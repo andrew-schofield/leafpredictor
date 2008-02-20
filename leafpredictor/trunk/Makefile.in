@@ -15,11 +15,11 @@
 @SET_MAKE@
 
 # Copyright (C) 2007 Andrew Schofield <the.uncle.fungus@gmail.com>
-#  
+#
 # This file is free software; as a special exception the author gives
-# unlimited permission to copy and/or distribute it, with or without 
+# unlimited permission to copy and/or distribute it, with or without
 # modifications, as long as this notice is preserved.
-# 
+#
 # This program is distributed in the hope that it will be useful, but
 # WITHOUT ANY WARRANTY, to the extent permitted by law; without even the
 # implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
@@ -43,7 +43,7 @@ subdir = .
 DIST_COMMON = README $(am__configure_deps) $(srcdir)/Makefile.am \
 	$(srcdir)/Makefile.in $(srcdir)/README.in \
 	$(srcdir)/config.h.in $(top_srcdir)/configure AUTHORS COPYING \
-	ChangeLog INSTALL NEWS THANKS install-sh missing
+	ChangeLog INSTALL NEWS THANKS depcomp install-sh missing
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/wxwin.m4 \
 	$(top_srcdir)/configure.ac
@@ -172,7 +172,7 @@ target_alias = @target_alias@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 EXTRA_DIST = reconf configure
-SUBDIRS = m4 src doc
+SUBDIRS = m4 src doc src/include
 all: config.h
 	$(MAKE) $(AM_MAKEFLAGS) all-recursive
 
