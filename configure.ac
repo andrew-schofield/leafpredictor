@@ -10,7 +10,7 @@
 
 m4_include(m4/wxwin.m4)
 AC_INIT([LeafPredictor],
-        [0.0.1],
+        [0.1],
         [Andrew Schofield as239@york.ac.uk],
         [LeafPredictor])
 AC_PREFIX
@@ -45,6 +45,8 @@ AC_CONFIG_FILES([
    doc/Makefile
    m4/Makefile
    src/Makefile
+   src/include/Makefile
+   src/include/leafpredictor.h
 ])
 
 AC_OUTPUT
