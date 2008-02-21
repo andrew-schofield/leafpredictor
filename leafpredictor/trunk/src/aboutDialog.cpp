@@ -34,7 +34,6 @@ AboutDialog::AboutDialog(wxWindow* parent) : wxDialog(parent, wxID_ANY, wxString
 	wxFlexGridSizer *authorHomepageSizer;
 
 
-	// ---
 	authorHomepageSizer = new wxFlexGridSizer(2);
 
 	authorHomepageSizer->Add(new wxStaticText(this, wxID_ANY, _("Author:")), 0, wxALIGN_RIGHT);
@@ -50,7 +49,6 @@ AboutDialog::AboutDialog(wxWindow* parent) : wxDialog(parent, wxID_ANY, wxString
 	authorHomepageSizer->AddSpacer(5);
 
 
-	// ---
 	infoSizer = new wxBoxSizer(wxVERTICAL);
 
 	infoSizer->Add(new wxStaticText(this, wxID_ANY, wxT(LEAFPREDICTOR_APPNAME)), 0, wxALIGN_CENTER);
@@ -60,10 +58,6 @@ AboutDialog::AboutDialog(wxWindow* parent) : wxDialog(parent, wxID_ANY, wxString
 	infoSizer->Add(authorHomepageSizer);
 
 
-	// ---
-	//mainSizer->Add(infoSizer);
-
-	// ---
 	topLevelSizer = new wxBoxSizer(wxVERTICAL);
 
 	topLevelSizer->Add(infoSizer, 1, wxEXPAND | wxALL, 5);

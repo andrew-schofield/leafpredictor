@@ -27,6 +27,7 @@ END_EVENT_TABLE()
 LeafCanvas::LeafCanvas(wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize &size) : wxScrolledWindow(parent, wxID_ANY, pos, size, wxSUNKEN_BORDER)
 {
 	SetBackgroundColour(*wxWHITE);
+	mLabel = wxT("");
 }
 
 
@@ -38,7 +39,6 @@ LeafCanvas::~LeafCanvas()
 void LeafCanvas::SetLeaf(std::vector<double> coords)
 {
 	mLeaf = coords;
-
 
 	double   minX = 0, minY = 0, maxX = 0, maxY = 0;
 	wxUint32   i;
@@ -63,7 +63,7 @@ void LeafCanvas::SetLeaf(std::vector<double> coords)
 	mXMid = minX + (mXRange / 2);
 	mYMid = minY + (mYRange / 2);
 
-	//Tools::InfoMsgBox(wxString::Format(wxT("%.2f, %.2f"), mXMid, mYMid));
+	CalculateScale();
 
 	Refresh();
 }
@@ -86,18 +86,10 @@ void LeafCanvas::OnPaint(wxPaintEvent& event)
 void LeafCanvas::PaintBackground(wxDC& dc)
 {
 
-	//Tools::InfoMsgBox(wxString::Format(wxT("Painting background")));
 	wxColour backgroundColour = *wxWHITE;
 
-
 	dc.SetBrush(wxBrush(backgroundColour));
-	//dc.SetPen(wxPen(backgroundColour, 1));
 
-	//wxRect windowRect(wxPoint(0,0), GetClientSize());
-
-	//CalcUnscrolledPosition(windowRect.x, windowRect.y, & windowRect.x, & windowRect.y);
-
-	//dc.DrawRectangle(windowRect);
 	dc.Clear();
 }
 
@@ -106,32 +98,23 @@ void LeafCanvas::DrawLeaf(wxDC& dc)
 {
 	wxColour leafColour = *wxGREEN;
 	wxUint32 i;
-	double   xScale, yScale, scale;
-
-
-	xScale = GetClientSize().x / mXRange;
-	yScale = GetClientSize().y / mYRange;
-
-	if(xScale<yScale)
-		scale = xScale;
-	else
-		scale = yScale;
-
-	//dc.SetUserScale(2,2);
 
 	dc.SetBrush(wxBrush(leafColour));
+
+	dc.DrawText(mLabel,0,0);
+
 	dc.SetPen(wxPen(*wxLIGHT_GREY, 1));
-	//dc.DrawLine(0,GetClientSize().y/2,GetClientSize().x,GetClientSize().y/2);
-	//dc.DrawLine(GetClientSize().x/2,0,GetClientSize().x/2,GetClientSize().y);
+	//axes
+	dc.DrawLine(0,GetClientSize().y/2,GetClientSize().x,GetClientSize().y/2);
+	dc.DrawLine(GetClientSize().x/2,0,GetClientSize().x/2,GetClientSize().y);
 
 	dc.SetPen(wxPen(leafColour, 1));
 
 	wxPoint leaf[mLeaf.size()/2];
-	//scaledLeaf = ScaleLeaf();
-	for(i=0;i<mLeaf.size()/2;++i)
+	for(i=0;i<(mLeaf.size()/2);++i)
 	{
-		int x = (int)(mLeaf.at(i*2) * scale + (GetClientSize().x/2 - mXMid * scale));
-		int y = (int)(mLeaf.at((i*2)+1) * scale + (GetClientSize().y/2 - mYMid * scale));
+		int x = (int)(mLeaf.at(i*2) * mScale + (GetClientSize().x/2 - mXMid * mScale));
+		int y = (int)(mLeaf.at((i*2)+1) * mScale + (GetClientSize().y/2 - mYMid * mScale));
 		x = dc.LogicalToDeviceX(x);
 		y = dc.LogicalToDeviceY(y);
 		leaf[i] = wxPoint(x,y);
@@ -142,8 +125,22 @@ void LeafCanvas::DrawLeaf(wxDC& dc)
 }
 
 
-
 void LeafCanvas::OnResize(wxSizeEvent& event)
 {
+	CalculateScale();
 	Refresh();
+}
+
+
+void LeafCanvas::CalculateScale(void)
+{
+	double   xScale, yScale;
+
+	xScale = GetClientSize().x / mXRange;
+	yScale = GetClientSize().y / mYRange;
+
+	if(xScale<yScale)
+		mScale = xScale;
+	else
+		mScale = yScale;
 }

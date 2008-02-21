@@ -145,6 +145,8 @@ public:
 	 **/
 	bool Show(bool show = true);
 
+	void SetPCMessage(wxString msg);
+
 private:
 	DECLARE_EVENT_TABLE()
 };

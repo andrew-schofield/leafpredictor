@@ -26,7 +26,10 @@ class LeafCanvas: public wxScrolledWindow
 {
 protected:
 	std::vector<double>  mLeaf;
-	double               mXRange, mYRange, mXMid, mYMid;
+	double               mXRange, mYRange, mXMid, mYMid, mScale;
+	wxString             mLabel;
+
+	void CalculateScale(void);
 
 	void DrawLeaf(wxDC& dc);
 
@@ -42,6 +45,12 @@ public:
 	virtual ~LeafCanvas();
 
 	void SetLeaf(std::vector<double> coords);
+
+	void SetScale(double scale) {mScale = scale;}
+	double GetScale(void) {return mScale;}
+	void SetLabel(wxString label) {mLabel = label;}
+
+	//void ExtDraw(void);
 
 private:
 	DECLARE_EVENT_TABLE()
