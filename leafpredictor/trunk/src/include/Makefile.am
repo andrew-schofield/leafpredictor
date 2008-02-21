@@ -8,9 +8,12 @@
 # WITHOUT ANY WARRANTY, to the extent permitted by law; without even the
 # implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
-bin_PROGRAMS = leafpredictor
-leafpredictor_SOURCES = aboutDialog.cpp eigenSystem.cpp leafCanvas.cpp main.cpp mainDialog.cpp
-INCLUDES = -I$(top_srcdir)/src/include
-AM_CXXFLAGS = -Wall -Wno-strict-aliasing
-AM_CPPFLAGS = \
-	-DDATADIR=\"$(datadir)\"
+EXTRA_DIST = \
+	aboutDialog.h \
+	eigenSystem.h \
+	leafCanvas.h \
+	leafpredictor.h \
+	main.h \
+	mainDialog.h \
+	tools.h
+
