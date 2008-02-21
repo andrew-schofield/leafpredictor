@@ -19,6 +19,7 @@
 
 #include "aboutDialog.h"
 #include "eigenSystem.h"
+#include "tools.h"
 
 #include "wx/menu.h"
 #include "wx/filedlg.h"
@@ -165,17 +166,17 @@ inline void MainDialog::CreateMenuBar(void)
 
 	// The 'Help' menu
 	menu = new wxMenu();
-#ifndef __WXMAC__
+	#ifndef __WXMAC__
 	menu->Append(wxID_HELP, _("&Help Contents\tF1"), _("See help contents"));
-#else
+	#else
 	menu->Append(wxID_HELP, _("&Help Contents\tCtrl+?"), _("See help contents"));
-#endif
+	#endif
 	menu->Append(wxID_ABOUT, _("&About"), wxString::Format(_("About %s"), wxT(LEAFPREDICTOR_APPNAME)));
-#ifdef __WXMAC__
+	#ifdef __WXMAC__
 	{
 	    wxApp::s_macAboutMenuItemId = wxID_ABOUT;
 	}
-#endif
+	#endif
 	menuBar->Append(menu, _("&Help"));
 
 	SetMenuBar(menuBar);
@@ -224,6 +225,8 @@ inline void MainDialog::CreateLayout(void)
 
 	mMeanLeafCanvas = new LeafCanvas(this, -1, wxDefaultPosition, wxDefaultSize);
 	mPredictedLeafCanvas = new LeafCanvas(this, -1, wxDefaultPosition, wxDefaultSize);
+	mMeanLeafCanvas->SetLabel(wxT("Mean Leaf"));
+	mPredictedLeafCanvas->SetLabel(wxT("Predicted Leaf"));
 
 	plotSizer->Add(mMeanLeafCanvas, 0, wxEXPAND);
 	plotSizer->Add(mPredictedLeafCanvas, 0, wxEXPAND);
@@ -273,7 +276,9 @@ void MainDialog::OnMenuOpen(wxCommandEvent& event)
 		mEigenSystem = new EigenSystem();
 		mEigenSystem->LoadEigenFile(selectedFile);
 		mMeanLeafCanvas->SetLeaf(mEigenSystem->GetMeanLeaf());
+		//mMeanLeafCanvas->ExtDraw();
 		mPredictedLeafCanvas->SetLeaf(mEigenSystem->GetPredictedLeaf());
+		//mPredictedLeafCanvas->ExtDraw();
 
 		mChoice1->Enable(true);
 		mChoice2->Enable(true);
@@ -341,6 +346,8 @@ void MainDialog::OnScroll(wxScrollEvent& event)
 			mPC1Value->SetLabel(wxString::Format(wxT("%.1f"),tmpFloat/10));
 			mEigenSystem->PredictLeaf(mChoice1->GetSelection(), mPC1Amount->GetValue(), mChoice2->GetSelection(), mPC2Amount->GetValue(), mChoice3->GetSelection(), mPC3Amount->GetValue());
 			mPredictedLeafCanvas->SetLeaf(mEigenSystem->GetPredictedLeaf());
+			//mMeanLeafCanvas->ExtDraw();
+			//mPredictedLeafCanvas->ExtDraw();
 			break;
 		case SLI_PC2:
 			tmpFloat = mPC2Amount->GetValue();
@@ -359,4 +366,10 @@ void MainDialog::OnScroll(wxScrollEvent& event)
 			wxASSERT(false);
 			break;
 	}
+}
+
+
+void MainDialog::SetPCMessage(wxString msg)
+{
+	SetStatusText(msg, STATUS_PCMESSAGE);
 }

@@ -18,6 +18,7 @@
 #include "eigenSystem.h"
 
 #include "tools.h"
+#include "mainDialog.h"
 
 #include "wx/textfile.h"
 #include "wx/txtstrm.h"
@@ -135,13 +136,11 @@ void EigenSystem::PredictLeaf(wxUint32 PC1, wxInt32 PC1Value, wxUint32 PC2, wxIn
 	val2 = PC2Value;
 	val3 = PC3Value;
 
-	//tmpFloat1 = GetPCSD(PC1);
-
-	//Tools::InfoMsgBox(wxString::Format(wxT("PC: %i -> %i\nPC: %i -> %i\nPC: %i -> %i"), PC1, PC1Value, PC2, PC2Value, PC3, PC3Value));
 	wxUint32 i;
-	//Tools::InfoMsgBox(wxString::Format(wxT("Factor %.2f"), val1));
 	for(i=0;i<mMeanLeaf.size();++i)
 	{
 		mPredictedLeaf[i] = mMeanLeaf[i] + (mEigenVectors[PC1][i] * (SD1 * (val1 / 10))) + (mEigenVectors[PC2][i] * (SD2 * (val2 / 10))) + (mEigenVectors[PC3][i] * (SD3 * (val3 / 10)));
 	}
+
+	MainDialog::GetInstance()->SetPCMessage(wxString::Format(wxT("PC %i: %.1f; PC %i: %.1f; PC %i: %.1f"), PC1+1, val1/10, PC2+1, val2/10, PC3+1, val3/10));
 }
