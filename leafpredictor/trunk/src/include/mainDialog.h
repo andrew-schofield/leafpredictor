@@ -26,6 +26,7 @@
 #include "wx/stattext.h"
 #include "wx/splitter.h"
 #include "wx/listctrl.h"
+#include "wx/menu.h"
 
 
 /**
@@ -55,6 +56,8 @@ protected:
 	LeafCanvas*        mPredictedLeafCanvas;
 	wxListView        *mSavedLeaves;
 	bool               mLinkedScale;
+	wxMenuItem        *mRelativeMenu;
+	wxMenuItem        *mResetMenu;
 
 	/**
 	 * Constructor.
