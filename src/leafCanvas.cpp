@@ -156,10 +156,9 @@ void LeafCanvas::ExtDraw(void)
 wxBitmap LeafCanvas::GetScreenShot(void)
 {
 	wxBitmap bitmap(GetClientSize().x, GetClientSize().y);
-	wxBufferedDC dc;
-	wxMemoryDC memDC;
-	memDC.SelectObject(bitmap);
-	memDC.Blit(0, 0, GetClientSize().x, GetClientSize().y, & dc, 0, 0);
-	memDC.SelectObject(wxNullBitmap);
+	wxBufferedDC dc(NULL, bitmap);
+
+	PaintBackground(dc);
+	DrawLeaf(dc);
 	return bitmap;
 }
