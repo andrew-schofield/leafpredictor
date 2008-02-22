@@ -21,7 +21,6 @@
 #include "eigenSystem.h"
 #include "tools.h"
 
-#include "wx/menu.h"
 #include "wx/filedlg.h"
 #include "wx/dcbuffer.h"
 #include "wx/sizer.h"
@@ -179,10 +178,14 @@ inline void MainDialog::CreateMenuBar(void)
 	menuBar->Append(menu, _("&File"));
 
 	menu = new wxMenu();
-	menu->Append(MID_RELATIVE, _("&Relative scaling\tCTRL+R"), _("Scale leaves relative to each other"),true);
+	mRelativeMenu = new wxMenuItem(menu,MID_RELATIVE, _("&Relative scaling\tCTRL+R"), _("Scale leaves relative to each other"),true);
+	menu->Append(mRelativeMenu);
 	menu->Check(MID_RELATIVE, true);
+	mRelativeMenu->Enable(false);
 	menu->AppendSeparator();
-	menu->Append(MID_RESETPCS, _("&Reset\tCTRL+W"), _("Reset all PC values back to 0"));
+	mResetMenu = new wxMenuItem(menu,MID_RESETPCS, _("&Reset\tCTRL+W"), _("Reset all PC values back to 0"));
+	menu->Append(mResetMenu);
+	mResetMenu->Enable(false);
 	menu->AppendSeparator();
 	menu->Append(MID_MEAN_SCREEN, _("Save &Mean Leaf\tCTRL+M"), _("Save the mean leaf to an image file"));
 	menu->Append(MID_PRED_SCREEN, _("Save &Predicted Leaf\tCTRL+P"), _("Save the predicted leaf to an image file"));
@@ -310,6 +313,8 @@ void MainDialog::OnMenuImport(wxCommandEvent& event)
 		mPC1Amount->Enable(true);
 		mPC2Amount->Enable(true);
 		mPC3Amount->Enable(true);
+		mRelativeMenu->Enable(true);
+		mResetMenu->Enable(true);
 	}
 }
 
@@ -442,7 +447,7 @@ void MainDialog::OnMenuResetPCs(wxCommandEvent& event)
 void MainDialog::OnMenuMeanScreen(wxCommandEvent& event)
 {
 	wxString selectedFile;
-	wxBitmap screenShot = mMeanLeafCanvas->GetScreenShot();
+	wxBitmap screenShot(mMeanLeafCanvas->GetScreenShot());
 
 	wxFileDialog *SaveDialog = new wxFileDialog(this, _("Choose location to save mean leaf image"), wxT(""), wxT(""),wxT("PNG Images (*.png)|*.png"), wxSAVE, wxDefaultPosition);
 	if (SaveDialog->ShowModal() == wxID_OK) // if the user click "Open" instead of "cancel"
@@ -456,7 +461,7 @@ void MainDialog::OnMenuMeanScreen(wxCommandEvent& event)
 void MainDialog::OnMenuPredScreen(wxCommandEvent& event)
 {
 	wxString selectedFile;
-	wxBitmap screenShot = mPredictedLeafCanvas->GetScreenShot();
+	wxBitmap screenShot(mPredictedLeafCanvas->GetScreenShot());
 
 	wxFileDialog *SaveDialog = new wxFileDialog(this, _("Choose location to save predicted leaf image"), wxT(""), wxT(""),wxT("PNG Images (*.png)|*.png"), wxSAVE, wxDefaultPosition);
 	if (SaveDialog->ShowModal() == wxID_OK) // if the user click "Open" instead of "cancel"
