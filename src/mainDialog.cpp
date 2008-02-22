@@ -33,11 +33,14 @@ enum _CONTROL_ID
 {
 
 	CHC_PC1 = wxID_HIGHEST,
-    CHC_PC2,
+	CHC_PC2,
 	CHC_PC3,
 	SLI_PC1,
 	SLI_PC2,
-	SLI_PC3
+	SLI_PC3,
+	MID_IMPORT,
+	MID_RELATIVE,
+	MID_RESETPCS
 };
 
 
@@ -59,6 +62,10 @@ BEGIN_EVENT_TABLE(MainDialog, wxFrame)
 	EVT_MENU       (wxID_EXIT,                               MainDialog::OnMenuQuit)
 	EVT_MENU       (wxID_ABOUT,                              MainDialog::OnMenuAbout)
 	EVT_MENU       (wxID_OPEN,                               MainDialog::OnMenuOpen)
+	EVT_MENU       (MID_IMPORT,                              MainDialog::OnMenuImport)
+	EVT_MENU       (wxID_SAVE,                               MainDialog::OnMenuSave)
+	EVT_MENU       (MID_RELATIVE,                            MainDialog::OnMenuRelative)
+	EVT_MENU       (MID_RESETPCS,                            MainDialog::OnMenuResetPCs)
 
 	// --- Frame
 	EVT_CLOSE      (MainDialog::OnClose)
@@ -96,6 +103,7 @@ MainDialog::MainDialog(void) : wxFrame(NULL, wxID_ANY, wxT(LEAFPREDICTOR_APPNAME
 	CreateMenuBar();
 	CreateStatusBar(2);
 	CreateLayout();
+	mLinkedScale = true;
 }
 
 
@@ -159,10 +167,19 @@ inline void MainDialog::CreateMenuBar(void)
 
 	// The 'Main' menu
 	menu = new wxMenu();
-	menu->Append(wxID_OPEN, _("&Open...\tCTRL+O"), _("Open an eigensystem for prediction"));
+	menu->Append(MID_IMPORT, _("&Import\tCTRL+I"), _("Import a LeafAnalyser eigensystem for prediction"));
+	menu->Append(wxID_OPEN, _("&Open\tCTRL+O"), _("Open a saved LeafPredictor project"));
+	menu->Append(wxID_SAVE, _("&Save\tCTRL+S"), _("Save a LeafPredictor project"));
 	menu->AppendSeparator();
 	menu->Append(wxID_EXIT, _("&Quit\tCtrl+Q"), wxString::Format(_("Quit %s"), wxT(LEAFPREDICTOR_APPNAME)));
 	menuBar->Append(menu, _("&File"));
+
+	menu = new wxMenu();
+	menu->Append(MID_RELATIVE, _("&Relative scaling\tCTRL+R"), _("Scale leaves relative to each other"),true);
+	menu->Check(MID_RELATIVE, true);
+	menu->AppendSeparator();
+	menu->Append(MID_RESETPCS, _("&Reset\tCTRL+W"), _("Reset all PC values back to 0"));
+	menuBar->Append(menu, _("&Plots"));
 
 	// The 'Help' menu
 	menu = new wxMenu();
@@ -265,20 +282,20 @@ void MainDialog::OnMenuAbout(wxCommandEvent& event)
 	AboutDialog::GetInstance(this)->ShowModal();
 }
 
-void MainDialog::OnMenuOpen(wxCommandEvent& event)
+void MainDialog::OnMenuImport(wxCommandEvent& event)
 {
 	wxString selectedFile;
 
-	wxFileDialog *OpenDialog = new wxFileDialog(this, _("Select an eigensystem to use for prediction"), wxT(""), wxT(""),wxT("Text Files (*.txt)|*.txt"), wxOPEN, wxDefaultPosition);
+	wxFileDialog *OpenDialog = new wxFileDialog(this, _("Select a LeafAnalyser eigensystem to import"), wxT(""), wxT(""),wxT("Text Files (*.txt)|*.txt"), wxOPEN, wxDefaultPosition);
 	if (OpenDialog->ShowModal() == wxID_OK) // if the user click "Open" instead of "cancel"
 	{
 		selectedFile = OpenDialog->GetPath();
 		mEigenSystem = new EigenSystem();
 		mEigenSystem->LoadEigenFile(selectedFile);
 		mMeanLeafCanvas->SetLeaf(mEigenSystem->GetMeanLeaf());
-		//mMeanLeafCanvas->ExtDraw();
+		mMeanLeafCanvas->ExtDraw();
 		mPredictedLeafCanvas->SetLeaf(mEigenSystem->GetPredictedLeaf());
-		//mPredictedLeafCanvas->ExtDraw();
+		mPredictedLeafCanvas->ExtDraw();
 
 		mChoice1->Enable(true);
 		mChoice2->Enable(true);
@@ -311,20 +328,17 @@ void MainDialog::OnChoices(wxCommandEvent& event)
 		case CHC_PC1:
 			mPC1Value->SetLabel(wxT(" 0.0"));
 			mPC1Amount->SetValue(0);
-			mEigenSystem->PredictLeaf(mChoice1->GetSelection(), mPC1Amount->GetValue(), mChoice2->GetSelection(), mPC2Amount->GetValue(), mChoice3->GetSelection(), mPC3Amount->GetValue());
-			mPredictedLeafCanvas->SetLeaf(mEigenSystem->GetPredictedLeaf());
+			UpdateLeaves();
 			break;
 		case CHC_PC2:
 			mPC2Value->SetLabel(wxT(" 0.0"));
 			mPC2Amount->SetValue(0);
-			mEigenSystem->PredictLeaf(mChoice1->GetSelection(), mPC1Amount->GetValue(), mChoice2->GetSelection(), mPC2Amount->GetValue(), mChoice3->GetSelection(), mPC3Amount->GetValue());
-			mPredictedLeafCanvas->SetLeaf(mEigenSystem->GetPredictedLeaf());
+			UpdateLeaves();
 			break;
 		case CHC_PC3:
 			mPC3Value->SetLabel(wxT(" 0.0"));
 			mPC3Amount->SetValue(0);
-			mEigenSystem->PredictLeaf(mChoice1->GetSelection(), mPC1Amount->GetValue(), mChoice2->GetSelection(), mPC2Amount->GetValue(), mChoice3->GetSelection(), mPC3Amount->GetValue());
-			mPredictedLeafCanvas->SetLeaf(mEigenSystem->GetPredictedLeaf());
+			UpdateLeaves();
 			break;
 
 		default:
@@ -344,22 +358,17 @@ void MainDialog::OnScroll(wxScrollEvent& event)
 		case SLI_PC1:
 			tmpFloat = mPC1Amount->GetValue();
 			mPC1Value->SetLabel(wxString::Format(wxT("%.1f"),tmpFloat/10));
-			mEigenSystem->PredictLeaf(mChoice1->GetSelection(), mPC1Amount->GetValue(), mChoice2->GetSelection(), mPC2Amount->GetValue(), mChoice3->GetSelection(), mPC3Amount->GetValue());
-			mPredictedLeafCanvas->SetLeaf(mEigenSystem->GetPredictedLeaf());
-			//mMeanLeafCanvas->ExtDraw();
-			//mPredictedLeafCanvas->ExtDraw();
+			UpdateLeaves();
 			break;
 		case SLI_PC2:
 			tmpFloat = mPC2Amount->GetValue();
 			mPC2Value->SetLabel(wxString::Format(wxT("%.1f"),tmpFloat/10));
-			mEigenSystem->PredictLeaf(mChoice1->GetSelection(), mPC1Amount->GetValue(), mChoice2->GetSelection(), mPC2Amount->GetValue(), mChoice3->GetSelection(), mPC3Amount->GetValue());
-			mPredictedLeafCanvas->SetLeaf(mEigenSystem->GetPredictedLeaf());
+			UpdateLeaves();
 			break;
 		case SLI_PC3:
 			tmpFloat = mPC3Amount->GetValue();
 			mPC3Value->SetLabel(wxString::Format(wxT("%.1f"),tmpFloat/10));
-			mEigenSystem->PredictLeaf(mChoice1->GetSelection(), mPC1Amount->GetValue(), mChoice2->GetSelection(), mPC2Amount->GetValue(), mChoice3->GetSelection(), mPC3Amount->GetValue());
-			mPredictedLeafCanvas->SetLeaf(mEigenSystem->GetPredictedLeaf());
+			UpdateLeaves();
 			break;
 
 		default:
@@ -372,4 +381,52 @@ void MainDialog::OnScroll(wxScrollEvent& event)
 void MainDialog::SetPCMessage(wxString msg)
 {
 	SetStatusText(msg, STATUS_PCMESSAGE);
+}
+
+
+void MainDialog::OnMenuOpen(wxCommandEvent& event)
+{
+}
+
+
+void MainDialog::OnMenuSave(wxCommandEvent& event)
+{
+}
+
+
+void MainDialog::UpdateLeaves(void)
+{
+	mEigenSystem->PredictLeaf(mChoice1->GetSelection(), mPC1Amount->GetValue(), mChoice2->GetSelection(), mPC2Amount->GetValue(), mChoice3->GetSelection(), mPC3Amount->GetValue());
+	mMeanLeafCanvas->SetLeaf(mEigenSystem->GetMeanLeaf());
+	mPredictedLeafCanvas->SetLeaf(mEigenSystem->GetPredictedLeaf());
+	if(mLinkedScale)
+	{
+		double meanScale, predScale;
+
+		predScale = mPredictedLeafCanvas->GetScale();
+		meanScale = mMeanLeafCanvas->GetScale();
+		mMeanLeafCanvas->SetScale(std::min(predScale,meanScale));
+		mPredictedLeafCanvas->SetScale(std::min(predScale,meanScale));
+	}
+	mMeanLeafCanvas->ExtDraw();
+	mPredictedLeafCanvas->ExtDraw();
+}
+
+
+void MainDialog::OnMenuRelative(wxCommandEvent& event)
+{
+	mLinkedScale = !mLinkedScale;
+	UpdateLeaves();
+}
+
+
+void MainDialog::OnMenuResetPCs(wxCommandEvent& event)
+{
+	mPC1Amount->SetValue(0);
+	mPC1Value->SetLabel(wxT(" 0.0"));
+	mPC2Amount->SetValue(0);
+	mPC2Value->SetLabel(wxT(" 0.0"));
+	mPC3Amount->SetValue(0);
+	mPC3Value->SetLabel(wxT(" 0.0"));
+	UpdateLeaves();
 }

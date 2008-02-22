@@ -24,6 +24,8 @@
 #include "wx/choice.h"
 #include "wx/slider.h"
 #include "wx/stattext.h"
+#include "wx/splitter.h"
+#include "wx/listctrl.h"
 
 
 /**
@@ -49,9 +51,10 @@ protected:
 	wxStaticText       *mPC1Value;
 	wxStaticText       *mPC2Value;
 	wxStaticText       *mPC3Value;
-
 	LeafCanvas*        mMeanLeafCanvas;
 	LeafCanvas*        mPredictedLeafCanvas;
+	wxListView        *mSavedLeaves;
+	bool               mLinkedScale;
 
 	/**
 	 * Constructor.
@@ -83,6 +86,14 @@ protected:
 	void OnMenuAbout(wxCommandEvent& event);
 
 	void OnMenuOpen(wxCommandEvent& event);
+
+	void OnMenuSave(wxCommandEvent& event);
+
+	void OnMenuImport(wxCommandEvent& event);
+
+	void OnMenuRelative(wxCommandEvent& event);
+
+	void OnMenuResetPCs(wxCommandEvent& event);
 
 	void OnChoices(wxCommandEvent& event);
 
@@ -146,6 +157,8 @@ public:
 	bool Show(bool show = true);
 
 	void SetPCMessage(wxString msg);
+
+	void UpdateLeaves(void);
 
 private:
 	DECLARE_EVENT_TABLE()

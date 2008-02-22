@@ -50,7 +50,7 @@ public:
 	double GetScale(void) {return mScale;}
 	void SetLabel(wxString label) {mLabel = label;}
 
-	//void ExtDraw(void);
+	void ExtDraw(void);
 
 private:
 	DECLARE_EVENT_TABLE()

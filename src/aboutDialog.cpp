@@ -17,12 +17,15 @@
 #include "leafpredictor.h"
 #include "aboutDialog.h"
 
+#include "staticBoldedText.h"
+
 #include "wx/sizer.h"
 //#include "wx/intl.h"
 #include "wx/version.h"
 #include "wx/statline.h"
 #include "wx/hyperlink.h"
 #include "wx/stattext.h"
+#include "wx/font.h"
 
 AboutDialog* AboutDialog::mInstance = NULL;
 
@@ -33,25 +36,24 @@ AboutDialog::AboutDialog(wxWindow* parent) : wxDialog(parent, wxID_ANY, wxString
 	wxBoxSizer      *infoSizer;
 	wxFlexGridSizer *authorHomepageSizer;
 
-
 	authorHomepageSizer = new wxFlexGridSizer(2);
 
-	authorHomepageSizer->Add(new wxStaticText(this, wxID_ANY, _("Author:")), 0, wxALIGN_RIGHT);
+	authorHomepageSizer->Add(new StaticBoldedText(this, wxID_ANY, _("Author: ")), 0, wxALIGN_RIGHT);
 	authorHomepageSizer->Add(new wxStaticText(this, wxID_ANY, wxT("Andrew Schofield")), 0, wxALIGN_LEFT);
-	authorHomepageSizer->Add(new wxStaticText(this, wxID_ANY, _("Homepage:")), 0, wxALIGN_RIGHT);
+	authorHomepageSizer->Add(new StaticBoldedText(this, wxID_ANY, _("Homepage: ")), 0, wxALIGN_RIGHT);
 	authorHomepageSizer->Add(new wxHyperlinkCtrl(this, wxID_ANY, wxT(LEAFPREDICTOR_URL_HOMEPAGE), wxT(LEAFPREDICTOR_URL_HOMEPAGE)));
-	authorHomepageSizer->Add(new wxStaticText(this, wxID_ANY, _("Licence:")), 0, wxALIGN_RIGHT);
+	authorHomepageSizer->Add(new StaticBoldedText(this, wxID_ANY, _("Licence: ")), 0, wxALIGN_RIGHT);
 	authorHomepageSizer->Add(new wxHyperlinkCtrl(this, wxID_ANY, wxT("GNU GPL v2"), wxT(LEAFPREDICTOR_URL_LICENCE)));
 	authorHomepageSizer->AddSpacer(5);
 	authorHomepageSizer->AddSpacer(5);
-	authorHomepageSizer->Add(new wxStaticText(this, wxID_ANY, _("Library:")), 0, wxALIGN_RIGHT);
+	authorHomepageSizer->Add(new StaticBoldedText(this, wxID_ANY, _("Library: ")), 0, wxALIGN_RIGHT);
 	authorHomepageSizer->Add(new wxHyperlinkCtrl(this, wxID_ANY, wxVERSION_STRING, wxT(LEAFPREDICTOR_URL_WXWIDGETS)));
 	authorHomepageSizer->AddSpacer(5);
 
 
 	infoSizer = new wxBoxSizer(wxVERTICAL);
 
-	infoSizer->Add(new wxStaticText(this, wxID_ANY, wxT(LEAFPREDICTOR_APPNAME)), 0, wxALIGN_CENTER);
+	infoSizer->Add(new StaticBoldedText(this, wxID_ANY, wxT(LEAFPREDICTOR_APPNAME)), 0, wxALIGN_CENTER);
 	infoSizer->AddSpacer(5);
 	infoSizer->Add(new wxStaticLine(this, wxID_ANY, wxDefaultPosition, wxSize(65, -1)), 0, wxALIGN_CENTER);
 	infoSizer->AddSpacer(5);

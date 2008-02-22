@@ -15,5 +15,6 @@ EXTRA_DIST = \
 	leafpredictor.h \
 	main.h \
 	mainDialog.h \
+	staticBoldedText.h \
 	tools.h
 

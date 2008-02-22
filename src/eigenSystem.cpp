@@ -142,5 +142,5 @@ void EigenSystem::PredictLeaf(wxUint32 PC1, wxInt32 PC1Value, wxUint32 PC2, wxIn
 		mPredictedLeaf[i] = mMeanLeaf[i] + (mEigenVectors[PC1][i] * (SD1 * (val1 / 10))) + (mEigenVectors[PC2][i] * (SD2 * (val2 / 10))) + (mEigenVectors[PC3][i] * (SD3 * (val3 / 10)));
 	}
 
-	MainDialog::GetInstance()->SetPCMessage(wxString::Format(wxT("PC %i: %.1f; PC %i: %.1f; PC %i: %.1f"), PC1+1, val1/10, PC2+1, val2/10, PC3+1, val3/10));
+	MainDialog::GetInstance()->SetPCMessage(wxString::Format(wxT("PC %i: %.1f SDs; PC %i: %.1f SDs; PC %i: %.1f SDs"), PC1+1, val1/10, PC2+1, val2/10, PC3+1, val3/10));
 }

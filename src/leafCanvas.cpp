@@ -65,7 +65,7 @@ void LeafCanvas::SetLeaf(std::vector<double> coords)
 
 	CalculateScale();
 
-	Refresh();
+	//Refresh();
 }
 
 
@@ -99,7 +99,6 @@ void LeafCanvas::DrawLeaf(wxDC& dc)
 	wxColour leafColour = *wxGREEN;
 	wxUint32 i;
 
-	dc.SetBrush(wxBrush(leafColour));
 
 	dc.DrawText(mLabel,0,0);
 
@@ -108,7 +107,7 @@ void LeafCanvas::DrawLeaf(wxDC& dc)
 	dc.DrawLine(0,GetClientSize().y/2,GetClientSize().x,GetClientSize().y/2);
 	dc.DrawLine(GetClientSize().x/2,0,GetClientSize().x/2,GetClientSize().y);
 
-	dc.SetPen(wxPen(leafColour, 1));
+	dc.SetPen(wxPen(*wxRED, 1));
 
 	wxPoint leaf[mLeaf.size()/2];
 	for(i=0;i<(mLeaf.size()/2);++i)
@@ -121,6 +120,8 @@ void LeafCanvas::DrawLeaf(wxDC& dc)
 		dc.DrawCircle(x,y,2);
 	}
 
+	dc.SetBrush(wxBrush(leafColour));
+	dc.SetPen(wxPen(leafColour, 1));
 	dc.DrawSpline(WXSIZEOF(leaf),leaf);
 }
 
@@ -143,4 +144,10 @@ void LeafCanvas::CalculateScale(void)
 		mScale = xScale;
 	else
 		mScale = yScale;
+}
+
+
+void LeafCanvas::ExtDraw(void)
+{
+	Refresh();
 }
