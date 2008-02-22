@@ -34,9 +34,11 @@ enum _CONTROL_ID
 	CHC_PC1 = wxID_HIGHEST,
 	CHC_PC2,
 	CHC_PC3,
+	CHC_PC4,
 	SLI_PC1,
 	SLI_PC2,
 	SLI_PC3,
+	SLI_PC4,
 	MID_IMPORT,
 	MID_RELATIVE,
 	MID_RESETPCS,
@@ -78,10 +80,12 @@ BEGIN_EVENT_TABLE(MainDialog, wxFrame)
 	EVT_CHOICE     (CHC_PC1,                                 MainDialog::OnChoices)
 	EVT_CHOICE     (CHC_PC2,                                 MainDialog::OnChoices)
 	EVT_CHOICE     (CHC_PC3,                                 MainDialog::OnChoices)
+	EVT_CHOICE     (CHC_PC4,                                 MainDialog::OnChoices)
 
 	EVT_COMMAND_SCROLL     (SLI_PC1,        MainDialog::OnScroll)
 	EVT_COMMAND_SCROLL     (SLI_PC2,        MainDialog::OnScroll)
 	EVT_COMMAND_SCROLL     (SLI_PC3,        MainDialog::OnScroll)
+	EVT_COMMAND_SCROLL     (SLI_PC4,        MainDialog::OnScroll)
 END_EVENT_TABLE()
 
 
@@ -223,19 +227,23 @@ inline void MainDialog::CreateLayout(void)
 		mPC1[i] = wxString::Format(_T("PC %i"), i+1);
 		mPC2[i] = wxString::Format(_T("PC %i"), i+1);
 		mPC3[i] = wxString::Format(_T("PC %i"), i+1);
+		mPC4[i] = wxString::Format(_T("PC %i"), i+1);
 	}
 
 	mChoice1 = new wxChoice(this, CHC_PC1, wxDefaultPosition, wxDefaultSize, 96, mPC1);
 	mChoice2 = new wxChoice(this, CHC_PC2, wxDefaultPosition, wxDefaultSize, 96, mPC2);
 	mChoice3 = new wxChoice(this, CHC_PC3, wxDefaultPosition, wxDefaultSize, 96, mPC3);
+	mChoice4 = new wxChoice(this, CHC_PC4, wxDefaultPosition, wxDefaultSize, 96, mPC4);
 
 	mPC1Amount = new wxSlider(this, SLI_PC1, 0, -50, 50, wxDefaultPosition, wxDefaultSize);
 	mPC2Amount = new wxSlider(this, SLI_PC2, 0, -50, 50, wxDefaultPosition, wxDefaultSize);
 	mPC3Amount = new wxSlider(this, SLI_PC3, 0, -50, 50, wxDefaultPosition, wxDefaultSize);
+	mPC4Amount = new wxSlider(this, SLI_PC4, 0, -50, 50, wxDefaultPosition, wxDefaultSize);
 
 	mPC1Value = new wxStaticText(this, wxID_ANY, wxT(" 0.0"), wxDefaultPosition, wxDefaultSize);
 	mPC2Value = new wxStaticText(this, wxID_ANY, wxT(" 0.0"), wxDefaultPosition, wxDefaultSize);
 	mPC3Value = new wxStaticText(this, wxID_ANY, wxT(" 0.0"), wxDefaultPosition, wxDefaultSize);
+	mPC4Value = new wxStaticText(this, wxID_ANY, wxT(" 0.0"), wxDefaultPosition, wxDefaultSize);
 
 	pcSizer = new wxBoxSizer(wxHORIZONTAL);
 	pcSizer->Add(mChoice1, 0, wxALIGN_LEFT);
@@ -247,6 +255,9 @@ inline void MainDialog::CreateLayout(void)
 	pcSizer->Add(mChoice3, 0, wxALIGN_LEFT);
 	pcSizer->Add(mPC3Amount, 1,  wxEXPAND);
 	pcSizer->Add(mPC3Value, 0, wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL);
+	pcSizer->Add(mChoice4, 0, wxALIGN_LEFT);
+	pcSizer->Add(mPC4Amount, 1,  wxEXPAND);
+	pcSizer->Add(mPC4Value, 0, wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL);
 
 	plotSizer = new wxGridSizer(2,1);
 
@@ -272,9 +283,11 @@ inline void MainDialog::CreateLayout(void)
 	mChoice1->Enable(false);
 	mChoice2->Enable(false);
 	mChoice3->Enable(false);
+	mChoice4->Enable(false);
 	mPC1Amount->Enable(false);
 	mPC2Amount->Enable(false);
 	mPC3Amount->Enable(false);
+	mPC4Amount->Enable(false);
 
 }
 
@@ -310,9 +323,11 @@ void MainDialog::OnMenuImport(wxCommandEvent& event)
 		mChoice1->Enable(true);
 		mChoice2->Enable(true);
 		mChoice3->Enable(true);
+		mChoice4->Enable(true);
 		mPC1Amount->Enable(true);
 		mPC2Amount->Enable(true);
 		mPC3Amount->Enable(true);
+		mPC4Amount->Enable(true);
 		mRelativeMenu->Enable(true);
 		mResetMenu->Enable(true);
 	}
@@ -352,6 +367,11 @@ void MainDialog::OnChoices(wxCommandEvent& event)
 			mPC3Amount->SetValue(0);
 			UpdateLeaves();
 			break;
+		case CHC_PC4:
+			mPC4Value->SetLabel(wxT(" 0.0"));
+			mPC4Amount->SetValue(0);
+			UpdateLeaves();
+			break;
 
 		default:
 			wxASSERT(false);
@@ -382,6 +402,11 @@ void MainDialog::OnScroll(wxScrollEvent& event)
 			mPC3Value->SetLabel(wxString::Format(wxT("%.1f"),tmpFloat/10));
 			UpdateLeaves();
 			break;
+		case SLI_PC4:
+			tmpFloat = mPC4Amount->GetValue();
+			mPC4Value->SetLabel(wxString::Format(wxT("%.1f"),tmpFloat/10));
+			UpdateLeaves();
+			break;
 
 		default:
 			wxASSERT(false);
@@ -408,7 +433,7 @@ void MainDialog::OnMenuSave(wxCommandEvent& event)
 
 void MainDialog::UpdateLeaves(void)
 {
-	mEigenSystem->PredictLeaf(mChoice1->GetSelection(), mPC1Amount->GetValue(), mChoice2->GetSelection(), mPC2Amount->GetValue(), mChoice3->GetSelection(), mPC3Amount->GetValue());
+	mEigenSystem->PredictLeaf(mChoice1->GetSelection(), mPC1Amount->GetValue(), mChoice2->GetSelection(), mPC2Amount->GetValue(), mChoice3->GetSelection(), mPC3Amount->GetValue(), mChoice4->GetSelection(), mPC4Amount->GetValue());
 	mMeanLeafCanvas->SetLeaf(mEigenSystem->GetMeanLeaf());
 	mPredictedLeafCanvas->SetLeaf(mEigenSystem->GetPredictedLeaf());
 	if(mLinkedScale)
@@ -440,6 +465,8 @@ void MainDialog::OnMenuResetPCs(wxCommandEvent& event)
 	mPC2Value->SetLabel(wxT(" 0.0"));
 	mPC3Amount->SetValue(0);
 	mPC3Value->SetLabel(wxT(" 0.0"));
+	mPC4Amount->SetValue(0);
+	mPC4Value->SetLabel(wxT(" 0.0"));
 	UpdateLeaves();
 }
 
