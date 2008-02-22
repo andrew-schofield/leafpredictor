@@ -19,6 +19,7 @@
 #include "mainDialog.h"
 
 #include "locale.h"
+#include "wx/image.h"
 
 IMPLEMENT_APP(LeafPredictorApp)
 
@@ -81,7 +82,7 @@ bool LeafPredictorApp::OnInit(void)
 #endif
 
 	// Miscellaneous initializations
-	//wxImage::AddHandler(new wxPNGHandler);      // We use only PNG images
+	wxImage::AddHandler(new wxPNGHandler);      // We use only PNG images
 
 	//Create mandatory singletons
 	//MessagesManager::CreateInstance();          // MUST be created first, so that other manager can log messages immediately

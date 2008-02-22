@@ -19,6 +19,7 @@
 
 #include "wx/dcbuffer.h"
 #include "wx/scrolwin.h"
+#include "wx/dcscreen.h"
 
 #include <vector>
 
@@ -51,6 +52,8 @@ public:
 	void SetLabel(wxString label) {mLabel = label;}
 
 	void ExtDraw(void);
+
+	wxBitmap GetScreenShot(void);
 
 private:
 	DECLARE_EVENT_TABLE()

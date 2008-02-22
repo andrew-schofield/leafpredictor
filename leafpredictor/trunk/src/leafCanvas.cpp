@@ -137,8 +137,8 @@ void LeafCanvas::CalculateScale(void)
 {
 	double   xScale, yScale;
 
-	xScale = GetClientSize().x / mXRange;
-	yScale = GetClientSize().y / mYRange;
+	xScale = (GetClientSize().x -20) / mXRange;
+	yScale = (GetClientSize().y -20) / mYRange;
 
 	if(xScale<yScale)
 		mScale = xScale;
@@ -150,4 +150,16 @@ void LeafCanvas::CalculateScale(void)
 void LeafCanvas::ExtDraw(void)
 {
 	Refresh();
+}
+
+
+wxBitmap LeafCanvas::GetScreenShot(void)
+{
+	wxBitmap bitmap(GetClientSize().x, GetClientSize().y);
+	wxBufferedDC dc;
+	wxMemoryDC memDC;
+	memDC.SelectObject(bitmap);
+	memDC.Blit(0, 0, GetClientSize().x, GetClientSize().y, & dc, 0, 0);
+	memDC.SelectObject(wxNullBitmap);
+	return bitmap;
 }
