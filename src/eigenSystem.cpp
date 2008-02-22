@@ -124,23 +124,25 @@ double EigenSystem::GetPCContribution(wxInt32 PC)
 	return 100 * (mEigenValues.at(PC -1) / mTotalVariance);
 }
 
-void EigenSystem::PredictLeaf(wxUint32 PC1, wxInt32 PC1Value, wxUint32 PC2, wxInt32 PC2Value, wxUint32 PC3, wxInt32 PC3Value)
+void EigenSystem::PredictLeaf(wxUint32 PC1, wxInt32 PC1Value, wxUint32 PC2, wxInt32 PC2Value, wxUint32 PC3, wxInt32 PC3Value, wxUint32 PC4, wxInt32 PC4Value)
 {
-	double SD1, SD2, SD3, val1, val2, val3;
+	double SD1, SD2, SD3, SD4, val1, val2, val3, val4;
 
 	SD1 = GetPCSD(PC1);
 	SD2 = GetPCSD(PC2);
 	SD3 = GetPCSD(PC3);
+	SD4 = GetPCSD(PC4);
 
 	val1 = PC1Value;
 	val2 = PC2Value;
 	val3 = PC3Value;
+	val4 = PC4Value;
 
 	wxUint32 i;
 	for(i=0;i<mMeanLeaf.size();++i)
 	{
-		mPredictedLeaf[i] = mMeanLeaf[i] + (mEigenVectors[PC1][i] * (SD1 * (val1 / 10))) + (mEigenVectors[PC2][i] * (SD2 * (val2 / 10))) + (mEigenVectors[PC3][i] * (SD3 * (val3 / 10)));
+		mPredictedLeaf[i] = mMeanLeaf[i] + (mEigenVectors[PC1][i] * (SD1 * (val1 / 10))) + (mEigenVectors[PC2][i] * (SD2 * (val2 / 10))) + (mEigenVectors[PC3][i] * (SD3 * (val3 / 10))) + (mEigenVectors[PC4][i] * (SD4 * (val4 / 10)));
 	}
 
-	MainDialog::GetInstance()->SetPCMessage(wxString::Format(wxT("PC %i: %.1f SDs; PC %i: %.1f SDs; PC %i: %.1f SDs"), PC1+1, val1/10, PC2+1, val2/10, PC3+1, val3/10));
+	MainDialog::GetInstance()->SetPCMessage(wxString::Format(wxT("PC %i: %.1f SDs; PC %i: %.1f SDs; PC %i: %.1f SDs; PC %i: %.1f SDs"), PC1+1, val1/10, PC2+1, val2/10, PC3+1, val3/10, PC4+1, val4/10));
 }

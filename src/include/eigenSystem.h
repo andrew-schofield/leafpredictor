@@ -48,7 +48,7 @@ public:
 	std::vector< double > GetMeanLeaf(void) {return mMeanLeaf;}
 	std::vector< double > GetPredictedLeaf(void) {return mPredictedLeaf;}
 
-	void PredictLeaf(wxUint32 PC1, wxInt32 PC1Value, wxUint32 PC2, wxInt32 PC2Value, wxUint32 PC3, wxInt32 PC3Value);
+	void PredictLeaf(wxUint32 PC1, wxInt32 PC1Value, wxUint32 PC2, wxInt32 PC2Value, wxUint32 PC3, wxInt32 PC3Value, wxUint32 PC4, wxInt32 PC4Value);
 
 };
 
