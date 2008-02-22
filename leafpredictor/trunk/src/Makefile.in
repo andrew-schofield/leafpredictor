@@ -55,7 +55,8 @@ am__installdirs = "$(DESTDIR)$(bindir)"
 binPROGRAMS_INSTALL = $(INSTALL_PROGRAM)
 PROGRAMS = $(bin_PROGRAMS)
 am_leafpredictor_OBJECTS = aboutDialog.$(OBJEXT) eigenSystem.$(OBJEXT) \
-	leafCanvas.$(OBJEXT) main.$(OBJEXT) mainDialog.$(OBJEXT)
+	leafCanvas.$(OBJEXT) main.$(OBJEXT) mainDialog.$(OBJEXT) \
+	staticBoldedText.$(OBJEXT)
 leafpredictor_OBJECTS = $(am_leafpredictor_OBJECTS)
 leafpredictor_LDADD = $(LDADD)
 DEFAULT_INCLUDES = -I. -I$(top_builddir)@am__isrc@
@@ -163,7 +164,7 @@ sysconfdir = @sysconfdir@
 target_alias = @target_alias@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-leafpredictor_SOURCES = aboutDialog.cpp eigenSystem.cpp leafCanvas.cpp main.cpp mainDialog.cpp
+leafpredictor_SOURCES = aboutDialog.cpp eigenSystem.cpp leafCanvas.cpp main.cpp mainDialog.cpp staticBoldedText.cpp
 INCLUDES = -I$(top_srcdir)/src/include
 AM_CXXFLAGS = -Wall -Wno-strict-aliasing
 AM_CPPFLAGS = \
@@ -240,6 +241,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/leafCanvas.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/main.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/mainDialog.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/staticBoldedText.Po@am__quote@
 
 .cpp.o:
 @am__fastdepCXX_TRUE@	$(CXXCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
