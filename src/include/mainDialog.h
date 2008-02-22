@@ -95,6 +95,10 @@ protected:
 
 	void OnMenuResetPCs(wxCommandEvent& event);
 
+	void OnMenuMeanScreen(wxCommandEvent& event);
+
+	void OnMenuPredScreen(wxCommandEvent& event);
+
 	void OnChoices(wxCommandEvent& event);
 
 	void OnScroll(wxScrollEvent& event);
