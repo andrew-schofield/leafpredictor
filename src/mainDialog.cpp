@@ -53,7 +53,8 @@ enum _CONTROL_ID
 	MID_RELATIVE,
 	MID_RESETPCS,
 	MID_MEAN_SCREEN,
-	MID_PRED_SCREEN
+	MID_PRED_SCREEN,
+	MID_INVERTLEAF
 };
 
 
@@ -82,6 +83,7 @@ BEGIN_EVENT_TABLE(MainDialog, wxFrame)
 	EVT_MENU       (MID_RESETPCS,                            MainDialog::OnMenuResetPCs)
 	EVT_MENU       (MID_MEAN_SCREEN,                         MainDialog::OnMenuMeanScreen)
 	EVT_MENU       (MID_PRED_SCREEN,                         MainDialog::OnMenuPredScreen)
+	EVT_MENU       (MID_INVERTLEAF,                          MainDialog::OnMenuInvertLeaf)
 
 	// --- Frame
 	EVT_CLOSE      (MainDialog::OnClose)
@@ -122,6 +124,7 @@ MainDialog::MainDialog(void) : wxFrame(NULL, wxID_ANY, wxT(LEAFPREDICTOR_APPNAME
 	CreateStatusBar(2);
 	CreateLayout();
 	mLinkedScale = true;
+	mInvertLeaf = false;
 }
 
 
@@ -201,6 +204,10 @@ inline void MainDialog::CreateMenuBar(void)
 	menu->Append(mRelativeMenu);
 	menu->Check(MID_RELATIVE, true);
 	mRelativeMenu->Enable(false);
+	mInvertLeafMenu = new wxMenuItem(menu,MID_INVERTLEAF, _("&Invert Leaf\tCTRL+I"), _("Fix leaves that import upside-down"),true);
+	menu->Append(mInvertLeafMenu);
+	menu->Check(MID_INVERTLEAF, false);
+	mInvertLeafMenu->Enable(false);
 	menu->AppendSeparator();
 	mResetMenu = new wxMenuItem(menu,MID_RESETPCS, _("&Reset\tCTRL+W"), _("Reset all PC values back to 0"));
 	menu->Append(mResetMenu);
@@ -346,6 +353,7 @@ void MainDialog::OnMenuImportES(wxCommandEvent& event)
 		mRelativeMenu->Enable(true);
 		mResetMenu->Enable(true);
 		mImportLeafMenu->Enable(true);
+		mInvertLeafMenu->Enable(true);
 	}
 }
 
@@ -529,4 +537,11 @@ void MainDialog::OnMenuImportLeaf(wxCommandEvent& event)
 		//mMeanLeafCanvas->ExtDraw();
 		UpdateLeaves();
 	}
+}
+
+void MainDialog::OnMenuInvertLeaf(wxCommandEvent& event)
+{
+	mInvertLeaf = !mInvertLeaf;
+	mEigenSystem->InvertLeaf();
+	UpdateLeaves();
 }
