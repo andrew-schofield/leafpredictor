@@ -34,7 +34,6 @@ protected:
 	double                                mTotalVariance;
 
 	std::vector<double> SplitLineByDelim(wxString line, wxString delim);
-	std::vector<double> ConvertImportedLeaf(std::vector<double> leaf);
 
 public:
 
