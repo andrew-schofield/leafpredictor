@@ -33,6 +33,7 @@ protected:
 	std::vector<double>  mLeaf;
 	double               mXRange, mYRange, mXMid, mYMid, mScale;
 	wxString             mLabel;
+	bool                 mLeafExists;
 
 	void CalculateScale(void);
 
