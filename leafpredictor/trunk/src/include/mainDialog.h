@@ -67,6 +67,8 @@ protected:
 	wxMenuItem        *mRelativeMenu;
 	wxMenuItem        *mResetMenu;
 	wxMenuItem        *mImportLeafMenu;
+	wxMenuItem        *mInvertLeafMenu;
+	bool               mInvertLeaf;
 
 	/**
 	 * Constructor.
@@ -112,6 +114,8 @@ protected:
 	void OnMenuMeanScreen(wxCommandEvent& event);
 
 	void OnMenuPredScreen(wxCommandEvent& event);
+
+	void OnMenuInvertLeaf(wxCommandEvent& event);
 
 	void OnChoices(wxCommandEvent& event);
 
@@ -177,6 +181,8 @@ public:
 	void SetPCMessage(wxString msg);
 
 	void UpdateLeaves(void);
+
+	bool GetInvertLeaf(void) {return mInvertLeaf;}
 
 private:
 	DECLARE_EVENT_TABLE()

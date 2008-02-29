@@ -44,6 +44,7 @@ EigenSystem::EigenSystem()
 	mEigenValues.empty();
 	mEigenVectors.empty();
 	mTotalVariance = 0;
+	mInversionFactor = 1;
 }
 
 
@@ -80,6 +81,9 @@ bool EigenSystem::LoadEigenFile(wxString eigenFile)
 	 */
 
 	mMeanLeaf = SplitLineByDelim(in.GetLine(1), wxT("\t"));
+
+	InvertLeaf();
+
 	mPredictedLeaf = mMeanLeaf;
 	mEigenValues = SplitLineByDelim(in.GetLine(4), wxT("\t"));
 	for(i=0;i<mMeanLeaf.size();++i)
@@ -112,6 +116,8 @@ bool EigenSystem::LoadLeafFile(wxString leafFile)
 	mMeanLeaf = SplitLineByDelim(in.GetLine(0)+wxT(",x"), wxT(","));
 	// remove the first element as it is actually a node number, NOT a coordinate
 	mMeanLeaf.erase(mMeanLeaf.begin());
+
+	InvertLeaf();
 
 	return true;
 }
@@ -164,10 +170,10 @@ void EigenSystem::PredictLeaf(wxUint32 PC1, wxInt32 PC1Value, wxUint32 PC2, wxIn
 	SD3 = GetPCSD(PC3);
 	SD4 = GetPCSD(PC4);
 
-	val1 = PC1Value;
-	val2 = PC2Value;
-	val3 = PC3Value;
-	val4 = PC4Value;
+	val1 = PC1Value * mInversionFactor;
+	val2 = PC2Value * mInversionFactor;
+	val3 = PC3Value * mInversionFactor;
+	val4 = PC4Value * mInversionFactor;
 
 	wxUint32 i;
 	for(i=0;i<mMeanLeaf.size();++i)
@@ -175,5 +181,14 @@ void EigenSystem::PredictLeaf(wxUint32 PC1, wxInt32 PC1Value, wxUint32 PC2, wxIn
 		mPredictedLeaf[i] = mMeanLeaf[i] + (mEigenVectors[PC1][i] * (SD1 * (val1 / 10))) + (mEigenVectors[PC2][i] * (SD2 * (val2 / 10))) + (mEigenVectors[PC3][i] * (SD3 * (val3 / 10))) + (mEigenVectors[PC4][i] * (SD4 * (val4 / 10)));
 	}
 
-	MainDialog::GetInstance()->SetPCMessage(wxString::Format(wxT("PC %i: %.1f SDs; PC %i: %.1f SDs; PC %i: %.1f SDs; PC %i: %.1f SDs"), PC1+1, val1/10, PC2+1, val2/10, PC3+1, val3/10, PC4+1, val4/10));
+	MainDialog::GetInstance()->SetPCMessage(wxString::Format(wxT("PC %i: %.1f SDs; PC %i: %.1f SDs; PC %i: %.1f SDs; PC %i: %.1f SDs"), PC1+1, mInversionFactor * val1/10, PC2+1, mInversionFactor * val2/10, PC3+1, mInversionFactor * val3/10, PC4+1, mInversionFactor * val4/10));
+}
+
+void EigenSystem::InvertLeaf(void)
+{
+	for(uint i=0;i<mMeanLeaf.size();++i)
+	{
+		mMeanLeaf[i] = mMeanLeaf.at(i) * -1;
+	}
+	mInversionFactor *= -1;
 }
