@@ -186,7 +186,9 @@ inline void MainDialog::CreateMenuBar(void)
 	// The 'Main' menu
 	menu = new wxMenu();
 	menu->Append(MID_IMPORTES, _("&Import EigenSystem\tCTRL+I"), _("Import a LeafAnalyser eigensystem for prediction"));
-	menu->Append(MID_IMPORTLEAF, _("Import &Leaf"), _("Import a Leaf file from LeafAnalyser"));
+	mImportLeafMenu = new wxMenuItem(menu, MID_IMPORTLEAF, _("Import &Leaf"), _("Import a Leaf file from LeafAnalyser"));
+	menu->Append(mImportLeafMenu);
+	mImportLeafMenu->Enable(false);
 	menu->AppendSeparator();
 	menu->Append(wxID_OPEN, _("&Open\tCTRL+O"), _("Open a saved LeafPredictor project"));
 	menu->Append(wxID_SAVE, _("&Save\tCTRL+S"), _("Save a LeafPredictor project"));
@@ -343,6 +345,7 @@ void MainDialog::OnMenuImportES(wxCommandEvent& event)
 		mPC4Amount->Enable(true);
 		mRelativeMenu->Enable(true);
 		mResetMenu->Enable(true);
+		mImportLeafMenu->Enable(true);
 	}
 }
 
