@@ -108,7 +108,10 @@ bool EigenSystem::LoadLeafFile(wxString leafFile)
 	if(lineCount != 1)
 		return false;
 
-	mMeanLeaf = ConvertImportedLeaf(SplitLineByDelim(in.GetLine(0), wxT(",")));
+	// add redundant ",x" to the line to satisfy the splitter
+	mMeanLeaf = SplitLineByDelim(in.GetLine(0)+wxT(",x"), wxT(","));
+	// remove the first element as it is actually a node number, NOT a coordinate
+	mMeanLeaf.erase(mMeanLeaf.begin());
 
 	return true;
 }
@@ -173,19 +176,4 @@ void EigenSystem::PredictLeaf(wxUint32 PC1, wxInt32 PC1Value, wxUint32 PC2, wxIn
 	}
 
 	MainDialog::GetInstance()->SetPCMessage(wxString::Format(wxT("PC %i: %.1f SDs; PC %i: %.1f SDs; PC %i: %.1f SDs; PC %i: %.1f SDs"), PC1+1, val1/10, PC2+1, val2/10, PC3+1, val3/10, PC4+1, val4/10));
-}
-
-
-std::vector<double> EigenSystem::ConvertImportedLeaf(std::vector<double> leaf)
-{
-	std::vector<double> v;
-	wxUint8 i;
-
-	for(i=1;i<leaf.size();i=i+2)
-	{
-
-		v.push_back(leaf.at(i));
-		v.push_back(leaf.at(i-1));
-	}
-	return v;
 }
