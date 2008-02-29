@@ -1,18 +1,28 @@
 /*
-*  This program is free software; you can redistribute it and/or modify
-*  it under the terms of the GNU General Public License as published by
-*  the Free Software Foundation; either version 2 of the License, or
-*  (at your option) any later version.
-*
-*  This program is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU Library General Public License for more details.
-*
-*  You should have received a copy of the GNU General Public License
-*  along with this program; if not, write to the Free Software
-*  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
-*/
+ *  This program is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Library General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ */
+
+#ifdef __GNUG__
+#pragma implementation "mainDialog.h"
+#endif
+
+#include "wx/wxprec.h"
+
+#ifdef  __BORLANDC__
+#pragma hdrstop
+#endif
 
 #include "leafpredictor.h"
 #include "mainDialog.h"
@@ -30,7 +40,6 @@
 // Identifiers for the controls
 enum _CONTROL_ID
 {
-
 	CHC_PC1 = wxID_HIGHEST,
 	CHC_PC2,
 	CHC_PC3,
@@ -39,7 +48,8 @@ enum _CONTROL_ID
 	SLI_PC2,
 	SLI_PC3,
 	SLI_PC4,
-	MID_IMPORT,
+	MID_IMPORTES,
+	MID_IMPORTLEAF,
 	MID_RELATIVE,
 	MID_RESETPCS,
 	MID_MEAN_SCREEN,
@@ -65,7 +75,8 @@ BEGIN_EVENT_TABLE(MainDialog, wxFrame)
 	EVT_MENU       (wxID_EXIT,                               MainDialog::OnMenuQuit)
 	EVT_MENU       (wxID_ABOUT,                              MainDialog::OnMenuAbout)
 	EVT_MENU       (wxID_OPEN,                               MainDialog::OnMenuOpen)
-	EVT_MENU       (MID_IMPORT,                              MainDialog::OnMenuImport)
+	EVT_MENU       (MID_IMPORTES,                            MainDialog::OnMenuImportES)
+	EVT_MENU       (MID_IMPORTLEAF,                          MainDialog::OnMenuImportLeaf)
 	EVT_MENU       (wxID_SAVE,                               MainDialog::OnMenuSave)
 	EVT_MENU       (MID_RELATIVE,                            MainDialog::OnMenuRelative)
 	EVT_MENU       (MID_RESETPCS,                            MainDialog::OnMenuResetPCs)
@@ -174,7 +185,9 @@ inline void MainDialog::CreateMenuBar(void)
 
 	// The 'Main' menu
 	menu = new wxMenu();
-	menu->Append(MID_IMPORT, _("&Import\tCTRL+I"), _("Import a LeafAnalyser eigensystem for prediction"));
+	menu->Append(MID_IMPORTES, _("&Import EigenSystem\tCTRL+I"), _("Import a LeafAnalyser eigensystem for prediction"));
+	menu->Append(MID_IMPORTLEAF, _("Import &Leaf"), _("Import a Leaf file from LeafAnalyser"));
+	menu->AppendSeparator();
 	menu->Append(wxID_OPEN, _("&Open\tCTRL+O"), _("Open a saved LeafPredictor project"));
 	menu->Append(wxID_SAVE, _("&Save\tCTRL+S"), _("Save a LeafPredictor project"));
 	menu->AppendSeparator();
@@ -263,8 +276,8 @@ inline void MainDialog::CreateLayout(void)
 
 	mMeanLeafCanvas = new LeafCanvas(this, -1, wxDefaultPosition, wxDefaultSize);
 	mPredictedLeafCanvas = new LeafCanvas(this, -1, wxDefaultPosition, wxDefaultSize);
-	mMeanLeafCanvas->SetLabel(wxT("Mean Leaf"));
-	mPredictedLeafCanvas->SetLabel(wxT("Predicted Leaf"));
+	mMeanLeafCanvas->SetLabel(_("Mean Leaf"));
+	mPredictedLeafCanvas->SetLabel(_("Predicted Leaf"));
 
 	plotSizer->Add(mMeanLeafCanvas, 0, wxEXPAND);
 	plotSizer->Add(mPredictedLeafCanvas, 0, wxEXPAND);
@@ -305,7 +318,7 @@ void MainDialog::OnMenuAbout(wxCommandEvent& event)
 	AboutDialog::GetInstance(this)->ShowModal();
 }
 
-void MainDialog::OnMenuImport(wxCommandEvent& event)
+void MainDialog::OnMenuImportES(wxCommandEvent& event)
 {
 	wxString selectedFile;
 
@@ -495,5 +508,22 @@ void MainDialog::OnMenuPredScreen(wxCommandEvent& event)
 	{
 		selectedFile = SaveDialog->GetPath();
 		screenShot.SaveFile(selectedFile, wxBITMAP_TYPE_PNG);
+	}
+}
+
+
+void MainDialog::OnMenuImportLeaf(wxCommandEvent& event)
+{
+	wxString selectedFile;
+
+	wxFileDialog *OpenDialog = new wxFileDialog(this, _("Select a Leaf file to import"), wxT(""), wxT(""),wxT("Text Files (*.txt)|*.txt"), wxOPEN, wxDefaultPosition);
+	if (OpenDialog->ShowModal() == wxID_OK) // if the user click "Open" instead of "cancel"
+	{
+		selectedFile = OpenDialog->GetPath();
+		//mEigenSystem = new EigenSystem();
+		mEigenSystem->LoadLeafFile(selectedFile);
+		mMeanLeafCanvas->SetLeaf(mEigenSystem->GetMeanLeaf());
+		//mMeanLeafCanvas->ExtDraw();
+		UpdateLeaves();
 	}
 }

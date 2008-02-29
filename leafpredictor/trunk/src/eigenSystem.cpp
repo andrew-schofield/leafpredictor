@@ -1,18 +1,28 @@
 /*
-*  This program is free software; you can redistribute it and/or modify
-*  it under the terms of the GNU General Public License as published by
-*  the Free Software Foundation; either version 2 of the License, or
-*  (at your option) any later version.
-*
-*  This program is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU Library General Public License for more details.
-*
-*  You should have received a copy of the GNU General Public License
-*  along with this program; if not, write to the Free Software
-*  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
-*/
+ *  This program is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Library General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ */
+
+#ifdef __GNUG__
+#pragma implementation "eigenSystem.h"
+#endif
+
+#include "wx/wxprec.h"
+
+#ifdef  __BORLANDC__
+#pragma hdrstop
+#endif
 
 #include "leafpredictor.h"
 #include "eigenSystem.h"
@@ -69,9 +79,9 @@ bool EigenSystem::LoadEigenFile(wxString eigenFile)
 	 * The number of x,y coordinates and therefore the eigenvalues/vectors is not defined.
 	 */
 
-	mMeanLeaf = SplitLineByTabs(in.GetLine(1));
+	mMeanLeaf = SplitLineByDelim(in.GetLine(1), wxT("\t"));
 	mPredictedLeaf = mMeanLeaf;
-	mEigenValues = SplitLineByTabs(in.GetLine(4));
+	mEigenValues = SplitLineByDelim(in.GetLine(4), wxT("\t"));
 	for(i=0;i<mMeanLeaf.size();++i)
 	{
 		mTotalVariance += mEigenValues.at(i);
@@ -79,13 +89,31 @@ bool EigenSystem::LoadEigenFile(wxString eigenFile)
 
 	for(i=7;i<=102;++i)
 	{
-		mEigenVectors.push_back(SplitLineByTabs(in.GetLine(i)));
+		mEigenVectors.push_back(SplitLineByDelim(in.GetLine(i), wxT("\t")));
 	}
 
 	return true;
 }
 
-std::vector<double> EigenSystem::SplitLineByTabs(wxString line)
+
+bool EigenSystem::LoadLeafFile(wxString leafFile)
+{
+	wxTextFile in;
+	wxInt32 lineCount;
+
+	if(in.Open(leafFile) ==false)
+		return false;
+
+	lineCount = in.GetLineCount();
+	if(lineCount != 1)
+		return false;
+
+	mMeanLeaf = ConvertImportedLeaf(SplitLineByDelim(in.GetLine(0), wxT(",")));
+
+	return true;
+}
+
+std::vector<double> EigenSystem::SplitLineByDelim(wxString line, wxString delim)
 {
 	std::vector<double>    v;
 	wxInt32                endingPos;
@@ -94,12 +122,12 @@ std::vector<double> EigenSystem::SplitLineByTabs(wxString line)
 	double                 tmpDouble;
 
 	choppedString = line;
-	endingPos = choppedString.Find(wxT("\t"));
+	endingPos = choppedString.Find(delim);
 	while(endingPos != wxNOT_FOUND)
 	{
 		tmpString = choppedString.Mid(0, endingPos);
 		choppedString = choppedString.Mid(endingPos + 1, choppedString.length()- 1);
-		endingPos = choppedString.Find(wxT("\t"));
+		endingPos = choppedString.Find(delim);
 		tmpString.ToDouble(&tmpDouble);
 		v.push_back(tmpDouble);
 	}
@@ -145,4 +173,19 @@ void EigenSystem::PredictLeaf(wxUint32 PC1, wxInt32 PC1Value, wxUint32 PC2, wxIn
 	}
 
 	MainDialog::GetInstance()->SetPCMessage(wxString::Format(wxT("PC %i: %.1f SDs; PC %i: %.1f SDs; PC %i: %.1f SDs; PC %i: %.1f SDs"), PC1+1, val1/10, PC2+1, val2/10, PC3+1, val3/10, PC4+1, val4/10));
+}
+
+
+std::vector<double> EigenSystem::ConvertImportedLeaf(std::vector<double> leaf)
+{
+	std::vector<double> v;
+	wxUint8 i;
+
+	for(i=1;i<leaf.size();i=i+2)
+	{
+
+		v.push_back(leaf.at(i));
+		v.push_back(leaf.at(i-1));
+	}
+	return v;
 }
