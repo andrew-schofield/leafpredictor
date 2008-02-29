@@ -10,7 +10,7 @@
 
 m4_include(m4/wxwin.m4)
 AC_INIT([LeafPredictor],
-        [0.2],
+        [0.3],
         [Andrew Schofield as239@york.ac.uk],
         [LeafPredictor])
 AC_PREFIX
