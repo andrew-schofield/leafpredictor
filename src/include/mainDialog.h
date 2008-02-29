@@ -66,6 +66,7 @@ protected:
 	bool               mLinkedScale;
 	wxMenuItem        *mRelativeMenu;
 	wxMenuItem        *mResetMenu;
+	wxMenuItem        *mImportLeafMenu;
 
 	/**
 	 * Constructor.
