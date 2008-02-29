@@ -11,6 +11,7 @@
 EXTRA_DIST = \
 	aboutDialog.h \
 	eigenSystem.h \
+	imageDialog.h \
 	leafCanvas.h \
 	leafpredictor.h \
 	main.h \
