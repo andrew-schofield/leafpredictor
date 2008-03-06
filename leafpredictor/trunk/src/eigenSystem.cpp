@@ -53,7 +53,7 @@ EigenSystem::~EigenSystem(void)
 }
 
 
-bool EigenSystem::LoadEigenFile(wxString eigenFile)
+bool EigenSystem::LoadEigenFile(const wxString &eigenFile)
 {
 	wxTextFile in;
 	wxInt32    lineCount;
@@ -100,7 +100,7 @@ bool EigenSystem::LoadEigenFile(wxString eigenFile)
 }
 
 
-bool EigenSystem::LoadLeafFile(wxString leafFile)
+bool EigenSystem::LoadLeafFile(const wxString &leafFile)
 {
 	wxTextFile in;
 	wxInt32 lineCount;
@@ -122,7 +122,7 @@ bool EigenSystem::LoadLeafFile(wxString leafFile)
 	return true;
 }
 
-std::vector<double> EigenSystem::SplitLineByDelim(wxString line, wxString delim)
+std::vector<double> EigenSystem::SplitLineByDelim(const wxString &line, const wxString &delim)
 {
 	std::vector<double>    v;
 	wxInt32                endingPos;
@@ -186,7 +186,7 @@ void EigenSystem::PredictLeaf(wxUint32 PC1, wxInt32 PC1Value, wxUint32 PC2, wxIn
 
 void EigenSystem::InvertLeaf(void)
 {
-	for(uint i=0;i<mMeanLeaf.size();++i)
+	for(wxUint32 i=0;i<mMeanLeaf.size();++i)
 	{
 		mMeanLeaf[i] = mMeanLeaf.at(i) * -1;
 	}

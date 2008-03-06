@@ -34,7 +34,7 @@ protected:
 	double                                mTotalVariance;
 	wxInt32                               mInversionFactor;
 
-	std::vector<double> SplitLineByDelim(wxString line, wxString delim);
+	std::vector<double> SplitLineByDelim(const wxString &line, const wxString &delim);
 
 public:
 
@@ -42,9 +42,9 @@ public:
 
 	~EigenSystem(void);
 
-	bool LoadEigenFile(wxString eigenFile);
+	bool LoadEigenFile(const wxString &eigenFile);
 
-	bool LoadLeafFile(wxString leafFile);
+	bool LoadLeafFile(const wxString &leafFile);
 
 	wxInt32 GetNumberOfCoordinates(void);
 

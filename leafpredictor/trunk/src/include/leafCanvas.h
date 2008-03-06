@@ -52,7 +52,7 @@ public:
 	LeafCanvas(wxWindow* parent, wxWindowID, const wxPoint& pos, const wxSize& size);
 	virtual ~LeafCanvas();
 
-	void SetLeaf(std::vector<double> coords);
+	void SetLeaf(const std::vector<double> &coords);
 
 	void SetScale(double scale) {mScale = scale;}
 	double GetScale(void) {return mScale;}

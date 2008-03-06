@@ -310,7 +310,10 @@ inline void MainDialog::CreateLayout(void)
 	mPC2Amount->Enable(false);
 	mPC3Amount->Enable(false);
 	mPC4Amount->Enable(false);
-
+	mChoice1->SetSelection(0);
+	mChoice2->SetSelection(0);
+	mChoice3->SetSelection(0);
+	mChoice4->SetSelection(0);
 }
 
 /************************************  EVENTS  ************************************/
