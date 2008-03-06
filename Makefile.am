@@ -8,5 +8,5 @@
 # WITHOUT ANY WARRANTY, to the extent permitted by law; without even the
 # implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
-EXTRA_DIST = reconf configure doxconf
+EXTRA_DIST = reconf configure doxconf LeafPredictor.sln LeafPredictor.vcproj
 SUBDIRS = m4 src doc src/include

@@ -56,7 +56,7 @@ LeafCanvas::~LeafCanvas()
 }
 
 
-void LeafCanvas::SetLeaf(std::vector<double> coords)
+void LeafCanvas::SetLeaf(const std::vector<double> &coords)
 {
 	mLeaf = coords;
 
@@ -132,7 +132,8 @@ void LeafCanvas::DrawLeaf(wxDC& dc)
 
 	if (mLeafExists)
 	{
-		wxPoint leaf[(mLeaf.size()/2)+1];
+		wxPoint *leaf;
+		leaf = new wxPoint[(mLeaf.size()/2)+1];
 		for(i=0;i<(mLeaf.size()/2);++i)
 		{
 			int x = (int)(mLeaf.at(i*2) * mScale + (GetClientSize().x/2 - mXMid * mScale));
@@ -147,7 +148,9 @@ void LeafCanvas::DrawLeaf(wxDC& dc)
 
 		dc.SetBrush(wxBrush(leafColour));
 		dc.SetPen(wxPen(leafColour, 1));
-		dc.DrawSpline(WXSIZEOF(leaf),leaf);
+		dc.DrawSpline((mLeaf.size()/2)+1,leaf);
+		delete [] leaf;
+		leaf = NULL;
 	}
 }
 
@@ -246,7 +249,7 @@ wxBitmap LeafCanvas::GetScreenShot(void)
 			anti.SetRGB( x, y, (unsigned char)red, (unsigned char)green, (unsigned char)blue );
 		}
 
-		bitmap = anti;
+		wxBitmap bitmap(anti, -1);
 	}
 
 	return bitmap;
@@ -274,7 +277,8 @@ void LeafCanvas::DrawHQLeaf(wxDC& dc, wxInt32 xOut, wxInt32 yOut, wxInt32 thickn
 
 	if (mLeafExists)
 	{
-		wxPoint leaf[(mLeaf.size()/2)+1];
+		wxPoint *leaf;
+		leaf = new wxPoint[(mLeaf.size()/2)+1];
 		for(i=0;i<(mLeaf.size()/2);++i)
 		{
 			int x = (int)(mLeaf.at(i*2) * (mScale * scale) + (xOut/2 - mXMid * (mScale * scale)));
@@ -289,6 +293,8 @@ void LeafCanvas::DrawHQLeaf(wxDC& dc, wxInt32 xOut, wxInt32 yOut, wxInt32 thickn
 
 		dc.SetBrush(wxBrush(leafColour));
 		dc.SetPen(wxPen(leafColour, thickness));
-		dc.DrawSpline(WXSIZEOF(leaf),leaf);
+		dc.DrawSpline((mLeaf.size()/2)+1,leaf);
+		delete [] leaf;
+		leaf = NULL;
 	}
 }
