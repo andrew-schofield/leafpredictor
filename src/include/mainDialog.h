@@ -31,6 +31,7 @@
 #include "wx/splitter.h"
 #include "wx/listctrl.h"
 #include "wx/menu.h"
+#include "wx/sizer.h"
 
 
 /**
@@ -48,6 +49,7 @@ protected:
 	wxString           mPC2[96];
 	wxString           mPC3[96];
 	wxString           mPC4[96];
+	wxString           mSelectedCanvas;
 	wxChoice           *mChoice1;
 	wxChoice           *mChoice2;
 	wxChoice           *mChoice3;
@@ -61,14 +63,21 @@ protected:
 	wxStaticText       *mPC3Value;
 	wxStaticText       *mPC4Value;
 	LeafCanvas*        mMeanLeafCanvas;
-	LeafCanvas*        mPredictedLeafCanvas;
+	LeafCanvas*        mPredictedLeafCanvas1;
+	LeafCanvas*        mPredictedLeafCanvas2;
+	LeafCanvas*        mPredictedLeafCanvas3;
 	wxListView        *mSavedLeaves;
 	bool               mLinkedScale;
+	bool               mInvertLeaf;
+	bool               m4UpMode;
 	wxMenuItem        *mRelativeMenu;
 	wxMenuItem        *mResetMenu;
 	wxMenuItem        *mImportLeafMenu;
 	wxMenuItem        *mInvertLeafMenu;
-	bool               mInvertLeaf;
+	wxMenuItem        *m4UpLeafMenu;
+	wxMenuItem        *mExportLeafMenu;
+	wxBoxSizer        *mTopLevelSizer;
+	wxGridSizer       *mLowerPlotSizer;
 
 	/**
 	 * Constructor.
@@ -117,9 +126,15 @@ protected:
 
 	void OnMenuInvertLeaf(wxCommandEvent& event);
 
+	void OnMenu4UpLeaf(wxCommandEvent& event);
+
+	void OnMenuExportLeaf(wxCommandEvent& event);
+
 	void OnChoices(wxCommandEvent& event);
 
 	void OnScroll(wxScrollEvent& event);
+
+	void OnClick(wxMouseEvent& event);
 
 	/**
 	 * Event: Triggered when the application is closed.
@@ -180,9 +195,11 @@ public:
 
 	void SetPCMessage(wxString msg);
 
-	void UpdateLeaves(void);
+	void UpdateLeaves(bool all = false);
 
 	bool GetInvertLeaf(void) {return mInvertLeaf;}
+
+	void ExternalCanvasSelect(const wxString& canvas);
 
 private:
 	DECLARE_EVENT_TABLE()

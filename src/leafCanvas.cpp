@@ -29,8 +29,12 @@
 
 #include "tools.h"
 #include "imageDialog.h"
+#include "mainDialog.h"
 
 #include "wx/image.h"
+#include "wx/txtstrm.h"
+#include "wx/textfile.h"
+#include "wx/wfstream.h"
 
 // Identifiers for the controls
 enum _CONTROL_ID
@@ -41,6 +45,7 @@ enum _CONTROL_ID
 BEGIN_EVENT_TABLE(LeafCanvas, wxScrolledWindow)
 		EVT_PAINT(LeafCanvas::OnPaint)
 		EVT_SIZE (LeafCanvas::OnResize)
+		EVT_LEFT_DOWN(LeafCanvas::OnClick)
 END_EVENT_TABLE()
 
 LeafCanvas::LeafCanvas(wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize &size) : wxScrolledWindow(parent, wxID_ANY, pos, size, wxSUNKEN_BORDER)
@@ -48,6 +53,14 @@ LeafCanvas::LeafCanvas(wxWindow* parent, wxWindowID id, const wxPoint& pos, cons
 	SetBackgroundColour(*wxWHITE);
 	mLabel = wxT("");
 	mLeafExists = false;
+	mPC1 = 1;
+	mPC2 = 1;
+	mPC3 = 1;
+	mPC4 = 1;
+	mPC1Value = 0;
+	mPC2Value = 0;
+	mPC3Value = 0;
+	mPC4Value = 0;
 }
 
 
@@ -296,5 +309,33 @@ void LeafCanvas::DrawHQLeaf(wxDC& dc, wxInt32 xOut, wxInt32 yOut, wxInt32 thickn
 		dc.DrawSpline((mLeaf.size()/2)+1,leaf);
 		delete [] leaf;
 		leaf = NULL;
+	}
+}
+
+
+void LeafCanvas::OnClick(wxMouseEvent& event)
+{
+	MainDialog::GetInstance()->ExternalCanvasSelect(mLabel);
+}
+
+
+void LeafCanvas::ExportLeaf(const wxString &location)
+{
+	wxFileOutputStream   fileOS(location);
+	wxTextOutputStream   textOS(fileOS);
+	wxString outLine =  wxT("0");
+
+	for(wxUint32 i=0; i<mLeaf.size();++i)
+		outLine += wxString::Format(wxT(",%.2f"),mLeaf.at(i));
+
+	if(fileOS.Ok() == false)
+	{
+		Tools::ErrorMsgBox(wxString::Format(_("Could not open file for writing!\nThe leaf will not be saved!")));
+		return;
+	}
+	else
+	{
+		textOS.WriteString(outLine);
+		fileOS.Close();
 	}
 }

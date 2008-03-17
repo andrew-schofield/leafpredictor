@@ -34,6 +34,7 @@ protected:
 	double               mXRange, mYRange, mXMid, mYMid, mScale;
 	wxString             mLabel;
 	bool                 mLeafExists;
+	wxUint32             mPC1, mPC2, mPC3, mPC4, mPC1Value, mPC2Value, mPC3Value, mPC4Value;
 
 	void CalculateScale(void);
 
@@ -47,6 +48,8 @@ protected:
 
 	void DrawHQLeaf(wxDC& dc, wxInt32 xOut, wxInt32 yOut, wxInt32 thickness);
 
+	void OnClick(wxMouseEvent& event);
+
 
 public:
 	LeafCanvas(wxWindow* parent, wxWindowID, const wxPoint& pos, const wxSize& size);
@@ -58,9 +61,31 @@ public:
 	double GetScale(void) {return mScale;}
 	void SetLabel(wxString label) {mLabel = label;}
 
+	void SetPC1(wxInt32 PC) {mPC1 = PC;}
+	void SetPC2(wxInt32 PC) {mPC2 = PC;}
+	void SetPC3(wxInt32 PC) {mPC3 = PC;}
+	void SetPC4(wxInt32 PC) {mPC4 = PC;}
+
+	void SetPC1Value(wxInt32 value) {mPC1Value = value;}
+	void SetPC2Value(wxInt32 value) {mPC2Value = value;}
+	void SetPC3Value(wxInt32 value) {mPC3Value = value;}
+	void SetPC4Value(wxInt32 value) {mPC4Value = value;}
+
+	wxUint32 GetPC1(void) {return mPC1;}
+	wxUint32 GetPC2(void) {return mPC2;}
+	wxUint32 GetPC3(void) {return mPC3;}
+	wxUint32 GetPC4(void) {return mPC4;}
+
+	wxUint32 GetPC1Value(void) {return mPC1Value;}
+	wxUint32 GetPC2Value(void) {return mPC2Value;}
+	wxUint32 GetPC3Value(void) {return mPC3Value;}
+	wxUint32 GetPC4Value(void) {return mPC4Value;}
+
 	void ExtDraw(void);
 
 	wxBitmap GetScreenShot(void);
+
+	void ExportLeaf(const wxString &location);
 
 private:
 	DECLARE_EVENT_TABLE()
