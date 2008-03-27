@@ -57,7 +57,7 @@ public:
 	 * This is a wrapper around MsgBox.
 	 * @param question The question to ask.
 	 **/
-	static bool QuestionMsgBox(const wxString& question) {return MsgBox(question, wxICON_QUESTION | wxYES_NO) == wxYES;}
+	static bool QuestionMsgBox(const wxString& question) {return MsgBox(question, wxICON_QUESTION | wxYES_NO) == wxID_YES;}
 
 	/**
 	 * Create an information dialog box.

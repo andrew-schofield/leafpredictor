@@ -38,15 +38,13 @@ protected:
 
 	void CalculateScale(void);
 
-	void DrawLeaf(wxDC& dc);
+	void DrawLeaf(wxDC& dc, wxInt32 xOut, wxInt32 yOut, wxInt32 thickness, bool label = false);
 
 	void OnPaint(wxPaintEvent& event);
 
 	void OnResize(wxSizeEvent& event);
 
 	void PaintBackground(wxDC& dc);
-
-	void DrawHQLeaf(wxDC& dc, wxInt32 xOut, wxInt32 yOut, wxInt32 thickness);
 
 	void OnClick(wxMouseEvent& event);
 
@@ -87,6 +85,7 @@ public:
 
 	void ExportLeaf(const wxString &location);
 
+	bool NeedsInversion(void);
 private:
 	DECLARE_EVENT_TABLE()
 };

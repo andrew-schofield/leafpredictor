@@ -32,7 +32,6 @@
 
 #include "wx/textfile.h"
 #include "wx/txtstrm.h"
-#include "wx/msgdlg.h"
 
 #include <vector>
 #include <math.h>
@@ -191,4 +190,26 @@ void EigenSystem::InvertLeaf(void)
 		mMeanLeaf[i] = mMeanLeaf.at(i) * -1;
 	}
 	mInversionFactor *= -1;
+}
+
+
+void EigenSystem::ExportLeaf(const wxString &location)
+{
+	wxFileOutputStream   fileOS(location);
+	wxTextOutputStream   textOS(fileOS);
+	wxString outLine =  wxT("0");
+
+	for(wxUint32 i=0; i<mPredictedLeaf.size();++i)
+		outLine += wxString::Format(wxT(",%.2f"),mPredictedLeaf.at(i));
+
+	if(fileOS.Ok() == false)
+	{
+		Tools::ErrorMsgBox(wxString::Format(_("Could not open file for writing!\nThe leaf will not be saved!")));
+		return;
+	}
+	else
+	{
+		textOS.WriteString(outLine);
+		fileOS.Close();
+	}
 }

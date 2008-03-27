@@ -20,7 +20,7 @@
 
 #include <wx/defs.h>
 
-#ifdef _LEAFPREDICTOR_WIN32_
+#ifdef __WXMSW__
 #include "resource.h"
 #endif
 
@@ -28,5 +28,16 @@
 #define LEAFPREDICTOR_URL_HOMEPAGE	"http://localhost/"
 #define LEAFPREDICTOR_URL_WXWIDGETS	"http://www.wxwidgets.org/"
 #define LEAFPREDICTOR_URL_LICENCE	"http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt"
+
+#ifdef __WXGTK__
+#define LEAFPREDICTOR_GUI_BORDER 2     // GTK already has some borders
+#elif __WXMSW__
+#define LEAFPREDICTOR_GUI_BORDER 5     // Windows does not have default borders, so we use ours
+#elif __WXMAC__
+#define LEAFPREDICTOR_GUI_BORDER 5
+#endif
+
+#define LEAFPREDICTOR_GUI_SPACING_LOW          5       // (Low) Spacing used bewteen controls
+#define LEAFPREDICTOR_GUI_SPACING_HIGH         10      // (High) Spacing used bewteen controls
 
 #endif /* _LEAFPREDICTOR_H */

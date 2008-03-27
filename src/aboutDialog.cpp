@@ -34,7 +34,6 @@
 #include "wx/statline.h"
 #include "wx/hyperlink.h"
 #include "wx/stattext.h"
-#include "wx/font.h"
 
 AboutDialog* AboutDialog::mInstance = NULL;
 

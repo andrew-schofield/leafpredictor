@@ -22,20 +22,11 @@
 #endif
 
 #include "wx/string.h"
+#include "wx/wfstream.h"
 #include <vector>
 
 class EigenSystem
 {
-protected:
-	std::vector< double >                 mMeanLeaf;
-	std::vector< double >                 mPredictedLeaf;
-	std::vector< double >                 mEigenValues;
-	std::vector< std::vector<double> >    mEigenVectors;
-	double                                mTotalVariance;
-	wxInt32                               mInversionFactor;
-
-	std::vector<double> SplitLineByDelim(const wxString &line, const wxString &delim);
-
 public:
 
 	EigenSystem();
@@ -46,12 +37,6 @@ public:
 
 	bool LoadLeafFile(const wxString &leafFile);
 
-	wxInt32 GetNumberOfCoordinates(void);
-
-	double GetPCSD(wxInt32 PC);
-
-	double GetPCContribution(wxInt32 PC);
-
 	std::vector< double > GetMeanLeaf(void) {return mMeanLeaf;}
 	std::vector< double > GetPredictedLeaf(void) {return mPredictedLeaf;}
 
@@ -59,6 +44,24 @@ public:
 
 	void InvertLeaf(void);
 
+	void ExportLeaf(const wxString &location);
+
+private:
+
+	std::vector< double >                 mMeanLeaf;
+	std::vector< double >                 mPredictedLeaf;
+	std::vector< double >                 mEigenValues;
+	std::vector< std::vector<double> >    mEigenVectors;
+	double                                mTotalVariance;
+	wxInt32                               mInversionFactor;
+
+	std::vector<double> SplitLineByDelim(const wxString &line, const wxString &delim);
+
+	double GetPCSD(wxInt32 PC);
+
+	double GetPCContribution(wxInt32 PC);
+
+	wxInt32 GetNumberOfCoordinates(void);
 };
 
 

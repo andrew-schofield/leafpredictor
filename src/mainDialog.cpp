@@ -30,12 +30,15 @@
 #include "aboutDialog.h"
 #include "eigenSystem.h"
 #include "tools.h"
+#include "pcSpaceDialog.h"
+#include "leafDialog.h"
 
 #include "wx/filedlg.h"
 #include "wx/dcbuffer.h"
 #include "wx/sizer.h"
 #include "wx/choice.h"
 #include "wx/panel.h"
+#include "wx/msgdlg.h"
 
 // Identifiers for the controls
 enum _CONTROL_ID
@@ -60,7 +63,12 @@ enum _CONTROL_ID
 	LEAF_PRED1,
 	LEAF_PRED2,
 	LEAF_PRED3,
-	MID_EXPORTLEAF
+	MID_EXPORTLEAF,
+	MID_LEAFVIEWER,
+	MID_PROJECTMANAGER,
+	MID_GRIDGEN,
+	PC_SPACE_GEN,
+	LEAF_VIEWER
 };
 
 
@@ -93,6 +101,9 @@ BEGIN_EVENT_TABLE(MainDialog, wxFrame)
 	EVT_MENU               (MID_INVERTLEAF,                      MainDialog::OnMenuInvertLeaf)
 	EVT_MENU               (MID_4UPLEAF,                         MainDialog::OnMenu4UpLeaf)
 	EVT_MENU               (MID_EXPORTLEAF,                      MainDialog::OnMenuExportLeaf)
+	EVT_MENU               (MID_LEAFVIEWER,                      MainDialog::OnMenuShowLeafViewer)
+	EVT_MENU               (MID_PROJECTMANAGER,                  MainDialog::OnMenuShowProjectManager)
+	EVT_MENU               (MID_GRIDGEN,                         MainDialog::OnMenuGenerateGrid)
 
 	// --- Frame
 	EVT_CLOSE              (MainDialog::OnClose)
@@ -126,7 +137,7 @@ MainDialog::MainDialog(void) : wxFrame(NULL, wxID_ANY, wxT(LEAFPREDICTOR_APPNAME
 /*
 #ifdef __WXGTK__
 	SetIcon(wxIcon(PathManager::GetImgPath() + wxT(FMC_FILE_IMG_DIALOG)));
-#elif _FAHMON_WIN32_
+#elif __WXMSW__
 	SetIcon(wxICON(dialog_icon));
 #endif
 */
@@ -181,6 +192,7 @@ MainDialog* MainDialog::GetInstance(void)
 bool MainDialog::Show(bool show)
 {
 	bool result = wxFrame::Show(show);
+	//SetSize(800,600);
 	Maximize();
 
 	return result;
@@ -238,6 +250,14 @@ inline void MainDialog::CreateMenuBar(void)
 	menu->Append(MID_MEAN_SCREEN, _("Save &Mean Leaf\tCTRL+M"), _("Save the mean leaf to an image file"));
 	menu->Append(MID_PRED_SCREEN, _("Save &Predicted Leaf\tCTRL+P"), _("Save the predicted leaf to an image file"));
 	menuBar->Append(menu, _("&Plots"));
+
+	menu = new wxMenu();
+	menu->Append(MID_LEAFVIEWER, _("&Open Leaf Viewer\tCTRL+L"), _("View LeafAnalyser formatted leaves"));
+	menu->Append(MID_PROJECTMANAGER, _("Open &Project Manager\tCTRL+P"), _("View files in the current LeafPredictor project"));
+	mGridGenMenu = new wxMenuItem(menu, MID_GRIDGEN, _("&Generate PC Space\tCTRL+G"), _("Generate a set of Leaves that fill PC space in 1-4 dimensions"));
+	menu->Append(mGridGenMenu);
+	mGridGenMenu->Enable(false);
+	menuBar->Append(menu, _("&Tools"));
 
 	// The 'Help' menu
 	menu = new wxMenu();
@@ -396,6 +416,20 @@ void MainDialog::OnMenuImportES(wxCommandEvent& event)
 		mInvertLeafMenu->Check(false);
 		m4UpLeafMenu->Enable(true);
 		mExportLeafMenu->Enable(true);
+		mGridGenMenu->Enable(true);
+
+
+		if(mMeanLeafCanvas->NeedsInversion())
+		{
+			wxMessageDialog dialog(this, _("The position of the centroid in this eigensystem indicates that the leaf may be inverted. Fix this now?"), wxT(LEAFPREDICTOR_APPNAME), wxYES_NO | wxICON_QUESTION, wxDefaultPosition);
+			if(dialog.ShowModal() == wxID_YES)
+			{
+				mInvertLeaf = !mInvertLeaf;
+				mEigenSystem->InvertLeaf();
+				UpdateLeaves(true);
+				mInvertLeafMenu->Check(true);
+			}
+		}
 	}
 }
 
@@ -769,22 +803,22 @@ void MainDialog::ExternalCanvasSelect(const wxString& canvas)
 		mPC1Amount->SetValue(mPredictedLeafCanvas1->GetPC1Value());
 		tmpFloat = mPC1Amount->GetValue();
 		mPC1Value->SetLabel(wxString::Format(wxT("%.1f"),tmpFloat/10));
-		mChoice1->SetSelection(mPredictedLeafCanvas1->GetPC1()-1);
+		mChoice1->SetSelection(mPredictedLeafCanvas1->GetPC1());
 
 		mPC2Amount->SetValue(mPredictedLeafCanvas1->GetPC2Value());
 		tmpFloat = mPC2Amount->GetValue();
 		mPC2Value->SetLabel(wxString::Format(wxT("%.1f"),tmpFloat/10));
-		mChoice2->SetSelection(mPredictedLeafCanvas1->GetPC2()-1);
+		mChoice2->SetSelection(mPredictedLeafCanvas1->GetPC2());
 
 		mPC3Amount->SetValue(mPredictedLeafCanvas1->GetPC3Value());
 		tmpFloat = mPC3Amount->GetValue();
 		mPC3Value->SetLabel(wxString::Format(wxT("%.1f"),tmpFloat/10));
-		mChoice3->SetSelection(mPredictedLeafCanvas1->GetPC3()-1);
+		mChoice3->SetSelection(mPredictedLeafCanvas1->GetPC3());
 
 		mPC4Amount->SetValue(mPredictedLeafCanvas1->GetPC4Value());
 		tmpFloat = mPC4Amount->GetValue();
 		mPC4Value->SetLabel(wxString::Format(wxT("%.1f"),tmpFloat/10));
-		mChoice4->SetSelection(mPredictedLeafCanvas1->GetPC4()-1);
+		mChoice4->SetSelection(mPredictedLeafCanvas1->GetPC4());
 
 		SetStatusText(wxString::Format(_("Selected Leaf: %i"),1), STATUS_LEAF);
 	}
@@ -793,22 +827,22 @@ void MainDialog::ExternalCanvasSelect(const wxString& canvas)
 		mPC1Amount->SetValue(mPredictedLeafCanvas2->GetPC1Value());
 		tmpFloat = mPC1Amount->GetValue();
 		mPC1Value->SetLabel(wxString::Format(wxT("%.1f"),tmpFloat/10));
-		mChoice1->SetSelection(mPredictedLeafCanvas2->GetPC1()-1);
+		mChoice1->SetSelection(mPredictedLeafCanvas2->GetPC1());
 
 		mPC2Amount->SetValue(mPredictedLeafCanvas2->GetPC2Value());
 		tmpFloat = mPC2Amount->GetValue();
 		mPC2Value->SetLabel(wxString::Format(wxT("%.1f"),tmpFloat/10));
-		mChoice2->SetSelection(mPredictedLeafCanvas2->GetPC2()-1);
+		mChoice2->SetSelection(mPredictedLeafCanvas2->GetPC2());
 
 		mPC3Amount->SetValue(mPredictedLeafCanvas2->GetPC3Value());
 		tmpFloat = mPC3Amount->GetValue();
 		mPC3Value->SetLabel(wxString::Format(wxT("%.1f"),tmpFloat/10));
-		mChoice3->SetSelection(mPredictedLeafCanvas2->GetPC3()-1);
+		mChoice3->SetSelection(mPredictedLeafCanvas2->GetPC3());
 
 		mPC4Amount->SetValue(mPredictedLeafCanvas2->GetPC4Value());
 		tmpFloat = mPC4Amount->GetValue();
 		mPC4Value->SetLabel(wxString::Format(wxT("%.1f"),tmpFloat/10));
-		mChoice4->SetSelection(mPredictedLeafCanvas2->GetPC4()-1);
+		mChoice4->SetSelection(mPredictedLeafCanvas2->GetPC4());
 
 		SetStatusText(wxString::Format(_("Selected Leaf: %i"),2), STATUS_LEAF);
 	}
@@ -817,22 +851,22 @@ void MainDialog::ExternalCanvasSelect(const wxString& canvas)
 		mPC1Amount->SetValue(mPredictedLeafCanvas3->GetPC1Value());
 		tmpFloat = mPC1Amount->GetValue();
 		mPC1Value->SetLabel(wxString::Format(wxT("%.1f"),tmpFloat/10));
-		mChoice1->SetSelection(mPredictedLeafCanvas3->GetPC1()-1);
+		mChoice1->SetSelection(mPredictedLeafCanvas3->GetPC1());
 
 		mPC2Amount->SetValue(mPredictedLeafCanvas3->GetPC2Value());
 		tmpFloat = mPC2Amount->GetValue();
 		mPC2Value->SetLabel(wxString::Format(wxT("%.1f"),tmpFloat/10));
-		mChoice2->SetSelection(mPredictedLeafCanvas3->GetPC2()-1);
+		mChoice2->SetSelection(mPredictedLeafCanvas3->GetPC2());
 
 		mPC3Amount->SetValue(mPredictedLeafCanvas3->GetPC3Value());
 		tmpFloat = mPC3Amount->GetValue();
 		mPC3Value->SetLabel(wxString::Format(wxT("%.1f"),tmpFloat/10));
-		mChoice3->SetSelection(mPredictedLeafCanvas3->GetPC3()-1);
+		mChoice3->SetSelection(mPredictedLeafCanvas3->GetPC3());
 
 		mPC4Amount->SetValue(mPredictedLeafCanvas3->GetPC4Value());
 		tmpFloat = mPC4Amount->GetValue();
 		mPC4Value->SetLabel(wxString::Format(wxT("%.1f"),tmpFloat/10));
-		mChoice4->SetSelection(mPredictedLeafCanvas3->GetPC4()-1);
+		mChoice4->SetSelection(mPredictedLeafCanvas3->GetPC4());
 
 		SetStatusText(wxString::Format(_("Selected Leaf: %i"),3), STATUS_LEAF);
 	}
@@ -842,7 +876,7 @@ void MainDialog::OnMenuExportLeaf(wxCommandEvent& event)
 {
 	wxString selectedFile;
 
-	wxFileDialog *SaveDialog = new wxFileDialog(this, _("Choose location to save predicted leaf"), wxT(""), wxT(""),wxT("Leaf Analyser Leaves (*.txt)|*.txt"), wxSAVE, wxDefaultPosition);
+	wxFileDialog *SaveDialog = new wxFileDialog(this, _("Choose location to save predicted leaf"), wxT(""), wxT(""),wxT("LeafAnalyser Leaves (*.txt)|*.txt"), wxSAVE, wxDefaultPosition);
 	if (SaveDialog->ShowModal() == wxID_OK) // if the user click "Open" instead of "cancel"
 	{
 		selectedFile = SaveDialog->GetPath();
@@ -853,5 +887,98 @@ void MainDialog::OnMenuExportLeaf(wxCommandEvent& event)
 		else
 			mPredictedLeafCanvas3->ExportLeaf(selectedFile);
 
+	}
+}
+
+
+void MainDialog::OnMenuShowLeafViewer(wxCommandEvent&)
+{
+	LeafDialog* dialog = new LeafDialog(NULL, LEAF_VIEWER);
+	dialog->Show(true);
+}
+
+
+void MainDialog::OnMenuShowProjectManager(wxCommandEvent&)
+{
+}
+
+
+void MainDialog::OnMenuGenerateGrid(wxCommandEvent&)
+{
+	wxInt32 PC1 = 0;
+	wxInt32 PC2 = 0;
+	wxInt32 PC3 = 0;
+	wxInt32 PC4 = 0;
+	wxInt32 PC1Start = 0;
+	wxInt32 PC2Start = 0;
+	wxInt32 PC3Start = 0;
+	wxInt32 PC4Start = 0;
+	wxInt32 PC1End = 0;
+	wxInt32 PC2End = 0;
+	wxInt32 PC3End = 0;
+	wxInt32 PC4End = 0;
+	wxInt32 PC1Int = 1;
+	wxInt32 PC2Int = 1;
+	wxInt32 PC3Int = 1;
+	wxInt32 PC4Int = 1;
+	wxString Location = wxT("./");
+
+	PCSpaceDialog dialog(NULL, PC_SPACE_GEN);
+	if(dialog.ShowModal() == wxID_OK)
+	{
+		double tmpDouble;
+		PC1 = dialog.GetPC1();
+		dialog.GetPC1Start().ToDouble(&tmpDouble);
+		PC1Start = (int)(tmpDouble * 10);
+		dialog.GetPC1End().ToDouble(&tmpDouble);
+		PC1End = (int)(tmpDouble * 10);
+		dialog.GetPC1Int().ToDouble(&tmpDouble);
+		PC1Int = (int)(tmpDouble * 10);
+		if(dialog.IsPC2Enabled())
+		{
+			PC2 = dialog.GetPC2();
+			dialog.GetPC2Start().ToDouble(&tmpDouble);
+			PC2Start = (int)(tmpDouble * 10);
+			dialog.GetPC2End().ToDouble(&tmpDouble);
+			PC2End = (int)(tmpDouble * 10);
+			dialog.GetPC2Int().ToDouble(&tmpDouble);
+			PC2Int = (int)(tmpDouble * 10);
+		}
+		if(dialog.IsPC3Enabled())
+		{
+			PC3 = dialog.GetPC3();
+			dialog.GetPC3Start().ToDouble(&tmpDouble);
+			PC3Start = (int)(tmpDouble * 10);
+			dialog.GetPC3End().ToDouble(&tmpDouble);
+			PC3End = (int)(tmpDouble * 10);
+			dialog.GetPC3Int().ToDouble(&tmpDouble);
+			PC3Int = (int)(tmpDouble * 10);
+		}
+		if(dialog.IsPC4Enabled())
+		{
+			PC4 = dialog.GetPC4();
+			dialog.GetPC4Start().ToDouble(&tmpDouble);
+			PC4Start = (int)(tmpDouble * 10);
+			dialog.GetPC4End().ToDouble(&tmpDouble);
+			PC4End = (int)(tmpDouble * 10);
+			dialog.GetPC4Int().ToDouble(&tmpDouble);
+			PC4Int = (int)(tmpDouble * 10);
+		}
+		Location = dialog.GetLocation();
+		for(wxInt32 i=PC1Start; i<=PC1End;i+=PC1Int)
+		{
+			for(wxInt32 j=PC2Start; j<=PC2End; j+=PC2Int)
+			{
+				for(wxInt32 k=PC3Start; k<=PC3End; k+=PC3Int)
+				{
+					for(wxInt32 l=PC4Start; l<=PC4End; l+=PC4Int)
+					{
+						mEigenSystem->PredictLeaf(PC1, i, PC2, j, PC3, k, PC4, l);
+						mEigenSystem->ExportLeaf(wxString::Format(wxT("%s/[%i]-[%i]-[%i]-[%i].txt"), Location.c_str(), i, j, k, l));
+
+					}
+				}
+			}
+		}
 	}
 }

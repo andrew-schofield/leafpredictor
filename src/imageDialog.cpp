@@ -28,15 +28,10 @@
 #include "imageDialog.h"
 
 #include "wx/sizer.h"
-//#include "wx/intl.h"
-#include "wx/version.h"
 #include "wx/statline.h"
-#include "wx/hyperlink.h"
 #include "wx/stattext.h"
-#include "wx/font.h"
 #include "wx/checkbox.h"
 #include "wx/textctrl.h"
-#include "wx/choice.h"
 #include "wx/button.h"
 #include "wx/valtext.h"
 #include "wx/valgen.h"
@@ -99,50 +94,55 @@ void ImageDialog::CreateControls()
 	this->SetSizer(topSizer);
 
 	wxBoxSizer* defaultLabSizer = new wxBoxSizer(wxVERTICAL);
-	topSizer->Add(defaultLabSizer, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+	topSizer->Add(defaultLabSizer, 0, wxALIGN_CENTER_VERTICAL|wxALL, LEAFPREDICTOR_GUI_BORDER);
 
 	wxBoxSizer* boxSizer = new wxBoxSizer(wxVERTICAL);
-	topSizer->Add(boxSizer, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+	topSizer->Add(boxSizer, 0, wxALIGN_CENTER_VERTICAL|wxALL, LEAFPREDICTOR_GUI_BORDER);
 
 	wxStaticText* defaultLabel = new wxStaticText( this, wxID_STATIC, _("Leave default values if you want to save directly from the plot window"), wxDefaultPosition, wxDefaultSize, 0);
-	defaultLabSizer->Add(defaultLabel, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5);
+	defaultLabSizer->Add(defaultLabel, 0, wxALIGN_LEFT|wxALL, LEAFPREDICTOR_GUI_BORDER);
 
 	wxCheckBox* exportCheck = new wxCheckBox( this, ID_PUBLISH, _("Produce publishable quality image"), wxDefaultPosition, wxDefaultSize, 0 );
-	boxSizer->Add(exportCheck, 0, wxALIGN_LEFT|wxALL, 5);
+	boxSizer->Add(exportCheck, 0, wxALIGN_LEFT);
 
 	wxBoxSizer* imagePXSizer = new wxBoxSizer(wxHORIZONTAL);
-	topSizer->Add(imagePXSizer, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5);
+	topSizer->Add(imagePXSizer, 0, wxALIGN_LEFT|wxALL, LEAFPREDICTOR_GUI_BORDER);
 
 	wxStaticText* pxWidthLabel = new wxStaticText( this, wxID_STATIC, _("Image width (px)"), wxDefaultPosition, wxDefaultSize, 0 );
 	wxTextCtrl* pxWidth = new wxTextCtrl( this, ID_XPX, _("1600"), wxDefaultPosition, wxDefaultSize, 0);
-	imagePXSizer->Add(pxWidthLabel, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
-	imagePXSizer->Add(pxWidth, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
+	imagePXSizer->Add(pxWidthLabel, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL);
+	imagePXSizer->AddSpacer(LEAFPREDICTOR_GUI_SPACING_LOW);
+	imagePXSizer->Add(pxWidth, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL);
+	imagePXSizer->AddSpacer(LEAFPREDICTOR_GUI_SPACING_LOW);
 
 	wxStaticText* pxHeightLabel = new wxStaticText( this, wxID_STATIC, _("Image height (px)"), wxDefaultPosition, wxDefaultSize, 0 );
 	wxTextCtrl* pxHeight = new wxTextCtrl( this, ID_YPX, _("1200"), wxDefaultPosition, wxDefaultSize, 0);
-	imagePXSizer->Add(pxHeightLabel, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
-	imagePXSizer->Add(pxHeight, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
+	imagePXSizer->Add(pxHeightLabel, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL);
+	imagePXSizer->AddSpacer(LEAFPREDICTOR_GUI_SPACING_LOW);
+	imagePXSizer->Add(pxHeight, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL);
 
 	wxBoxSizer* imageDPISizer = new wxBoxSizer(wxHORIZONTAL);
-	topSizer->Add(imageDPISizer, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5);
+	topSizer->Add(imageDPISizer, 0, wxALIGN_LEFT|wxALL, LEAFPREDICTOR_GUI_BORDER);
 
 	wxStaticText* thicknessLabel = new wxStaticText( this, wxID_STATIC, _("Leaf outline thickness (px)"), wxDefaultPosition, wxDefaultSize, 0 );
 	wxTextCtrl* thickness = new wxTextCtrl( this, ID_THICKNESS, _("5"), wxDefaultPosition, wxDefaultSize, 0);
 
 	wxCheckBox* antialiaseCheck = new wxCheckBox( this, ID_ANTIALIASE, _("Antialiase image (slow)"), wxDefaultPosition, wxDefaultSize, 0);
 
-	imageDPISizer->Add(thicknessLabel, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
-	imageDPISizer->Add(thickness, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
-	imageDPISizer->Add(antialiaseCheck, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
+	imageDPISizer->Add(thicknessLabel, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL);
+	imageDPISizer->AddSpacer(LEAFPREDICTOR_GUI_SPACING_LOW);
+	imageDPISizer->Add(thickness, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL);
+	imageDPISizer->AddSpacer(LEAFPREDICTOR_GUI_SPACING_LOW);
+	imageDPISizer->Add(antialiaseCheck, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL);
 
 	wxStaticLine* line = new wxStaticLine( this, wxID_STATIC, wxDefaultPosition, wxDefaultSize, wxLI_HORIZONTAL );
-	topSizer->Add(line, 0, wxEXPAND|wxALL, 5);
+	topSizer->Add(line, 0, wxEXPAND|wxALL, LEAFPREDICTOR_GUI_BORDER);
 
 	wxBoxSizer* okBox = new wxBoxSizer(wxHORIZONTAL);
-	topSizer->Add(okBox, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5);
+	topSizer->Add(okBox, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, LEAFPREDICTOR_GUI_BORDER);
 
 	wxButton* ok = new wxButton ( this, wxID_OK, wxT("&OK"), wxDefaultPosition, wxDefaultSize, 0);
-	okBox->Add( ok, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+	okBox->Add( ok, 0, wxALIGN_CENTER_VERTICAL);
 
 	pxWidth->Enable(false);
 	pxHeight->Enable(false);

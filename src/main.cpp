@@ -26,6 +26,7 @@
 
 #include "leafpredictor.h"
 #include "main.h"
+
 #include "mainDialog.h"
 
 #include "locale.h"
@@ -51,7 +52,7 @@ bool LeafPredictorApp::OnInit(void)
 
 	wxString locale = m_locale.GetLocale();
 
-#ifdef _FAHMON_WIN32_
+#ifdef __WXMSW__
 	{
 		wxLocale::AddCatalogLookupPathPrefix(wxT("./lang"));
 	}
