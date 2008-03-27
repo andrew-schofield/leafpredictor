@@ -53,10 +53,10 @@ LeafCanvas::LeafCanvas(wxWindow* parent, wxWindowID id, const wxPoint& pos, cons
 	SetBackgroundColour(*wxWHITE);
 	mLabel = wxT("");
 	mLeafExists = false;
-	mPC1 = 1;
-	mPC2 = 1;
-	mPC3 = 1;
-	mPC4 = 1;
+	mPC1 = 0;
+	mPC2 = 0;
+	mPC3 = 0;
+	mPC4 = 0;
 	mPC1Value = 0;
 	mPC2Value = 0;
 	mPC3Value = 0;
@@ -112,7 +112,7 @@ void LeafCanvas::OnPaint(wxPaintEvent& event)
 
 	PaintBackground(dc);
 
-	DrawLeaf(dc);
+	DrawLeaf(dc, GetClientSize().x, GetClientSize().y, 1, true);
 
 }
 
@@ -125,46 +125,6 @@ void LeafCanvas::PaintBackground(wxDC& dc)
 	dc.SetBrush(wxBrush(backgroundColour));
 
 	dc.Clear();
-}
-
-
-void LeafCanvas::DrawLeaf(wxDC& dc)
-{
-	wxColour leafColour = *wxGREEN;
-	wxUint32 i;
-
-
-	dc.DrawText(mLabel,0,0);
-
-	dc.SetPen(wxPen(*wxLIGHT_GREY, 1));
-	//axes
-	dc.DrawLine(0,GetClientSize().y/2,GetClientSize().x,GetClientSize().y/2);
-	dc.DrawLine(GetClientSize().x/2,0,GetClientSize().x/2,GetClientSize().y);
-
-	dc.SetPen(wxPen(*wxRED, 1));
-
-	if (mLeafExists)
-	{
-		wxPoint *leaf;
-		leaf = new wxPoint[(mLeaf.size()/2)+1];
-		for(i=0;i<(mLeaf.size()/2);++i)
-		{
-			int x = (int)(mLeaf.at(i*2) * mScale + (GetClientSize().x/2 - mXMid * mScale));
-			int y = (int)(mLeaf.at((i*2)+1) * mScale + (GetClientSize().y/2 - mYMid * mScale));
-			x = dc.LogicalToDeviceX(x);
-			y = dc.LogicalToDeviceY(y);
-			leaf[i] = wxPoint(x,y);
-			dc.DrawCircle(x,y,2);
-			if (i == 0)
-				leaf[(mLeaf.size()/2)] = wxPoint(x,y);
-		}
-
-		dc.SetBrush(wxBrush(leafColour));
-		dc.SetPen(wxPen(leafColour, 1));
-		dc.DrawSpline((mLeaf.size()/2)+1,leaf);
-		delete [] leaf;
-		leaf = NULL;
-	}
 }
 
 
@@ -232,7 +192,7 @@ wxBitmap LeafCanvas::GetScreenShot(void)
 	wxBufferedDC dc(NULL, bitmap);
 
 	PaintBackground(dc);
-	DrawHQLeaf(dc, width, height, thickness);
+	DrawLeaf(dc, width, height, thickness);
 
 	if(antialiase)
 	{
@@ -269,7 +229,7 @@ wxBitmap LeafCanvas::GetScreenShot(void)
 }
 
 
-void LeafCanvas::DrawHQLeaf(wxDC& dc, wxInt32 xOut, wxInt32 yOut, wxInt32 thickness)
+void LeafCanvas::DrawLeaf(wxDC& dc, wxInt32 xOut, wxInt32 yOut, wxInt32 thickness, bool label)
 {
 	wxColour leafColour = *wxGREEN;
 	wxUint32 i;
@@ -279,12 +239,60 @@ void LeafCanvas::DrawHQLeaf(wxDC& dc, wxInt32 xOut, wxInt32 yOut, wxInt32 thickn
 	yScale = yOut/(double)GetClientSize().y;
 	scale = std::min(xScale,yScale);
 
-	//dc.DrawText(mLabel,0,0);
+	if(label)
+		dc.DrawText(mLabel,0,0);
 
 	dc.SetPen(wxPen(*wxLIGHT_GREY, thickness));
 	//axes
-	dc.DrawLine(0,yOut/2,xOut,yOut/2);
-	dc.DrawLine(xOut/2,0,xOut/2,yOut);
+	dc.DrawLine(0,(int)(GetClientSize().y/2 - mYMid * mScale),GetClientSize().x,(int)(GetClientSize().y/2 - mYMid * mScale));
+	dc.DrawLine((int)(GetClientSize().x/2 - mXMid * mScale),0,(int)(GetClientSize().x/2 - mXMid * mScale),GetClientSize().y);
+
+	wxInt32 min = 0 - (int)(GetClientSize().x / mScale - (GetClientSize().x/2 - mXMid * mScale));
+	wxInt32 max = (int)(GetClientSize().x / mScale - (GetClientSize().x/2 - mXMid * mScale));
+
+	if(min != max) //traps initial state where both min and max are -2^32
+	{
+		for(wxInt32 j=0;j<=max;j+=100)
+		{
+			wxUint32 x, y;
+			x = (int)(j * mScale + (GetClientSize().x/2 - mXMid * mScale));
+			x = dc.LogicalToDeviceX(x);
+			y = (int)(GetClientSize().y/2 - mYMid * mScale);
+			dc.DrawLine(x,y,x,y-5);
+		}
+		for(wxInt32 j=0;j>=min;j-=100)
+		{
+			wxUint32 x, y;
+			x = (int)(j * mScale + (GetClientSize().x/2 - mXMid * mScale));
+			x = dc.LogicalToDeviceX(x);
+			y = (int)(GetClientSize().y/2 - mYMid * mScale);
+			dc.DrawLine(x,y,x,y-5);
+		}
+	}
+
+	min = (int)(0 - GetClientSize().y / mScale - (GetClientSize().y/2 - mYMid * mScale));
+	max = (int)(GetClientSize().y / mScale - (GetClientSize().y/2 - mYMid * mScale));
+
+	if(min != max)
+	{
+		for(wxInt32 j=0;j<=max;j+=100)
+		{
+			wxUint32 x, y;
+			y = (int)(j * mScale + (GetClientSize().y/2 - mYMid * mScale));
+			y = dc.LogicalToDeviceY(y);
+			x = (int)(GetClientSize().x/2 - mXMid * mScale);
+			dc.DrawLine(x,y,x+5,y);
+		}
+
+		for(wxInt32 j=0;j>=min;j-=100)
+		{
+			wxUint32 x, y;
+			y = (int)(j * mScale + (GetClientSize().y/2 - mYMid * mScale));
+			y = dc.LogicalToDeviceY(y);
+			x = (int)(GetClientSize().x/2 - mXMid * mScale);
+			dc.DrawLine(x,y,x+5,y);
+		}
+	}
 
 	dc.SetPen(wxPen(*wxRED, thickness));
 
@@ -338,4 +346,12 @@ void LeafCanvas::ExportLeaf(const wxString &location)
 		textOS.WriteString(outLine);
 		fileOS.Close();
 	}
+}
+
+
+bool LeafCanvas::NeedsInversion(void)
+{
+	if((GetClientSize().y/2 - mYMid * mScale) > (GetClientSize().y * 0.66))
+		return true;
+	return false;
 }

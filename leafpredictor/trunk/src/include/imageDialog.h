@@ -39,24 +39,7 @@ public:
 	ImageDialog();
 	ImageDialog( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& caption = _("Export image options"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxCAPTION|wxSYSTEM_MENU );
 
-	void Init();
-
 	bool Create( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& caption = _("Export image options"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxCAPTION|wxSYSTEM_MENU );
-
-	void CreateControls();
-
-	void SetDialogValidators();
-
-	void OnThicknessUpdate( wxUpdateUIEvent& event );
-	void OnXPxUpdate( wxUpdateUIEvent& event );
-	void OnYPxUpdate( wxUpdateUIEvent& event );
-	void OnAntialiaseUpdate( wxUpdateUIEvent& event );
-
-	bool mSavePublishableImage;
-	wxString mXSize;
-	wxString mYSize;
-	wxString mLineThickness;
-	bool mAntialiase;
 
 	void SetSavePublishableImage(const bool publishable) {mSavePublishableImage = publishable;}
 	bool GetPublishableImage(void) const {return mSavePublishableImage;}
@@ -74,6 +57,25 @@ public:
 	bool GetAntialiase(void) const {return mAntialiase;}
 
 private:
+
+	bool mSavePublishableImage;
+	bool mAntialiase;
+	wxString mXSize;
+	wxString mYSize;
+	wxString mLineThickness;
+
+	void CreateControls();
+
+	void SetDialogValidators();
+
+	void OnThicknessUpdate( wxUpdateUIEvent& event );
+	void OnXPxUpdate( wxUpdateUIEvent& event );
+	void OnYPxUpdate( wxUpdateUIEvent& event );
+	void OnAntialiaseUpdate( wxUpdateUIEvent& event );
+
+	void Init();
+
+
 	DECLARE_EVENT_TABLE()
 
 };

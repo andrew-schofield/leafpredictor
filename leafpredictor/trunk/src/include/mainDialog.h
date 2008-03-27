@@ -28,8 +28,6 @@
 #include "wx/choice.h"
 #include "wx/slider.h"
 #include "wx/stattext.h"
-#include "wx/splitter.h"
-#include "wx/listctrl.h"
 #include "wx/menu.h"
 #include "wx/sizer.h"
 
@@ -66,7 +64,6 @@ protected:
 	LeafCanvas*        mPredictedLeafCanvas1;
 	LeafCanvas*        mPredictedLeafCanvas2;
 	LeafCanvas*        mPredictedLeafCanvas3;
-	wxListView        *mSavedLeaves;
 	bool               mLinkedScale;
 	bool               mInvertLeaf;
 	bool               m4UpMode;
@@ -76,6 +73,7 @@ protected:
 	wxMenuItem        *mInvertLeafMenu;
 	wxMenuItem        *m4UpLeafMenu;
 	wxMenuItem        *mExportLeafMenu;
+	wxMenuItem        *mGridGenMenu;
 	wxBoxSizer        *mTopLevelSizer;
 	wxGridSizer       *mLowerPlotSizer;
 
@@ -129,6 +127,12 @@ protected:
 	void OnMenu4UpLeaf(wxCommandEvent& event);
 
 	void OnMenuExportLeaf(wxCommandEvent& event);
+
+	void OnMenuShowLeafViewer(wxCommandEvent& event);
+
+	void OnMenuShowProjectManager(wxCommandEvent& event);
+
+	void OnMenuGenerateGrid(wxCommandEvent& event);
 
 	void OnChoices(wxCommandEvent& event);
 
@@ -189,7 +193,7 @@ public:
 
 	/**
 	 * Redefine the wxFrame::Show() method in order to perform some initializations before displaying the frame.
-	 * @param Show Should the frame actually be shown.
+	 * @param show Should the frame actually be shown.
 	 **/
 	bool Show(bool show = true);
 
