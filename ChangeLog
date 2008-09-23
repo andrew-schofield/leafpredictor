@@ -1,3 +1,9 @@
+LeafPredictor 0.9
+
+2008-09-23 Andrew Schofield <the.uncle.fungus@gmail.com>
+* Added faint background to unselected predictions to make the display more
+  obvious
+
 LeafPredictor 0.8
 
 2008-05-15 Andrew Schofield <the.uncle.fungus@gmail.com>

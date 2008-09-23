@@ -412,6 +412,9 @@ inline void MainDialog::CreateLayout(void)
 	mPredictedLeafCanvas2->Show(false);
 	mPredictedLeafCanvas3->Show(false);
 	mManualScaleAmount->Show(false);
+
+	mMeanLeafCanvas->Select(true);
+	mPredictedLeafCanvas1->Select(true);
 }
 
 /************************************  EVENTS  ************************************/
@@ -873,7 +876,7 @@ void MainDialog::OnMenu4UpLeaf(wxCommandEvent& event)
 		mSelectedCanvas = wxT("Predicted Leaf 1");
 		SetStatusText(wxString::Format(_("Selected Leaf: %i"),1), STATUS_LEAF);
 	}
-	UpdateLeaves();
+	UpdateLeaves(true);
 }
 
 void MainDialog::OnClick(wxMouseEvent& event)
@@ -909,6 +912,10 @@ void MainDialog::ExternalCanvasSelect(const wxString& canvas)
 		mChoice4->SetSelection(mPredictedLeafCanvas1->GetPC4());
 
 		SetStatusText(wxString::Format(_("Selected Leaf: %i"),1), STATUS_LEAF);
+
+		mPredictedLeafCanvas1->Select(true);
+		mPredictedLeafCanvas2->Select(false);
+		mPredictedLeafCanvas3->Select(false);
 	}
 	else if(mSelectedCanvas == wxT("Predicted Leaf 2"))
 	{
@@ -933,6 +940,10 @@ void MainDialog::ExternalCanvasSelect(const wxString& canvas)
 		mChoice4->SetSelection(mPredictedLeafCanvas2->GetPC4());
 
 		SetStatusText(wxString::Format(_("Selected Leaf: %i"),2), STATUS_LEAF);
+
+		mPredictedLeafCanvas1->Select(false);
+		mPredictedLeafCanvas2->Select(true);
+		mPredictedLeafCanvas3->Select(false);
 	}
 	else
 	{
@@ -957,7 +968,12 @@ void MainDialog::ExternalCanvasSelect(const wxString& canvas)
 		mChoice4->SetSelection(mPredictedLeafCanvas3->GetPC4());
 
 		SetStatusText(wxString::Format(_("Selected Leaf: %i"),3), STATUS_LEAF);
+
+		mPredictedLeafCanvas1->Select(false);
+		mPredictedLeafCanvas2->Select(false);
+		mPredictedLeafCanvas3->Select(true);
 	}
+	UpdateLeaves();
 }
 
 void MainDialog::OnMenuExportLeaf(wxCommandEvent& event)

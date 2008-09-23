@@ -50,7 +50,7 @@ END_EVENT_TABLE()
 
 LeafCanvas::LeafCanvas(wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize &size) : wxScrolledWindow(parent, wxID_ANY, pos, size, wxSUNKEN_BORDER)
 {
-	SetBackgroundColour(*wxWHITE);
+	//SetBackgroundColour(*wxWHITE);
 	mLabel = wxT("");
 	mLeafExists = false;
 	mPC1 = 0;
@@ -62,6 +62,7 @@ LeafCanvas::LeafCanvas(wxWindow* parent, wxWindowID id, const wxPoint& pos, cons
 	mPC3Value = 0;
 	mPC4Value = 0;
 	mOverlayExists = false;
+	mSelected = false;
 }
 
 
@@ -121,11 +122,27 @@ void LeafCanvas::OnPaint(wxPaintEvent& event)
 void LeafCanvas::PaintBackground(wxDC& dc)
 {
 
-	wxColour backgroundColour = *wxWHITE;
+	wxColour backgroundColour;
+
+	if(mSelected)
+	{
+		backgroundColour = *wxWHITE;
+	}
+	else
+	{
+		backgroundColour = wxColour(245, 245, 245);
+	}
 
 	dc.SetBrush(wxBrush(backgroundColour));
+	dc.SetPen(wxPen(backgroundColour, 1));
 
-	dc.Clear();
+	wxRect windowRect(wxPoint(0, 0), GetClientSize());
+	CalcUnscrolledPosition(windowRect.x, windowRect.y, & windowRect.x, & windowRect.y);
+	dc.DrawRectangle(windowRect);
+
+	SetBackgroundColour(backgroundColour);
+
+	//dc.Clear();
 }
 
 
