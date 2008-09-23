@@ -42,7 +42,7 @@ protected:
 	static MainDialog *mInstance; /**< The single instance of the Main Dialog */
 	static wxMutex     mMutexUpdateCheck; /**< Locks access to the update method */
 
-	EigenSystem       *mEigenSystem;
+	EigenSystem        mEigenSystem;
 	wxString           mPC1[96];
 	wxString           mPC2[96];
 	wxString           mPC3[96];
@@ -56,6 +56,7 @@ protected:
 	wxSlider           *mPC2Amount;
 	wxSlider           *mPC3Amount;
 	wxSlider           *mPC4Amount;
+	wxSlider           *mManualScaleAmount;
 	wxStaticText       *mPC1Value;
 	wxStaticText       *mPC2Value;
 	wxStaticText       *mPC3Value;
@@ -67,15 +68,22 @@ protected:
 	bool               mLinkedScale;
 	bool               mInvertLeaf;
 	bool               m4UpMode;
+	bool               mShowLandmarks;
 	wxMenuItem        *mRelativeMenu;
+	wxMenuItem        *mIndependentMenu;
+	wxMenuItem        *mManualMenu;
 	wxMenuItem        *mResetMenu;
 	wxMenuItem        *mImportLeafMenu;
 	wxMenuItem        *mInvertLeafMenu;
 	wxMenuItem        *m4UpLeafMenu;
 	wxMenuItem        *mExportLeafMenu;
 	wxMenuItem        *mGridGenMenu;
+	wxMenuItem        *mMeanOverlayMenu;
+	wxMenuItem        *mShowLandmarksMenu;
 	wxBoxSizer        *mTopLevelSizer;
 	wxGridSizer       *mLowerPlotSizer;
+	wxPanel           *mTopLevelPanel;
+	double             mManualScale;
 
 	/**
 	 * Constructor.
@@ -116,6 +124,10 @@ protected:
 
 	void OnMenuRelative(wxCommandEvent& event);
 
+	void OnMenuIndependent(wxCommandEvent& event);
+
+	void OnMenuManual(wxCommandEvent& event);
+
 	void OnMenuResetPCs(wxCommandEvent& event);
 
 	void OnMenuMeanScreen(wxCommandEvent& event);
@@ -134,9 +146,15 @@ protected:
 
 	void OnMenuGenerateGrid(wxCommandEvent& event);
 
+	void OnMenuMeanOverlay(wxCommandEvent& event);
+
+	void OnMenuShowLandmarks(wxCommandEvent& event);
+
 	void OnChoices(wxCommandEvent& event);
 
 	void OnScroll(wxScrollEvent& event);
+
+	void OnMSAScroll(wxScrollEvent& event);
 
 	void OnClick(wxMouseEvent& event);
 
@@ -204,6 +222,16 @@ public:
 	bool GetInvertLeaf(void) {return mInvertLeaf;}
 
 	void ExternalCanvasSelect(const wxString& canvas);
+
+	EigenSystem GetEigenSystem(void) {return mEigenSystem;}
+
+	EigenSystem* GetEigenSystemPointer(void) {return &mEigenSystem;}
+
+	double GetManualScale(void) {return mManualScale;}
+
+	void SetEigenSystem(EigenSystem ES);
+
+	bool GetShowLandmarks(void) {return mShowLandmarks;}
 
 private:
 	DECLARE_EVENT_TABLE()

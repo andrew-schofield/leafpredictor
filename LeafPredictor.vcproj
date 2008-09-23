@@ -114,7 +114,7 @@
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
 				AdditionalIncludeDirectories=".\src\include;&quot;G:\wxMSW-2.8.7\include&quot;;&quot;G:\wxMSW-2.8.7\include\msvc&quot;"
-				PreprocessorDefinitions="UNICODE;_UNICODE"
+				PreprocessorDefinitions="UNICODE;_UNICODE;__WXMSW__"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				RuntimeTypeInfo="false"
@@ -187,11 +187,23 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\leafDialog.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\main.cpp"
 				>
 			</File>
 			<File
 				RelativePath=".\src\mainDialog.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\pcSpaceDialog.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\projectDialog.cpp"
 				>
 			</File>
 			<File
@@ -221,6 +233,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\include\leafDialog.h"
+				>
+			</File>
+			<File
 				RelativePath=".\src\include\leafpredictor.h"
 				>
 			</File>
@@ -230,6 +246,18 @@
 			</File>
 			<File
 				RelativePath=".\src\include\mainDialog.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\include\pcSpaceDialog.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\include\projectDialog.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\include\resource.h"
 				>
 			</File>
 			<File
@@ -246,6 +274,10 @@
 			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav"
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
 			>
+			<File
+				RelativePath=".\resources\leafpredictor.rc"
+				>
+			</File>
 		</Filter>
 	</Files>
 	<Globals>

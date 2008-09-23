@@ -31,14 +31,15 @@ class LeafCanvas: public wxScrolledWindow
 {
 protected:
 	std::vector<double>  mLeaf;
+	std::vector<double>  mLeafOverlay;
 	double               mXRange, mYRange, mXMid, mYMid, mScale;
 	wxString             mLabel;
-	bool                 mLeafExists;
+	bool                 mLeafExists, mOverlayExists;
 	wxUint32             mPC1, mPC2, mPC3, mPC4, mPC1Value, mPC2Value, mPC3Value, mPC4Value;
 
 	void CalculateScale(void);
 
-	void DrawLeaf(wxDC& dc, wxInt32 xOut, wxInt32 yOut, wxInt32 thickness, bool label = false);
+	void DrawLeaf(wxDC& dc, wxInt32 xOut, wxInt32 yOut, wxInt32 thickness, bool label = false, double fixedscale = 0);
 
 	void OnPaint(wxPaintEvent& event);
 
@@ -54,6 +55,8 @@ public:
 	virtual ~LeafCanvas();
 
 	void SetLeaf(const std::vector<double> &coords);
+	void SetOverlay(const std::vector<double> &coords);
+	void RemoveOverlay(void);
 
 	void SetScale(double scale) {mScale = scale;}
 	double GetScale(void) {return mScale;}

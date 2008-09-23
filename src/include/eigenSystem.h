@@ -46,6 +46,10 @@ public:
 
 	void ExportLeaf(const wxString &location);
 
+	void SetLeaf(const std::vector< double > &leaf) {mMeanLeaf = leaf;}
+
+	bool GetInversionFactor(void) {return (mInversionFactor==1);}
+
 private:
 
 	std::vector< double >                 mMeanLeaf;

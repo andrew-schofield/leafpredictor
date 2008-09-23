@@ -9,7 +9,7 @@
 # implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
 bin_PROGRAMS = leafpredictor
-leafpredictor_SOURCES = aboutDialog.cpp eigenSystem.cpp imageDialog.cpp leafCanvas.cpp leafDialog.cpp main.cpp mainDialog.cpp pcSpaceDialog.cpp staticBoldedText.cpp
+leafpredictor_SOURCES = aboutDialog.cpp eigenSystem.cpp imageDialog.cpp leafCanvas.cpp leafDialog.cpp main.cpp mainDialog.cpp pcSpaceDialog.cpp projectDialog.cpp staticBoldedText.cpp
 INCLUDES = -I$(top_srcdir)/src/include
 AM_CXXFLAGS = -Wall -Wno-strict-aliasing
 AM_CPPFLAGS = \

@@ -18,6 +18,8 @@ EXTRA_DIST = \
 	main.h \
 	mainDialog.h \
 	pcSpaceDialog.h \
+	projectDialog.h \
+	resource.h \
 	staticBoldedText.h \
 	tools.h
 
