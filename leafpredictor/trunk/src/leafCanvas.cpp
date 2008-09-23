@@ -61,6 +61,7 @@ LeafCanvas::LeafCanvas(wxWindow* parent, wxWindowID id, const wxPoint& pos, cons
 	mPC2Value = 0;
 	mPC3Value = 0;
 	mPC4Value = 0;
+	mOverlayExists = false;
 }
 
 
@@ -112,7 +113,7 @@ void LeafCanvas::OnPaint(wxPaintEvent& event)
 
 	PaintBackground(dc);
 
-	DrawLeaf(dc, GetClientSize().x, GetClientSize().y, 1, true);
+	DrawLeaf(dc, GetClientSize().x, GetClientSize().y, 1, true, MainDialog::GetInstance()->GetManualScale());
 
 }
 
@@ -162,6 +163,7 @@ wxBitmap LeafCanvas::GetScreenShot(void)
 	wxInt32 height = 0;
 	wxInt32 thickness = 0;
 	bool antialiase = false;
+	double dScale = MainDialog::GetInstance()->GetManualScale();
 
 	ImageDialog dialog(NULL, EXPORT_IMAGE);
 	if (dialog.ShowModal() == wxID_OK)
@@ -187,12 +189,13 @@ wxBitmap LeafCanvas::GetScreenShot(void)
 		width *= 2;
 		height *= 2;
 		thickness *= 2;
+		dScale *= 2;
 	}
 	wxBitmap bitmap(width, height);
 	wxBufferedDC dc(NULL, bitmap);
 
 	PaintBackground(dc);
-	DrawLeaf(dc, width, height, thickness);
+	DrawLeaf(dc, width, height, thickness, false, dScale);
 
 	if(antialiase)
 	{
@@ -222,14 +225,15 @@ wxBitmap LeafCanvas::GetScreenShot(void)
 			anti.SetRGB( x, y, (unsigned char)red, (unsigned char)green, (unsigned char)blue );
 		}
 
-		wxBitmap bitmap(anti, -1);
+		wxBitmap aabitmap(anti, -1);
+		bitmap = aabitmap;
 	}
 
 	return bitmap;
 }
 
 
-void LeafCanvas::DrawLeaf(wxDC& dc, wxInt32 xOut, wxInt32 yOut, wxInt32 thickness, bool label)
+void LeafCanvas::DrawLeaf(wxDC& dc, wxInt32 xOut, wxInt32 yOut, wxInt32 thickness, bool label, double fixedscale)
 {
 	wxColour leafColour = *wxGREEN;
 	wxUint32 i;
@@ -237,61 +241,90 @@ void LeafCanvas::DrawLeaf(wxDC& dc, wxInt32 xOut, wxInt32 yOut, wxInt32 thicknes
 
 	xScale = xOut/(double)GetClientSize().x;
 	yScale = yOut/(double)GetClientSize().y;
-	scale = std::min(xScale,yScale);
+	if (fixedscale != 0)
+		scale = fixedscale;
+	else
+		scale = std::min(xScale,yScale) * mScale;
+	//Tools::InfoMsgBox(wxString::Format(wxT("%.2f, %.2f"), fixedscale, scale));
 
 	if(label)
 		dc.DrawText(mLabel,0,0);
 
 	dc.SetPen(wxPen(*wxLIGHT_GREY, thickness));
 	//axes
-	dc.DrawLine(0,(int)(GetClientSize().y/2 - mYMid * mScale),GetClientSize().x,(int)(GetClientSize().y/2 - mYMid * mScale));
-	dc.DrawLine((int)(GetClientSize().x/2 - mXMid * mScale),0,(int)(GetClientSize().x/2 - mXMid * mScale),GetClientSize().y);
+	dc.DrawLine(0,(int)(yOut/2 - mYMid * scale),xOut,(int)(yOut/2 - mYMid * scale));
+	dc.DrawLine((int)(xOut/2 - mXMid * scale),0,(int)(xOut/2 - mXMid * scale),yOut);
 
-	wxInt32 min = 0 - (int)(GetClientSize().x / mScale - (GetClientSize().x/2 - mXMid * mScale));
-	wxInt32 max = (int)(GetClientSize().x / mScale - (GetClientSize().x/2 - mXMid * mScale));
+	wxInt32 min = 0 - (int)(xOut / scale - (xOut/2 - mXMid * scale));
+	wxInt32 max = (int)(xOut / scale - (xOut/2 - mXMid * scale));
 
 	if(min != max) //traps initial state where both min and max are -2^32
 	{
 		for(wxInt32 j=0;j<=max;j+=100)
 		{
 			wxUint32 x, y;
-			x = (int)(j * mScale + (GetClientSize().x/2 - mXMid * mScale));
+			x = (int)(j * scale + (xOut/2 - mXMid * scale));
 			x = dc.LogicalToDeviceX(x);
-			y = (int)(GetClientSize().y/2 - mYMid * mScale);
+			y = (int)(yOut/2 - mYMid * scale);
 			dc.DrawLine(x,y,x,y-5);
 		}
 		for(wxInt32 j=0;j>=min;j-=100)
 		{
 			wxUint32 x, y;
-			x = (int)(j * mScale + (GetClientSize().x/2 - mXMid * mScale));
+			x = (int)(j * scale + (xOut/2 - mXMid * scale));
 			x = dc.LogicalToDeviceX(x);
-			y = (int)(GetClientSize().y/2 - mYMid * mScale);
+			y = (int)(yOut/2 - mYMid * scale);
 			dc.DrawLine(x,y,x,y-5);
 		}
 	}
 
-	min = (int)(0 - GetClientSize().y / mScale - (GetClientSize().y/2 - mYMid * mScale));
-	max = (int)(GetClientSize().y / mScale - (GetClientSize().y/2 - mYMid * mScale));
+	min = (int)(0 - yOut / scale - (yOut/2 - mYMid * scale));
+	max = (int)(yOut / scale - (yOut/2 - mYMid * scale));
 
 	if(min != max)
 	{
 		for(wxInt32 j=0;j<=max;j+=100)
 		{
 			wxUint32 x, y;
-			y = (int)(j * mScale + (GetClientSize().y/2 - mYMid * mScale));
+			y = (int)(j * scale + (yOut/2 - mYMid * scale));
 			y = dc.LogicalToDeviceY(y);
-			x = (int)(GetClientSize().x/2 - mXMid * mScale);
+			x = (int)(xOut/2 - mXMid * scale);
 			dc.DrawLine(x,y,x+5,y);
 		}
 
 		for(wxInt32 j=0;j>=min;j-=100)
 		{
 			wxUint32 x, y;
-			y = (int)(j * mScale + (GetClientSize().y/2 - mYMid * mScale));
+			y = (int)(j * scale + (yOut/2 - mYMid * scale));
 			y = dc.LogicalToDeviceY(y);
-			x = (int)(GetClientSize().x/2 - mXMid * mScale);
+			x = (int)(xOut/2 - mXMid * scale);
 			dc.DrawLine(x,y,x+5,y);
 		}
+	}
+
+	if (mOverlayExists)
+	{
+		dc.SetPen(wxPen(*wxBLACK, thickness));
+		wxPoint *leaf;
+		leaf = new wxPoint[(mLeafOverlay.size()/2)+1];
+		for(i=0;i<(mLeafOverlay.size()/2);++i)
+		{
+			int x = (int)(mLeafOverlay.at(i*2) * scale + (xOut/2 - mXMid * scale));
+			int y = (int)(mLeafOverlay.at((i*2)+1) * scale + (yOut/2 - mYMid * scale));
+			x = dc.LogicalToDeviceX(x);
+			y = dc.LogicalToDeviceY(y);
+			leaf[i] = wxPoint(x,y);
+			if(MainDialog::GetInstance()->GetShowLandmarks())
+				dc.DrawCircle(x,y,thickness*2);
+			if (i == 0)
+				leaf[(mLeafOverlay.size()/2)] = wxPoint(x,y);
+		}
+
+		//dc.SetBrush(wxBrush(*wxBLACK));
+		dc.SetPen(wxPen(*wxBLACK, thickness));
+		dc.DrawSpline((mLeafOverlay.size()/2)+1,leaf);
+		delete [] leaf;
+		leaf = NULL;
 	}
 
 	dc.SetPen(wxPen(*wxRED, thickness));
@@ -302,12 +335,13 @@ void LeafCanvas::DrawLeaf(wxDC& dc, wxInt32 xOut, wxInt32 yOut, wxInt32 thicknes
 		leaf = new wxPoint[(mLeaf.size()/2)+1];
 		for(i=0;i<(mLeaf.size()/2);++i)
 		{
-			int x = (int)(mLeaf.at(i*2) * (mScale * scale) + (xOut/2 - mXMid * (mScale * scale)));
-			int y = (int)(mLeaf.at((i*2)+1) * (mScale * scale) + (yOut/2 - mYMid * (mScale * scale)));
+			int x = (int)(mLeaf.at(i*2) * scale + (xOut/2 - mXMid * scale));
+			int y = (int)(mLeaf.at((i*2)+1) * scale + (yOut/2 - mYMid * scale));
 			x = dc.LogicalToDeviceX(x);
 			y = dc.LogicalToDeviceY(y);
 			leaf[i] = wxPoint(x,y);
-			dc.DrawCircle(x,y,thickness*2);
+			if(MainDialog::GetInstance()->GetShowLandmarks())
+				dc.DrawCircle(x,y,thickness*2);
 			if (i == 0)
 				leaf[(mLeaf.size()/2)] = wxPoint(x,y);
 		}
@@ -354,4 +388,81 @@ bool LeafCanvas::NeedsInversion(void)
 	if((GetClientSize().y/2 - mYMid * mScale) > (GetClientSize().y * 0.66))
 		return true;
 	return false;
+}
+
+
+void LeafCanvas::SetOverlay(const std::vector<double> &coords)
+{
+	mLeafOverlay = coords;
+	mOverlayExists = true;
+
+	/*double   minX = 0, minY = 0, maxX = 0, maxY = 0;
+	wxUint32   i;
+
+	for(i=0;i<mLeaf.size()/2;++i)
+	{
+		double x = mLeaf.at(i*2);
+		double y = mLeaf.at((i*2)+1);
+
+		if(x<minX)
+			minX = x;
+		if(x>maxX)
+			maxX = x;
+		if(y<minY)
+			minY = y;
+		if(y>maxY)
+			maxY = y;
+	}
+	Tools::InfoMsgBox(wxT("Re-scaling"));
+	for(i=0;i<mLeafOverlay.size()/2;++i)
+	{
+		double x = mLeafOverlay.at(i*2);
+		double y = mLeafOverlay.at((i*2)+1);
+
+		if(x<minX)
+			minX = x;
+		if(x>maxX)
+			maxX = x;
+		if(y<minY)
+			minY = y;
+		if(y>maxY)
+			maxY = y;
+	}
+	mXRange = maxX - minX;
+	mYRange = maxY - minY;
+
+	mXMid = minX + (mXRange / 2);
+	mYMid = minY + (mYRange / 2);
+	CalculateScale();*/
+}
+
+
+void LeafCanvas::RemoveOverlay(void)
+{
+	mLeafOverlay.empty();
+	mOverlayExists = false;
+
+	/*double   minX = 0, minY = 0, maxX = 0, maxY = 0;
+	wxUint32   i;
+
+	for(i=0;i<mLeaf.size()/2;++i)
+	{
+		double x = mLeaf.at(i*2);
+		double y = mLeaf.at((i*2)+1);
+
+		if(x<minX)
+			minX = x;
+		if(x>maxX)
+			maxX = x;
+		if(y<minY)
+			minY = y;
+		if(y>maxY)
+			maxY = y;
+	}
+	mXRange = maxX - minX;
+	mYRange = maxY - minY;
+
+	mXMid = minX + (mXRange / 2);
+	mYMid = minY + (mYRange / 2);
+	CalculateScale();*/
 }

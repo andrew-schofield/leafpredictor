@@ -1,0 +1,10 @@
+LeafPredictor 0.8
+
+2008-05-15 Andrew Schofield <the.uncle.fungus@gmail.com>
+* Added option to remove landmarks from display.
+* Added value field for manual scale slider.
+* Adjusted manual scale multiplier to increase it by a factor of 2.
+* Fixed antialiasing function for screenshots.
+* Fixed Windows build system.
+* Fixed nasty grey background for sliders on Windows.
+* Improved Windows program icon.

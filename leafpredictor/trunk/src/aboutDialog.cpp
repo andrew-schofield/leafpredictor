@@ -49,7 +49,7 @@ AboutDialog::AboutDialog(wxWindow* parent) : wxDialog(parent, wxID_ANY, wxString
 	authorHomepageSizer->Add(new StaticBoldedText(this, wxID_ANY, _("Author: ")), 0, wxALIGN_RIGHT);
 	authorHomepageSizer->Add(new wxStaticText(this, wxID_ANY, wxT("Andrew Schofield")), 0, wxALIGN_LEFT);
 	authorHomepageSizer->Add(new StaticBoldedText(this, wxID_ANY, _("Homepage: ")), 0, wxALIGN_RIGHT);
-	authorHomepageSizer->Add(new wxHyperlinkCtrl(this, wxID_ANY, wxT(LEAFPREDICTOR_URL_HOMEPAGE), wxT(LEAFPREDICTOR_URL_HOMEPAGE)));
+	authorHomepageSizer->Add(new wxHyperlinkCtrl(this, wxID_ANY, _("LeafPredictor"), wxT(LEAFPREDICTOR_URL_HOMEPAGE)));
 	authorHomepageSizer->Add(new StaticBoldedText(this, wxID_ANY, _("Licence: ")), 0, wxALIGN_RIGHT);
 	authorHomepageSizer->Add(new wxHyperlinkCtrl(this, wxID_ANY, wxT("GNU GPL v2"), wxT(LEAFPREDICTOR_URL_LICENCE)));
 	authorHomepageSizer->AddSpacer(5);

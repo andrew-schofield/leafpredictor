@@ -28,9 +28,11 @@
 #include "main.h"
 
 #include "mainDialog.h"
+#include "projectDialog.h"
 
 #include "locale.h"
 #include "wx/image.h"
+#include "wx/filename.h"
 
 IMPLEMENT_APP(LeafPredictorApp)
 
@@ -101,7 +103,7 @@ bool LeafPredictorApp::OnInit(void)
 	//ProjectsManager::CreateInstance();
 	//ClientsManager::CreateInstance();
 	//BenchmarksManager::CreateInstance();
-	//WebMonitor::CreateInstance();
+	ProjectDialog::CreateInstance();
 	MainDialog::CreateInstance();               // MUST be created last, when all other managers have been created
 	MainDialog::GetInstance()->Show(true);
 
@@ -119,7 +121,7 @@ int LeafPredictorApp::OnExit(void)
 	// ProjectsManager::DestroyInstance();
 	// WebMonitor::DestroyInstance();
 	// PreferencesManager::DestroyInstance();        // MUST be destroyed last, so that other managers can save their preferences when they are destroyed
-	// MessagesManager::DestroyInstance();
+	ProjectDialog::DestroyInstance();
 
 	return 0;
 }
