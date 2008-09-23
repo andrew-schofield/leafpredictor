@@ -34,7 +34,7 @@ protected:
 	std::vector<double>  mLeafOverlay;
 	double               mXRange, mYRange, mXMid, mYMid, mScale;
 	wxString             mLabel;
-	bool                 mLeafExists, mOverlayExists;
+	bool                 mLeafExists, mOverlayExists, mSelected;
 	wxUint32             mPC1, mPC2, mPC3, mPC4, mPC1Value, mPC2Value, mPC3Value, mPC4Value;
 
 	void CalculateScale(void);
@@ -89,6 +89,8 @@ public:
 	void ExportLeaf(const wxString &location);
 
 	bool NeedsInversion(void);
+
+	void Select(bool select) {mSelected = select;}
 private:
 	DECLARE_EVENT_TABLE()
 };
