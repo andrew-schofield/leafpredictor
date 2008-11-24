@@ -17,7 +17,7 @@
 /**
  * \file staticBoldedText.h
  * Creates a bold text object.
- * \author François Ingelrest
+ * \author Francois Ingelrest
  * \author Andrew Schofield
  **/
 
