@@ -1,0 +1,363 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 42;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		336F27850DBBBEC2007E62A1 /* eigenSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 336F277F0DBBBEC2007E62A1 /* eigenSystem.cpp */; };
+		336F27860DBBBEC2007E62A1 /* imageDialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 336F27800DBBBEC2007E62A1 /* imageDialog.cpp */; };
+		336F27870DBBBEC2007E62A1 /* leafCanvas.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 336F27810DBBBEC2007E62A1 /* leafCanvas.cpp */; };
+		336F27880DBBBEC2007E62A1 /* leafDialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 336F27820DBBBEC2007E62A1 /* leafDialog.cpp */; };
+		336F27890DBBBEC2007E62A1 /* pcSpaceDialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 336F27830DBBBEC2007E62A1 /* pcSpaceDialog.cpp */; };
+		336F278A0DBBBEC2007E62A1 /* projectDialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 336F27840DBBBEC2007E62A1 /* projectDialog.cpp */; };
+		339706030DBBDBB9008D5DC9 /* LeafPredictor.icns in Resources */ = {isa = PBXBuildFile; fileRef = 339706020DBBDBB9008D5DC9 /* LeafPredictor.icns */; };
+		33C205B40D64C154006EE977 /* aboutDialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 33C205A20D64C154006EE977 /* aboutDialog.cpp */; };
+		33C205DA0D64C17E006EE977 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 33C205C70D64C17E006EE977 /* main.cpp */; };
+		33C205DB0D64C17E006EE977 /* mainDialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 33C205C80D64C17E006EE977 /* mainDialog.cpp */; };
+		33C205E70D64C17E006EE977 /* staticBoldedText.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 33C205D40D64C17E006EE977 /* staticBoldedText.cpp */; };
+		33DFF5430D626A2F0095F52F /* libwx_macu-2.8.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 33DFF53D0D626A2F0095F52F /* libwx_macu-2.8.a */; };
+		33DFF5460D626A2F0095F52F /* libwxpng-2.8.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 33DFF5400D626A2F0095F52F /* libwxpng-2.8.a */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		336F277F0DBBBEC2007E62A1 /* eigenSystem.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = eigenSystem.cpp; path = src/eigenSystem.cpp; sourceTree = "<group>"; };
+		336F27800DBBBEC2007E62A1 /* imageDialog.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = imageDialog.cpp; path = src/imageDialog.cpp; sourceTree = "<group>"; };
+		336F27810DBBBEC2007E62A1 /* leafCanvas.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = leafCanvas.cpp; path = src/leafCanvas.cpp; sourceTree = "<group>"; };
+		336F27820DBBBEC2007E62A1 /* leafDialog.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = leafDialog.cpp; path = src/leafDialog.cpp; sourceTree = "<group>"; };
+		336F27830DBBBEC2007E62A1 /* pcSpaceDialog.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = pcSpaceDialog.cpp; path = src/pcSpaceDialog.cpp; sourceTree = "<group>"; };
+		336F27840DBBBEC2007E62A1 /* projectDialog.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = projectDialog.cpp; path = src/projectDialog.cpp; sourceTree = "<group>"; };
+		336F278B0DBBBEE3007E62A1 /* eigenSystem.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = eigenSystem.h; path = src/include/eigenSystem.h; sourceTree = "<group>"; };
+		336F278C0DBBBEE3007E62A1 /* imageDialog.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = imageDialog.h; path = src/include/imageDialog.h; sourceTree = "<group>"; };
+		336F278D0DBBBEE3007E62A1 /* leafCanvas.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = leafCanvas.h; path = src/include/leafCanvas.h; sourceTree = "<group>"; };
+		336F278E0DBBBEE3007E62A1 /* leafDialog.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = leafDialog.h; path = src/include/leafDialog.h; sourceTree = "<group>"; };
+		336F278F0DBBBEE3007E62A1 /* leafpredictor.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = leafpredictor.h; path = src/include/leafpredictor.h; sourceTree = "<group>"; };
+		336F27900DBBBEE3007E62A1 /* pcSpaceDialog.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = pcSpaceDialog.h; path = src/include/pcSpaceDialog.h; sourceTree = "<group>"; };
+		336F27910DBBBEE3007E62A1 /* projectDialog.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = projectDialog.h; path = src/include/projectDialog.h; sourceTree = "<group>"; };
+		336F279A0DBBBFFD007E62A1 /* LeafPredictor.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LeafPredictor.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		339706020DBBDBB9008D5DC9 /* LeafPredictor.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = LeafPredictor.icns; path = resources/LeafPredictor.icns; sourceTree = "<group>"; };
+		33C205A20D64C154006EE977 /* aboutDialog.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = aboutDialog.cpp; path = src/aboutDialog.cpp; sourceTree = "<group>"; };
+		33C205C70D64C17E006EE977 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = main.cpp; path = src/main.cpp; sourceTree = "<group>"; };
+		33C205C80D64C17E006EE977 /* mainDialog.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = mainDialog.cpp; path = src/mainDialog.cpp; sourceTree = "<group>"; };
+		33C205D40D64C17E006EE977 /* staticBoldedText.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = staticBoldedText.cpp; path = src/staticBoldedText.cpp; sourceTree = "<group>"; };
+		33C205ED0D64C1CD006EE977 /* aboutDialog.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = aboutDialog.h; path = src/include/aboutDialog.h; sourceTree = "<group>"; };
+		33C206020D64C1CE006EE977 /* main.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = main.h; path = src/include/main.h; sourceTree = "<group>"; };
+		33C206030D64C1CE006EE977 /* mainDialog.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = mainDialog.h; path = src/include/mainDialog.h; sourceTree = "<group>"; };
+		33C206100D64C1CE006EE977 /* staticBoldedText.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = staticBoldedText.h; path = src/include/staticBoldedText.h; sourceTree = "<group>"; };
+		33C206110D64C1CE006EE977 /* tools.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = tools.h; path = src/include/tools.h; sourceTree = "<group>"; };
+		33DFF53D0D626A2F0095F52F /* libwx_macu-2.8.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libwx_macu-2.8.a"; sourceTree = "<group>"; };
+		33DFF5400D626A2F0095F52F /* libwxpng-2.8.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libwxpng-2.8.a"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		33DFF4870D6255770095F52F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				33DFF5430D626A2F0095F52F /* libwx_macu-2.8.a in Frameworks */,
+				33DFF5460D626A2F0095F52F /* libwxpng-2.8.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		33C205530D64BA55006EE977 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				336F277F0DBBBEC2007E62A1 /* eigenSystem.cpp */,
+				336F27800DBBBEC2007E62A1 /* imageDialog.cpp */,
+				336F27810DBBBEC2007E62A1 /* leafCanvas.cpp */,
+				336F27820DBBBEC2007E62A1 /* leafDialog.cpp */,
+				336F27830DBBBEC2007E62A1 /* pcSpaceDialog.cpp */,
+				336F27840DBBBEC2007E62A1 /* projectDialog.cpp */,
+				33C205C70D64C17E006EE977 /* main.cpp */,
+				33C205C80D64C17E006EE977 /* mainDialog.cpp */,
+				33C205D40D64C17E006EE977 /* staticBoldedText.cpp */,
+				33C205A20D64C154006EE977 /* aboutDialog.cpp */,
+				33C2055D0D64BB3A006EE977 /* include */,
+			);
+			name = src;
+			sourceTree = "<group>";
+		};
+		33C2055D0D64BB3A006EE977 /* include */ = {
+			isa = PBXGroup;
+			children = (
+				336F278B0DBBBEE3007E62A1 /* eigenSystem.h */,
+				336F278C0DBBBEE3007E62A1 /* imageDialog.h */,
+				336F278D0DBBBEE3007E62A1 /* leafCanvas.h */,
+				336F278E0DBBBEE3007E62A1 /* leafDialog.h */,
+				336F278F0DBBBEE3007E62A1 /* leafpredictor.h */,
+				336F27900DBBBEE3007E62A1 /* pcSpaceDialog.h */,
+				336F27910DBBBEE3007E62A1 /* projectDialog.h */,
+				33C205ED0D64C1CD006EE977 /* aboutDialog.h */,
+				33C206020D64C1CE006EE977 /* main.h */,
+				33C206030D64C1CE006EE977 /* mainDialog.h */,
+				33C206100D64C1CE006EE977 /* staticBoldedText.h */,
+				33C206110D64C1CE006EE977 /* tools.h */,
+			);
+			name = include;
+			sourceTree = "<group>";
+		};
+		33DFF4790D6255580095F52F = {
+			isa = PBXGroup;
+			children = (
+				339706020DBBDBB9008D5DC9 /* LeafPredictor.icns */,
+				33C205530D64BA55006EE977 /* src */,
+				33DFF53D0D626A2F0095F52F /* libwx_macu-2.8.a */,
+				33DFF5400D626A2F0095F52F /* libwxpng-2.8.a */,
+				33DFF48A0D6255770095F52F /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		33DFF48A0D6255770095F52F /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				336F279A0DBBBFFD007E62A1 /* LeafPredictor.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		33DFF4880D6255770095F52F /* LeafPredictor */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 33DFF48D0D6255790095F52F /* Build configuration list for PBXNativeTarget "LeafPredictor" */;
+			buildPhases = (
+				33DFF4850D6255770095F52F /* Resources */,
+				33DFF4860D6255770095F52F /* Sources */,
+				33DFF4870D6255770095F52F /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = LeafPredictor;
+			productName = FahMon;
+			productReference = 336F279A0DBBBFFD007E62A1 /* LeafPredictor.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		33DFF47B0D6255580095F52F /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = 33DFF47C0D6255590095F52F /* Build configuration list for PBXProject "LeafPredictor" */;
+			hasScannedForEncodings = 0;
+			mainGroup = 33DFF4790D6255580095F52F;
+			productRefGroup = 33DFF48A0D6255770095F52F /* Products */;
+			projectDirPath = "";
+			targets = (
+				33DFF4880D6255770095F52F /* LeafPredictor */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		33DFF4850D6255770095F52F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				339706030DBBDBB9008D5DC9 /* LeafPredictor.icns in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		33DFF4860D6255770095F52F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				33C205B40D64C154006EE977 /* aboutDialog.cpp in Sources */,
+				33C205DA0D64C17E006EE977 /* main.cpp in Sources */,
+				33C205DB0D64C17E006EE977 /* mainDialog.cpp in Sources */,
+				33C205E70D64C17E006EE977 /* staticBoldedText.cpp in Sources */,
+				336F27850DBBBEC2007E62A1 /* eigenSystem.cpp in Sources */,
+				336F27860DBBBEC2007E62A1 /* imageDialog.cpp in Sources */,
+				336F27870DBBBEC2007E62A1 /* leafCanvas.cpp in Sources */,
+				336F27880DBBBEC2007E62A1 /* leafDialog.cpp in Sources */,
+				336F27890DBBBEC2007E62A1 /* pcSpaceDialog.cpp in Sources */,
+				336F278A0DBBBEC2007E62A1 /* projectDialog.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		33DFF47D0D6255590095F52F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					ppc,
+					i386,
+				);
+				COPY_PHASE_STRIP = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				HEADER_SEARCH_PATHS = (
+					"/usr/local/include/wx-2.8",
+					"/usr/local/lib/wx/include/mac-unicode-release-static-2.8",
+					"$(inherited)",
+					./,
+				);
+				OTHER_LDFLAGS = (
+					"-lz",
+					"-lwxpng-2.8",
+					"-lpthread",
+					"-framework",
+					WebKit,
+					"-framework",
+					IOKit,
+					"-framework",
+					Carbon,
+					"-framework",
+					System,
+					"-liconv",
+					"-framework",
+					Cocoa,
+					"-framework",
+					QuickTime,
+					"$(inherited)",
+				);
+				ZERO_LINK = NO;
+			};
+			name = Debug;
+		};
+		33DFF47E0D6255590095F52F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+			};
+			name = Release;
+		};
+		33DFF48E0D6255790095F52F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
+				HEADER_SEARCH_PATHS = (
+					"/usr/local/lib/wx/include/mac-unicode-release-static-2.8",
+					"/usr/local/include/wx-2.8",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "LeafPredictor-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(LIBRARY_SEARCH_PATHS_QUOTED_1)",
+				);
+				LIBRARY_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)\"";
+				OTHER_CFLAGS = (
+					"-D_FILE_OFFSET_BITS=64",
+					"-D_LARGE_FILES",
+					"-D__WXMAC__",
+				);
+				OTHER_LDFLAGS = (
+					"-lz",
+					"-framework",
+					QuickTime,
+					"-framework",
+					Cocoa,
+					"-framework",
+					Carbon,
+					"-framework",
+					IOKit,
+					"-framework",
+					System,
+					"-liconv",
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = LeafPredictor;
+				WRAPPER_EXTENSION = app;
+				ZERO_LINK = NO;
+			};
+			name = Debug;
+		};
+		33DFF48F0D6255790095F52F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					ppc,
+					i386,
+				);
+				COPY_PHASE_STRIP = YES;
+				GCC_ALTIVEC_EXTENSIONS = YES;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
+				HEADER_SEARCH_PATHS = (
+					"/usr/local/include/wx-2.8",
+					"/usr/local/lib/wx/include/mac-unicode-release-static-2.8",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "LeafPredictor-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(LIBRARY_SEARCH_PATHS_QUOTED_1)",
+				);
+				LIBRARY_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)\"";
+				OTHER_CFLAGS = (
+					"-D_FILE_OFFSET_BITS=64",
+					"-D_LARGE_FILES",
+					"-D__WXMAC__",
+				);
+				OTHER_LDFLAGS = (
+					"-framework",
+					System,
+					"-framework",
+					IOKit,
+					"-framework",
+					Cocoa,
+					"-framework",
+					QuickTime,
+					"-liconv",
+					"-lz",
+					"-framework",
+					Carbon,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = LeafPredictor;
+				SEPARATE_STRIP = YES;
+				STRIP_INSTALLED_PRODUCT = YES;
+				WRAPPER_EXTENSION = app;
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		33DFF47C0D6255590095F52F /* Build configuration list for PBXProject "LeafPredictor" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				33DFF47D0D6255590095F52F /* Debug */,
+				33DFF47E0D6255590095F52F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		33DFF48D0D6255790095F52F /* Build configuration list for PBXNativeTarget "LeafPredictor" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				33DFF48E0D6255790095F52F /* Debug */,
+				33DFF48F0D6255790095F52F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 33DFF47B0D6255580095F52F /* Project object */;
+}
