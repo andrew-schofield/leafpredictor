@@ -250,11 +250,11 @@ inline void MainDialog::CreateMenuBar(void)
 	mIndependentMenu->Enable(false);
 	mRelativeMenu = new wxMenuItem(menu,MID_RELATIVE, _("&Relative Scaling"), _("Scale leaves relative to each other"),wxITEM_RADIO);
 	menu->Append(mRelativeMenu);
-	menu->Check(MID_RELATIVE, true);
+	menu->Check(MID_RELATIVE, false);
 	mRelativeMenu->Enable(false);
 	mManualMenu = new wxMenuItem(menu,MID_MANUAL, _("&Manual Scaling"), _("Scale leaves by a given value"),wxITEM_RADIO);
 	menu->Append(mManualMenu);
-	menu->Check(MID_MANUAL, false);
+	menu->Check(MID_MANUAL, true);
 	mManualMenu->Enable(false);
 	menu->AppendSeparator();
 	mInvertLeafMenu = new wxMenuItem(menu,MID_INVERTLEAF, _("&Invert Leaf\tCTRL+N"), _("Fix leaves that import upside-down"),wxITEM_CHECK);
@@ -411,7 +411,7 @@ inline void MainDialog::CreateLayout(void)
 
 	mPredictedLeafCanvas2->Show(false);
 	mPredictedLeafCanvas3->Show(false);
-	mManualScaleAmount->Show(false);
+	mManualScaleAmount->Show(true);
 
 	mMeanLeafCanvas->Select(true);
 	mPredictedLeafCanvas1->Select(true);
@@ -472,6 +472,9 @@ void MainDialog::OnMenuImportES(wxCommandEvent& event)
 			mMeanOverlayMenu->Enable(true);
 			mMeanOverlayMenu->Check(false);
 			mShowLandmarksMenu->Enable(true);
+			mManualScaleAmount->SetValue((wxInt32)(mMeanLeafCanvas->GetScale() * 50));
+			mManualScale = mMeanLeafCanvas->GetScale();
+			//UpdateLeaves();
 
 
 			if(mMeanLeafCanvas->NeedsInversion())
@@ -760,7 +763,7 @@ void MainDialog::OnMenuIndependent(wxCommandEvent& event)
 
 void MainDialog::OnMenuManual(wxCommandEvent& event)
 {
-	mManualScale = (double)mManualScaleAmount->GetValue() / 100;
+	mManualScale = (double)mManualScaleAmount->GetValue() / 50;
 	UpdateLeaves();
 	mManualScaleAmount->Show(true);
 	mTopLevelSizer->Layout();
@@ -1116,9 +1119,29 @@ void MainDialog::OnMSAScroll(wxScrollEvent& event)
 
 void MainDialog::SetEigenSystem(EigenSystem ES)
 {
+	mEigenSystem.Empty();
 	mEigenSystem = ES;
-	if(GetEigenSystemPointer()->GetInversionFactor())
-		Tools::InfoMsgBox(wxT("true"));
 	mInvertLeaf = GetEigenSystemPointer()->GetInversionFactor();
 	mInvertLeafMenu->Check(mInvertLeaf);
+	mMeanLeafCanvas->SetLeaf(mEigenSystem.GetMeanLeaf());
+	mMeanLeafCanvas->ExtDraw();
+	mPredictedLeafCanvas1->SetLeaf(mEigenSystem.GetPredictedLeaf());
+	mPredictedLeafCanvas1->ExtDraw();
+	mPredictedLeafCanvas2->SetLeaf(mEigenSystem.GetPredictedLeaf());
+	mPredictedLeafCanvas2->ExtDraw();
+	mPredictedLeafCanvas3->SetLeaf(mEigenSystem.GetPredictedLeaf());
+	mPredictedLeafCanvas3->ExtDraw();
+}
+
+
+LeafCanvas* MainDialog::GetSelectedCanvas(void)
+{
+	if(mSelectedCanvas == wxT("Predicted Leaf 1"))
+		return mPredictedLeafCanvas1;
+	else if(mSelectedCanvas == wxT("Predicted Leaf 2"))
+		return mPredictedLeafCanvas2;
+	else if(mSelectedCanvas == wxT("Predicted Leaf 3"))
+		return mPredictedLeafCanvas3;
+	else
+		return NULL;
 }
