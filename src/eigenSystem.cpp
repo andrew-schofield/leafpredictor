@@ -218,3 +218,14 @@ void EigenSystem::ExportLeaf(const wxString &location)
 		fileOS.Close();
 	}
 }
+
+
+void EigenSystem::Empty(void)
+{
+	mMeanLeaf.empty();
+	mPredictedLeaf.empty();
+	mEigenValues.empty();
+	mEigenVectors.empty();
+	mTotalVariance = 0;
+	mInversionFactor = 0;
+}

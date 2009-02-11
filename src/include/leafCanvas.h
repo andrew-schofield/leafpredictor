@@ -21,6 +21,8 @@
 #pragma interface "leafCanvas.cpp"
 #endif
 
+#include "leafPrediction.h"
+
 #include "wx/dcbuffer.h"
 #include "wx/scrolwin.h"
 #include "wx/dcscreen.h"
@@ -61,6 +63,8 @@ public:
 	void SetScale(double scale) {mScale = scale;}
 	double GetScale(void) {return mScale;}
 	void SetLabel(wxString label) {mLabel = label;}
+
+	void SetPrediction(LeafPrediction prediction);
 
 	void SetPC1(wxInt32 PC) {mPC1 = PC;}
 	void SetPC2(wxInt32 PC) {mPC2 = PC;}
