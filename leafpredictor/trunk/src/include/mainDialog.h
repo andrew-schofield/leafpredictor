@@ -233,6 +233,8 @@ public:
 
 	bool GetShowLandmarks(void) {return mShowLandmarks;}
 
+	LeafCanvas* GetSelectedCanvas(void);
+
 private:
 	DECLARE_EVENT_TABLE()
 };

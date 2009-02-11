@@ -27,6 +27,7 @@
 #include "leafpredictor.h"
 #include "projectDialog.h"
 #include "mainDialog.h"
+#include "leafPrediction.h"
 
 #include "staticBoldedText.h"
 #include "tools.h"
@@ -184,6 +185,24 @@ void ProjectDialog::OnAddESMenu(wxCommandEvent& event)
 
 void ProjectDialog::OnAddPLMenu(wxCommandEvent& event)
 {
+	wxTreeItemId id = mProjectTree->GetSelection();
+	LeafPrediction mPrediction;
+
+	wxTextEntryDialog dialog(this, _("Predicted Leaf Name\n"), _("Please enter a string"), _("Default value"), wxOK);
+
+	if (dialog.ShowModal() == wxID_OK)
+	{
+		mPrediction.SetPC1(MainDialog::GetInstance()->GetSelectedCanvas()->GetPC1());
+		mPrediction.SetPC2(MainDialog::GetInstance()->GetSelectedCanvas()->GetPC2());
+		mPrediction.SetPC3(MainDialog::GetInstance()->GetSelectedCanvas()->GetPC3());
+		mPrediction.SetPC4(MainDialog::GetInstance()->GetSelectedCanvas()->GetPC4());
+		mPrediction.SetPC1Value(MainDialog::GetInstance()->GetSelectedCanvas()->GetPC1Value());
+		mPrediction.SetPC2Value(MainDialog::GetInstance()->GetSelectedCanvas()->GetPC2Value());
+		mPrediction.SetPC3Value(MainDialog::GetInstance()->GetSelectedCanvas()->GetPC3Value());
+		mPrediction.SetPC4Value(MainDialog::GetInstance()->GetSelectedCanvas()->GetPC4Value());
+
+		mProjectTree->AppendItem(id, dialog.GetValue(), -1, -1, new PredictedLeafData(mPrediction));
+	}
 }
 
 
@@ -224,4 +243,20 @@ void ProjectDialog::OnUseItemMenu(wxCommandEvent& event)
 		MainDialog::GetInstance()->GetEigenSystemPointer()->SetLeaf( item->GetLeaf());
 		MainDialog::GetInstance()->UpdateLeaves(true);
 	}
+	if(mProjectTree->GetItemText(parent) == _("Leaf Predictions"))
+	{
+		PredictedLeafData *item = (PredictedLeafData *)mProjectTree->GetItemData(id);
+		MainDialog::GetInstance()->GetSelectedCanvas()->SetPrediction(item->GetLeafPrediction());
+		MainDialog::GetInstance()->UpdateLeaves(true);
+	}
+}
+
+
+void ProjectDialog::SaveProject(wxFileName file)
+{
+}
+
+
+void ProjectDialog::LoadProject(wxFileName file)
+{
 }

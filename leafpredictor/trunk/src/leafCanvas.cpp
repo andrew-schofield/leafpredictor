@@ -63,6 +63,10 @@ LeafCanvas::LeafCanvas(wxWindow* parent, wxWindowID id, const wxPoint& pos, cons
 	mPC4Value = 0;
 	mOverlayExists = false;
 	mSelected = false;
+	mXRange = 0;
+	mYRange = 0;
+	mXMid = 0;
+	mYMid = 0;
 }
 
 
@@ -482,4 +486,20 @@ void LeafCanvas::RemoveOverlay(void)
 	mXMid = minX + (mXRange / 2);
 	mYMid = minY + (mYRange / 2);
 	CalculateScale();*/
+}
+
+
+void LeafCanvas::SetPrediction(LeafPrediction prediction)
+{
+	SetPC1(prediction.GetPC1());
+	SetPC2(prediction.GetPC2());
+	SetPC3(prediction.GetPC3());
+	SetPC4(prediction.GetPC4());
+	SetPC1Value(prediction.GetPC1Value());
+	SetPC2Value(prediction.GetPC2Value());
+	SetPC3Value(prediction.GetPC3Value());
+	SetPC4Value(prediction.GetPC4Value());
+	CalculateScale();
+	Refresh();
+	MainDialog::GetInstance()->ExternalCanvasSelect(mLabel);
 }

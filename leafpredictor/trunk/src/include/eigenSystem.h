@@ -50,6 +50,8 @@ public:
 
 	bool GetInversionFactor(void) {return (mInversionFactor==1);}
 
+	void Empty(void);
+
 private:
 
 	std::vector< double >                 mMeanLeaf;

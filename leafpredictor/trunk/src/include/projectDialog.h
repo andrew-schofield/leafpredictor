@@ -22,10 +22,12 @@
 #endif
 
 #include "eigenSystem.h"
+#include "leafPrediction.h"
 
 #include "wx/frame.h"
 #include "wx/treectrl.h"
 #include "wx/menu.h"
+#include "wx/filename.h"
 
 
 class ProjectDialog : public wxFrame
@@ -65,8 +67,12 @@ public:
 	void OnDelItemMenu(wxCommandEvent& event);
 	void OnUseItemMenu(wxCommandEvent& event);
 
+	void SaveProject(wxFileName file);
+	void LoadProject(wxFileName file);
+
 	DECLARE_EVENT_TABLE()
 };
+
 
 class EigenSystemData : public wxTreeItemData
 {
@@ -79,6 +85,7 @@ class EigenSystemData : public wxTreeItemData
 		EigenSystem mEigenSystem;
 };
 
+
 class ImportedLeafData : public wxTreeItemData
 {
 	public:
@@ -88,6 +95,18 @@ class ImportedLeafData : public wxTreeItemData
 
 	private:
 		std::vector<double>  mLeaf;
+};
+
+
+class PredictedLeafData : public wxTreeItemData
+{
+	public:
+		PredictedLeafData(const LeafPrediction leafPrediction) : mLeafPrediction(leafPrediction) { }
+
+		LeafPrediction GetLeafPrediction(void) {return mLeafPrediction;}
+
+	private:
+		LeafPrediction mLeafPrediction;
 };
 
 

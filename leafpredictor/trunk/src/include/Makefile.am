@@ -14,6 +14,7 @@ EXTRA_DIST = \
 	imageDialog.h \
 	leafCanvas.h \
 	leafDialog.h \
+	leafPrediction.h \
 	leafpredictor.h \
 	main.h \
 	mainDialog.h \
