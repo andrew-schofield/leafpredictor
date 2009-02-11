@@ -412,6 +412,7 @@ inline void MainDialog::CreateLayout(void)
 	mPredictedLeafCanvas2->Show(false);
 	mPredictedLeafCanvas3->Show(false);
 	mManualScaleAmount->Show(true);
+	mManualScaleAmount->Enable(false);
 
 	mMeanLeafCanvas->Select(true);
 	mPredictedLeafCanvas1->Select(true);
@@ -472,6 +473,7 @@ void MainDialog::OnMenuImportES(wxCommandEvent& event)
 			mMeanOverlayMenu->Enable(true);
 			mMeanOverlayMenu->Check(false);
 			mShowLandmarksMenu->Enable(true);
+			mManualScaleAmount->Enable(true);
 			mManualScaleAmount->SetValue((wxInt32)(mMeanLeafCanvas->GetScale() * 50));
 			mManualScale = mMeanLeafCanvas->GetScale();
 			//UpdateLeaves();
