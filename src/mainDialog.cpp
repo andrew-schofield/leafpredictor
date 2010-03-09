@@ -236,9 +236,9 @@ inline void MainDialog::CreateMenuBar(void)
 	mExportLeafMenu = new wxMenuItem(menu, MID_EXPORTLEAF, _("&Export Leaf"), _("Export the selected predicted leaf into LeafAnalyser format"));
 	menu->Append(mExportLeafMenu);
 	mExportLeafMenu->Enable(false);
-	menu->AppendSeparator();
+	/*menu->AppendSeparator();
 	menu->Append(wxID_OPEN, _("&Open\tCTRL+O"), _("Open a saved LeafPredictor project"));
-	menu->Append(wxID_SAVE, _("&Save\tCTRL+S"), _("Save a LeafPredictor project"));
+	menu->Append(wxID_SAVE, _("&Save\tCTRL+S"), _("Save a LeafPredictor project"));*/
 	menu->AppendSeparator();
 	menu->Append(wxID_EXIT, _("&Quit\tCtrl+Q"), wxString::Format(_("Quit %s"), wxT(LEAFPREDICTOR_APPNAME)));
 	menuBar->Append(menu, _("&File"));
@@ -285,7 +285,7 @@ inline void MainDialog::CreateMenuBar(void)
 
 	menu = new wxMenu();
 	menu->Append(MID_LEAFVIEWER, _("&Open Leaf Viewer\tCTRL+L"), _("View LeafAnalyser formatted leaves"));
-	menu->Append(MID_PROJECTMANAGER, _("Open &Project Manager\tCTRL+P"), _("View files in the current LeafPredictor project"));
+	//menu->Append(MID_PROJECTMANAGER, _("Open &Project Manager\tCTRL+P"), _("View files in the current LeafPredictor project"));
 	mGridGenMenu = new wxMenuItem(menu, MID_GRIDGEN, _("&Generate PC Space\tCTRL+G"), _("Generate a set of Leaves that fill PC space in 1-4 dimensions"));
 	menu->Append(mGridGenMenu);
 	mGridGenMenu->Enable(false);
@@ -294,9 +294,9 @@ inline void MainDialog::CreateMenuBar(void)
 	// The 'Help' menu
 	menu = new wxMenu();
 	#ifndef __WXMAC__
-	menu->Append(wxID_HELP, _("&Help Contents\tF1"), _("See help contents"));
+	//menu->Append(wxID_HELP, _("&Help Contents\tF1"), _("See help contents"));
 	#else
-	menu->Append(wxID_HELP, _("&Help Contents\tCtrl+?"), _("See help contents"));
+	//menu->Append(wxID_HELP, _("&Help Contents\tCtrl+?"), _("See help contents"));
 	#endif
 	menu->Append(wxID_ABOUT, _("&About"), wxString::Format(_("About %s"), wxT(LEAFPREDICTOR_APPNAME)));
 	#ifdef __WXMAC__
