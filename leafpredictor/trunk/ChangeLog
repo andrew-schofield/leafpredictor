@@ -1,4 +1,7 @@
-LeafPredictor 0.9
+LeafPredictor 0.8a
+
+2009-02-11 Andrew Schofield <the.uncle.fungus@gmail.com>
+* Added saving of predictions to project manager
 
 2008-11-28 Andrew Schofield <the.uncle.fungus@gmail.com>
 * Made manual scale the default method on loading an eigensystem.
