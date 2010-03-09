@@ -11,7 +11,7 @@
 m4_include(m4/wxwin.m4)
 AC_INIT([LeafPredictor],
         [0.8a],
-        [Andrew Schofield as239@york.ac.uk],
+        [Andrew Schofield andrew@fire-salamander.co.uk],
         [LeafPredictor])
 AC_PREFIX
 AM_CONFIG_HEADER(config.h)
