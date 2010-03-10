@@ -6,6 +6,7 @@
 * Show axes on program startup, when no leaf showing.
 * Added PC info to display canvas. Also appears on output.
 * Added option to disable PC info. Disabled by default.
+* Made SVG output the default image format.
 
 2010-03-09 Andrew Schofield <andrew@fire-salamander.co.uk>
 * Removed menu items that either don't work or don't do anything yet.
