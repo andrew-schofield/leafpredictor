@@ -1,3 +1,8 @@
+2010-03-10 Andrew Schofield <andrew@fire-salamander.co.uk>
+* Swapped save dialog order such that the configuration happens after choosing
+  the filename.
+* Added ability to save leaf output to Scalable Vector Graphics (svg) format.
+
 2010-03-09 Andrew Schofield <andrew@fire-salamander.co.uk>
 * Removed menu items that either don't work or don't do anything yet.
 
