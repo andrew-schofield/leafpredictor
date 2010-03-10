@@ -798,11 +798,11 @@ void MainDialog::OnMenuMeanScreen(wxCommandEvent& event)
 	wxString selectedFile;
 	wxBitmap screenShot;
 
-	wxFileDialog *SaveDialog = new wxFileDialog(this, _("Choose location to save mean leaf image"), wxT(""), wxT(""),wxT("PNG Images (*.png)|*.png|Vector Graphics (*.svg)|*.svg"), wxSAVE, wxDefaultPosition);
+	wxFileDialog *SaveDialog = new wxFileDialog(this, _("Choose location to save mean leaf image"), wxT(""), wxT(""),wxT("Vector Graphics (*.svg)|*.svg|PNG Images (*.png)|*.png"), wxSAVE, wxDefaultPosition);
 	if (SaveDialog->ShowModal() == wxID_OK) // if the user click "Open" instead of "cancel"
 	{
 		selectedFile = SaveDialog->GetPath();
-		if (SaveDialog->GetFilterIndex() == 0)
+		if (SaveDialog->GetFilterIndex() == 1)
 		{
 			screenShot = (mMeanLeafCanvas->GetScreenShot());
 			screenShot.SaveFile(selectedFile, wxBITMAP_TYPE_PNG);
@@ -820,11 +820,11 @@ void MainDialog::OnMenuPredScreen(wxCommandEvent& event)
 	wxString selectedFile;
 	wxBitmap screenShot;
 
-	wxFileDialog *SaveDialog = new wxFileDialog(this, _("Choose location to save predicted leaf image"), wxT(""), wxT(""),wxT("PNG Images (*.png)|*.png|Vector Graphics (*.svg)|*.svg"), wxSAVE, wxDefaultPosition);
+	wxFileDialog *SaveDialog = new wxFileDialog(this, _("Choose location to save predicted leaf image"), wxT(""), wxT(""),wxT("Vector Graphics (*.svg)|*.svg|PNG Images (*.png)|*.png"), wxSAVE, wxDefaultPosition);
 	if (SaveDialog->ShowModal() == wxID_OK) // if the user click "Open" instead of "cancel"
 	{
 		selectedFile = SaveDialog->GetPath();
-		if(SaveDialog->GetFilterIndex() == 0)
+		if(SaveDialog->GetFilterIndex() == 1)
 		{
 			if(mSelectedCanvas == wxT("Predicted Leaf 1"))
 				screenShot = (mPredictedLeafCanvas1->GetScreenShot());
