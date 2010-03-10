@@ -119,8 +119,6 @@ BEGIN_EVENT_TABLE(MainDialog, wxFrame)
 	// --- Frame
 	EVT_CLOSE              (MainDialog::OnClose)
 
-	EVT_COMMAND            (wxID_ANY, EVT_NEW_MESSAGE_LOGGED,    MainDialog::OnNewMessageLogged)
-
 	EVT_CHOICE             (CHC_PC1,                             MainDialog::OnChoices)
 	EVT_CHOICE             (CHC_PC2,                             MainDialog::OnChoices)
 	EVT_CHOICE             (CHC_PC3,                             MainDialog::OnChoices)
@@ -144,16 +142,6 @@ wxMutex MainDialog::mMutexUpdateCheck;
 
 MainDialog::MainDialog(void) : wxFrame(NULL, wxID_ANY, wxT(LEAFPREDICTOR_APPNAME))
 {
-
-	// Setting the icon for the main dialog will allows child frames and dialog to inherit from it
-/*
-#ifdef __WXGTK__
-	SetIcon(wxIcon(PathManager::GetImgPath() + wxT(FMC_FILE_IMG_DIALOG)));
-#elif __WXMSW__
-	SetIcon(wxICON(dialog_icon));
-#endif
-*/
-
 	CreateMenuBar();
 	CreateStatusBar(3);
 	CreateLayout();
@@ -504,12 +492,6 @@ void MainDialog::OnClose(wxCloseEvent& event)
 	AboutDialog::DestroyInstance();
 	ProjectDialog::DestroyInstance();
 	Destroy();
-}
-
-
-void MainDialog::OnNewMessageLogged(wxCommandEvent& event)
-{
-	//MessagesFrame::OnNewMessage();
 }
 
 

@@ -171,17 +171,6 @@ protected:
 	 **/
 	void OnMenuQuit(wxCommandEvent& event);
 
-	/**
-	 * Event: Manages new messages.
-	 * This is needed, because MessagesManager cannot make calls to MessagesFrame:
-	 *
-	 * "You can't make GUI method calls from more than one thread. You need to
-	 * organize your app such that the GUI runs in the main thread and events/data
-	 * are transfered to/from worker threads in some thread safe manner."
-	 * @param event The event itself. This is sent automatically.
-	 **/
-	void OnNewMessageLogged(wxCommandEvent& event);
-
 public:
 	// Singleton pattern
 	/**

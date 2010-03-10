@@ -31,7 +31,6 @@
 #include "eigenSystem.h"
 
 #include "wx/sizer.h"
-//#include "wx/intl.h"
 #include "wx/version.h"
 #include "wx/statline.h"
 #include "wx/hyperlink.h"

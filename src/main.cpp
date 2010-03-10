@@ -37,8 +37,6 @@
 IMPLEMENT_APP(LeafPredictorApp)
 
 BEGIN_EVENT_TABLE(LeafPredictorApp, wxApp)
-	EVT_QUERY_END_SESSION (LeafPredictorApp::OnQueryEndSession)
-	EVT_END_SESSION (LeafPredictorApp::OnEndSession)
 	EVT_CLOSE (LeafPredictorApp::OnClose)
 END_EVENT_TABLE()
 
@@ -97,12 +95,6 @@ bool LeafPredictorApp::OnInit(void)
 	// Miscellaneous initializations
 	wxImage::AddHandler(new wxPNGHandler);      // We use only PNG images
 
-	//Create mandatory singletons
-	//MessagesManager::CreateInstance();          // MUST be created first, so that other manager can log messages immediately
-	//PreferencesManager::CreateInstance();       // MUST be created second, so that other managers can retrieve some preferences when created
-	//ProjectsManager::CreateInstance();
-	//ClientsManager::CreateInstance();
-	//BenchmarksManager::CreateInstance();
 	ProjectDialog::CreateInstance();
 	MainDialog::CreateInstance();               // MUST be created last, when all other managers have been created
 	MainDialog::GetInstance()->Show(true);
@@ -113,35 +105,11 @@ bool LeafPredictorApp::OnInit(void)
 
 int LeafPredictorApp::OnExit(void)
 {
-	// This frame is automatically destroyed by wxWidget, so we don't have to do it
-	// MainDialog::DestroyInstance();
-	// TrayManager::DestroyInstance();
-	// BenchmarksManager::DestroyInstance();
-	// ClientsManager::DestroyInstance();
-	// ProjectsManager::DestroyInstance();
-	// WebMonitor::DestroyInstance();
-	// PreferencesManager::DestroyInstance();        // MUST be destroyed last, so that other managers can save their preferences when they are destroyed
 	ProjectDialog::DestroyInstance();
 
 	return 0;
 }
 
-
-void LeafPredictorApp::OnEndSession(wxCloseEvent& event)
-{
-	//_LogMsgInfo(wxString::Format(wxT("Running OnEndSession")));
-	//MainDialog::GetInstance()->Close();
-}
-
-
-void LeafPredictorApp::OnQueryEndSession(wxCloseEvent& event)
-{
-	//_LogMsgInfo(wxString::Format(wxT("Running OnQueryEndSession")));
-	//MainDialog::GetInstance()->Close();
-}
-
 void LeafPredictorApp::OnClose(wxCloseEvent& event)
 {
-	//_LogMsgInfo(wxString::Format(wxT("Running OnClose")));
-	//MainDialog::GetInstance()->Close();
 }
