@@ -69,6 +69,7 @@ protected:
 	bool               mInvertLeaf;
 	bool               m4UpMode;
 	bool               mShowLandmarks;
+	bool               mShowPCInfo;
 	wxMenuItem        *mRelativeMenu;
 	wxMenuItem        *mIndependentMenu;
 	wxMenuItem        *mManualMenu;
@@ -80,6 +81,7 @@ protected:
 	wxMenuItem        *mGridGenMenu;
 	wxMenuItem        *mMeanOverlayMenu;
 	wxMenuItem        *mShowLandmarksMenu;
+	wxMenuItem        *mShowPCInfoMenu;
 	wxBoxSizer        *mTopLevelSizer;
 	wxGridSizer       *mLowerPlotSizer;
 	wxPanel           *mTopLevelPanel;
@@ -137,6 +139,8 @@ protected:
 	void OnMenuInvertLeaf(wxCommandEvent& event);
 
 	void OnMenu4UpLeaf(wxCommandEvent& event);
+	
+	void OnMenuShowPCInfo(wxCommandEvent& event);
 
 	void OnMenuExportLeaf(wxCommandEvent& event);
 
@@ -223,6 +227,8 @@ public:
 	bool GetShowLandmarks(void) {return mShowLandmarks;}
 
 	LeafCanvas* GetSelectedCanvas(void);
+	
+	bool GetShowPCInfo(void) {return mShowPCInfo;}
 
 private:
 	DECLARE_EVENT_TABLE()

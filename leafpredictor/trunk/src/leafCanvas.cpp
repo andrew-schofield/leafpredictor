@@ -268,6 +268,15 @@ void LeafCanvas::DrawLeaf(wxDC& dc, wxInt32 xOut, wxInt32 yOut, wxInt32 thicknes
 		scale = fixedscale;
 	else
 		scale = std::min(xScale,yScale) * mScale;
+		
+	if (!mLeafExists)
+	{
+		scale=0.2;
+		mXMid = 0;
+		mYMid = 0;
+		xOut = GetClientSize().x;
+		yOut = GetClientSize().y;
+	}
 
 	if(label)
 	{
@@ -281,19 +290,14 @@ void LeafCanvas::DrawLeaf(wxDC& dc, wxInt32 xOut, wxInt32 yOut, wxInt32 thicknes
 		}
 		dc.DrawText(mLabel,0,0);
 	}
-		
-	if (!mLeafExists)
+	if(MainDialog::GetInstance()->GetShowPCInfo())
 	{
-		scale=0.2;
-		mXMid = 0;
-		mYMid = 0;
-		xOut = GetClientSize().x;
-		yOut = GetClientSize().y;
-	}
-	extData = wxString::Format(wxT("Scale: %i\nPC %i: %.1f SDs\nPC %i: %.1f SDs\nPC %i: %.1f SDs\nPC %i: %.1f SDs\n\n"),(int)(scale*50),this->GetPC1()+1,(double)(this->GetPC1Value())/10,this->GetPC2()+1,(double)(this->GetPC2Value())/10,this->GetPC3()+1,(double)(this->GetPC3Value())/10,this->GetPC4()+1,(double)(this->GetPC4Value())/10);
-	extDataSize = dc.GetMultiLineTextExtent(extData);
 	
-	dc.DrawText(extData,0,GetClientSize().y-extDataSize.GetHeight());
+		extData = wxString::Format(wxT("Scale: %i\nPC %i: %.1f SDs\nPC %i: %.1f SDs\nPC %i: %.1f SDs\nPC %i: %.1f SDs\n\n"),(int)(scale*50),this->GetPC1()+1,(double)(this->GetPC1Value())/10,this->GetPC2()+1,(double)(this->GetPC2Value())/10,this->GetPC3()+1,(double)(this->GetPC3Value())/10,this->GetPC4()+1,(double)(this->GetPC4Value())/10);
+		extDataSize = dc.GetMultiLineTextExtent(extData);
+	
+		dc.DrawText(extData,0,GetClientSize().y-extDataSize.GetHeight());
+	}
 	
 	dc.SetPen(wxPen(*wxLIGHT_GREY, thickness));
 	//axes
@@ -457,6 +461,6 @@ void LeafCanvas::CreateSVGFile(wxString filename)
 
  	wxSVGFileDC svgDC (filename, width, height);
 	PaintBackground(svgDC);
-	DrawLeaf(svgDC, width, height, thickness, true, dScale);
+	DrawLeaf(svgDC, width, height, thickness, false, dScale);
 }
 
