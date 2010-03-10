@@ -62,6 +62,7 @@ enum _CONTROL_ID
 	MID_PRED_SCREEN,
 	MID_INVERTLEAF,
 	MID_4UPLEAF,
+	MID_SHOWPCINFO,
 	LEAF_MEAN,
 	LEAF_PRED1,
 	LEAF_PRED2,
@@ -105,6 +106,7 @@ BEGIN_EVENT_TABLE(MainDialog, wxFrame)
 	EVT_MENU               (MID_PRED_SCREEN,                     MainDialog::OnMenuPredScreen)
 	EVT_MENU               (MID_INVERTLEAF,                      MainDialog::OnMenuInvertLeaf)
 	EVT_MENU               (MID_4UPLEAF,                         MainDialog::OnMenu4UpLeaf)
+	EVT_MENU               (MID_SHOWPCINFO,                      MainDialog::OnMenuShowPCInfo)
 	EVT_MENU               (MID_EXPORTLEAF,                      MainDialog::OnMenuExportLeaf)
 	EVT_MENU               (MID_LEAFVIEWER,                      MainDialog::OnMenuShowLeafViewer)
 	EVT_MENU               (MID_PROJECTMANAGER,                  MainDialog::OnMenuShowProjectManager)
@@ -145,6 +147,7 @@ MainDialog::MainDialog(void) : wxFrame(NULL, wxID_ANY, wxT(LEAFPREDICTOR_APPNAME
 	mManualScale = 0;
 	mInvertLeaf = false;
 	m4UpMode = false;
+	mShowPCInfo = false;
 	mSelectedCanvas = wxT("Predicted Leaf 1");
 	SetStatusText(wxString::Format(_("Selected Leaf: %i"),1), STATUS_LEAF);
 	mShowLandmarks = true;
@@ -249,6 +252,10 @@ inline void MainDialog::CreateMenuBar(void)
 	menu->Append(m4UpLeafMenu);
 	menu->Check(MID_4UPLEAF, false);
 	m4UpLeafMenu->Enable(false);
+	mShowPCInfoMenu = new wxMenuItem(menu, MID_SHOWPCINFO, _("S&how PC Scores"), _("Display PC Scores on the plot area"),wxITEM_CHECK);
+	menu->Append(mShowPCInfoMenu);
+	menu->Check(MID_SHOWPCINFO, false);
+	mShowPCInfoMenu->Enable(false);
 	menu->AppendSeparator();
 	mMeanOverlayMenu = new wxMenuItem(menu, MID_MEAN_OVERLAY, _("&Overlay Mean Leaf"), _("Overlay mean leaf onto predicted leaves"),wxITEM_CHECK);
 	menu->Append(mMeanOverlayMenu);
@@ -452,6 +459,7 @@ void MainDialog::OnMenuImportES(wxCommandEvent& event)
 			mInvertLeafMenu->Enable(true);
 			mInvertLeafMenu->Check(false);
 			m4UpLeafMenu->Enable(true);
+			mShowPCInfoMenu->Enable(true);
 			mExportLeafMenu->Enable(true);
 			mGridGenMenu->Enable(true);
 			mMeanOverlayMenu->Enable(true);
@@ -879,6 +887,14 @@ void MainDialog::OnMenu4UpLeaf(wxCommandEvent& event)
 	}
 	UpdateLeaves(true);
 }
+
+
+void MainDialog::OnMenuShowPCInfo(wxCommandEvent& event)
+{
+	mShowPCInfo = !mShowPCInfo;
+	UpdateLeaves(true);
+}
+
 
 void MainDialog::OnClick(wxMouseEvent& event)
 {
