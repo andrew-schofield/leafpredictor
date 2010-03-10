@@ -268,7 +268,11 @@ void LeafCanvas::DrawLeaf(wxDC& dc, wxInt32 xOut, wxInt32 yOut, wxInt32 thicknes
 		scale = std::min(xScale,yScale) * mScale;
 
 	if(label)
+	{
+		if(mSelected)
+			dc.SetPen(wxPen(*wxRED));
 		dc.DrawText(mLabel,0,0);
+	}
 		
 	if (!mLeafExists)
 	{
