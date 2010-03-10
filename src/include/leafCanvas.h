@@ -26,6 +26,7 @@
 #include "wx/dcbuffer.h"
 #include "wx/scrolwin.h"
 #include "wx/dcscreen.h"
+#include "dcsvg.h"
 
 #include <vector>
 
@@ -89,6 +90,8 @@ public:
 	void ExtDraw(void);
 
 	wxBitmap GetScreenShot(void);
+	
+	void CreateSVGFile(wxString filename);
 
 	void ExportLeaf(const wxString &location);
 

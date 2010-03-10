@@ -22,5 +22,6 @@ EXTRA_DIST = \
 	projectDialog.h \
 	resource.h \
 	staticBoldedText.h \
-	tools.h
+	tools.h \
+	dcsvg.h
 

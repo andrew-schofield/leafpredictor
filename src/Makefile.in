@@ -60,7 +60,8 @@ am_leafpredictor_OBJECTS = aboutDialog.$(OBJEXT) eigenSystem.$(OBJEXT) \
 	imageDialog.$(OBJEXT) leafCanvas.$(OBJEXT) \
 	leafDialog.$(OBJEXT) leafPrediction.$(OBJEXT) main.$(OBJEXT) \
 	mainDialog.$(OBJEXT) pcSpaceDialog.$(OBJEXT) \
-	projectDialog.$(OBJEXT) staticBoldedText.$(OBJEXT)
+	projectDialog.$(OBJEXT) staticBoldedText.$(OBJEXT) \
+	dcsvg.$(OBJEXT)
 leafpredictor_OBJECTS = $(am_leafpredictor_OBJECTS)
 leafpredictor_LDADD = $(LDADD)
 DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)
@@ -171,7 +172,7 @@ target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-leafpredictor_SOURCES = aboutDialog.cpp eigenSystem.cpp imageDialog.cpp leafCanvas.cpp leafDialog.cpp leafPrediction.cpp main.cpp mainDialog.cpp pcSpaceDialog.cpp projectDialog.cpp staticBoldedText.cpp
+leafpredictor_SOURCES = aboutDialog.cpp eigenSystem.cpp imageDialog.cpp leafCanvas.cpp leafDialog.cpp leafPrediction.cpp main.cpp mainDialog.cpp pcSpaceDialog.cpp projectDialog.cpp staticBoldedText.cpp dcsvg.cpp
 INCLUDES = -I$(top_srcdir)/src/include
 AM_CXXFLAGS = -Wall -Wno-strict-aliasing
 AM_CPPFLAGS = \
@@ -259,6 +260,7 @@ distclean-compile:
 	-rm -f *.tab.c
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/aboutDialog.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/dcsvg.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/eigenSystem.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/imageDialog.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/leafCanvas.Po@am__quote@

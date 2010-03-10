@@ -810,13 +810,21 @@ void MainDialog::OnMenuResetPCs(wxCommandEvent& event)
 void MainDialog::OnMenuMeanScreen(wxCommandEvent& event)
 {
 	wxString selectedFile;
-	wxBitmap screenShot(mMeanLeafCanvas->GetScreenShot());
+	wxBitmap screenShot;
 
-	wxFileDialog *SaveDialog = new wxFileDialog(this, _("Choose location to save mean leaf image"), wxT(""), wxT(""),wxT("PNG Images (*.png)|*.png"), wxSAVE, wxDefaultPosition);
+	wxFileDialog *SaveDialog = new wxFileDialog(this, _("Choose location to save mean leaf image"), wxT(""), wxT(""),wxT("PNG Images (*.png)|*.png|Vector Graphics (*.svg)|*.svg"), wxSAVE, wxDefaultPosition);
 	if (SaveDialog->ShowModal() == wxID_OK) // if the user click "Open" instead of "cancel"
 	{
 		selectedFile = SaveDialog->GetPath();
-		screenShot.SaveFile(selectedFile, wxBITMAP_TYPE_PNG);
+		if (SaveDialog->GetFilterIndex() == 0)
+		{
+			screenShot = (mMeanLeafCanvas->GetScreenShot());
+			screenShot.SaveFile(selectedFile, wxBITMAP_TYPE_PNG);
+		}
+		else
+		{
+			mMeanLeafCanvas->CreateSVGFile(selectedFile);
+		}
 	}
 }
 
@@ -825,18 +833,28 @@ void MainDialog::OnMenuPredScreen(wxCommandEvent& event)
 {
 	wxString selectedFile;
 	wxBitmap screenShot;
-	if(mSelectedCanvas == wxT("Predicted Leaf 1"))
-		screenShot = (mPredictedLeafCanvas1->GetScreenShot());
-	else if(mSelectedCanvas == wxT("Predicted Leaf 2"))
-		screenShot = (mPredictedLeafCanvas2->GetScreenShot());
-	else
-		screenShot = (mPredictedLeafCanvas3->GetScreenShot());
 
-	wxFileDialog *SaveDialog = new wxFileDialog(this, _("Choose location to save predicted leaf image"), wxT(""), wxT(""),wxT("PNG Images (*.png)|*.png"), wxSAVE, wxDefaultPosition);
+	wxFileDialog *SaveDialog = new wxFileDialog(this, _("Choose location to save predicted leaf image"), wxT(""), wxT(""),wxT("PNG Images (*.png)|*.png|Vector Graphics (*.svg)|*.svg"), wxSAVE, wxDefaultPosition);
 	if (SaveDialog->ShowModal() == wxID_OK) // if the user click "Open" instead of "cancel"
 	{
 		selectedFile = SaveDialog->GetPath();
-		screenShot.SaveFile(selectedFile, wxBITMAP_TYPE_PNG);
+		if(SaveDialog->GetFilterIndex() == 0)
+		{
+			if(mSelectedCanvas == wxT("Predicted Leaf 1"))
+				screenShot = (mPredictedLeafCanvas1->GetScreenShot());
+			else if(mSelectedCanvas == wxT("Predicted Leaf 2"))
+				screenShot = (mPredictedLeafCanvas2->GetScreenShot());
+			else
+				screenShot = (mPredictedLeafCanvas3->GetScreenShot());
+			screenShot.SaveFile(selectedFile, wxBITMAP_TYPE_PNG);
+		} else {
+			if(mSelectedCanvas == wxT("Predicted Leaf 1"))
+				mPredictedLeafCanvas1->CreateSVGFile(selectedFile);
+			else if(mSelectedCanvas == wxT("Predicted Leaf 2"))
+				mPredictedLeafCanvas2->CreateSVGFile(selectedFile);
+			else
+				mPredictedLeafCanvas3->CreateSVGFile(selectedFile);		
+		}
 	}
 }
 

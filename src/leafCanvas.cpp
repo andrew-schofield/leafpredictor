@@ -503,3 +503,17 @@ void LeafCanvas::SetPrediction(LeafPrediction prediction)
 	Refresh();
 	MainDialog::GetInstance()->ExternalCanvasSelect(mLabel);
 }
+
+
+void LeafCanvas::CreateSVGFile(wxString filename)
+{
+	wxInt32 width = GetClientSize().x;
+	wxInt32 height = GetClientSize().y;
+	wxInt32 thickness = 2;
+	double dScale = MainDialog::GetInstance()->GetManualScale();
+
+ 	wxSVGFileDC svgDC (filename, width, height);
+	PaintBackground(svgDC);
+	DrawLeaf(svgDC, width, height, thickness, false, dScale);
+}
+
