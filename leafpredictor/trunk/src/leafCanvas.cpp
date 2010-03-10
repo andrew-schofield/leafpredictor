@@ -266,61 +266,51 @@ void LeafCanvas::DrawLeaf(wxDC& dc, wxInt32 xOut, wxInt32 yOut, wxInt32 thicknes
 		scale = fixedscale;
 	else
 		scale = std::min(xScale,yScale) * mScale;
-	//Tools::InfoMsgBox(wxString::Format(wxT("%.2f, %.2f"), fixedscale, scale));
 
 	if(label)
 		dc.DrawText(mLabel,0,0);
-
+		
+	if (!mLeafExists)
+	{
+		scale=0.25;
+		mXMid = 0;
+		mYMid = 0;
+		xOut = GetClientSize().x;
+		yOut = GetClientSize().y;
+	}
+	
 	dc.SetPen(wxPen(*wxLIGHT_GREY, thickness));
 	//axes
 	dc.DrawLine(0,(int)(yOut/2 - mYMid * scale),xOut,(int)(yOut/2 - mYMid * scale));
 	dc.DrawLine((int)(xOut/2 - mXMid * scale),0,(int)(xOut/2 - mXMid * scale),yOut);
 
-	wxInt32 min = 0 - (int)(xOut / scale - (xOut/2 - mXMid * scale));
-	wxInt32 max = (int)(xOut / scale - (xOut/2 - mXMid * scale));
-
-	if(min != max) //traps initial state where both min and max are -2^32
+	for(wxInt32 j=(xOut/2 - mXMid * scale);j<=xOut;j+=(100*scale))
 	{
-		for(wxInt32 j=0;j<=max;j+=100)
-		{
-			wxUint32 x, y;
-			x = (int)(j * scale + (xOut/2 - mXMid * scale));
-			x = dc.LogicalToDeviceX(x);
-			y = (int)(yOut/2 - mYMid * scale);
-			dc.DrawLine(x,y,x,y-5);
-		}
-		for(wxInt32 j=0;j>=min;j-=100)
-		{
-			wxUint32 x, y;
-			x = (int)(j * scale + (xOut/2 - mXMid * scale));
-			x = dc.LogicalToDeviceX(x);
-			y = (int)(yOut/2 - mYMid * scale);
-			dc.DrawLine(x,y,x,y-5);
-		}
+		wxUint32 x, y;
+		x = j;
+		y = (int)(yOut/2 - mYMid * scale);
+		dc.DrawLine(x,y,x,y-5);
 	}
-
-	min = (int)(0 - yOut / scale - (yOut/2 - mYMid * scale));
-	max = (int)(yOut / scale - (yOut/2 - mYMid * scale));
-
-	if(min != max)
+	for(wxInt32 j=(xOut/2 - mXMid * scale);j>=0;j-=(100*scale))
 	{
-		for(wxInt32 j=0;j<=max;j+=100)
-		{
-			wxUint32 x, y;
-			y = (int)(j * scale + (yOut/2 - mYMid * scale));
-			y = dc.LogicalToDeviceY(y);
-			x = (int)(xOut/2 - mXMid * scale);
-			dc.DrawLine(x,y,x+5,y);
-		}
-
-		for(wxInt32 j=0;j>=min;j-=100)
-		{
-			wxUint32 x, y;
-			y = (int)(j * scale + (yOut/2 - mYMid * scale));
-			y = dc.LogicalToDeviceY(y);
-			x = (int)(xOut/2 - mXMid * scale);
-			dc.DrawLine(x,y,x+5,y);
-		}
+		wxUint32 x, y;
+		x = j;
+		y = (int)(yOut/2 - mYMid * scale);
+		dc.DrawLine(x,y,x,y-5);
+	}
+	for(wxInt32 j=(yOut/2 - mYMid * scale);j<=yOut;j+=(100*scale))
+	{
+		wxUint32 x, y;
+		x = (int)(xOut/2 - mXMid * scale);
+		y = j;
+		dc.DrawLine(x,y,x+5,y);
+	}
+	for(wxInt32 j=(yOut/2 - mYMid * scale);j>=0;j-=(100*scale))
+	{
+		wxUint32 x, y;
+		x = (int)(xOut/2 - mXMid * scale);
+		y = j;
+		dc.DrawLine(x,y,x+5,y);
 	}
 
 	if (mOverlayExists)
