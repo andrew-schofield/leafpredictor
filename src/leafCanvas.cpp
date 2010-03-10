@@ -416,45 +416,6 @@ void LeafCanvas::SetOverlay(const std::vector<double> &coords)
 {
 	mLeafOverlay = coords;
 	mOverlayExists = true;
-
-	/*double   minX = 0, minY = 0, maxX = 0, maxY = 0;
-	wxUint32   i;
-
-	for(i=0;i<mLeaf.size()/2;++i)
-	{
-		double x = mLeaf.at(i*2);
-		double y = mLeaf.at((i*2)+1);
-
-		if(x<minX)
-			minX = x;
-		if(x>maxX)
-			maxX = x;
-		if(y<minY)
-			minY = y;
-		if(y>maxY)
-			maxY = y;
-	}
-	Tools::InfoMsgBox(wxT("Re-scaling"));
-	for(i=0;i<mLeafOverlay.size()/2;++i)
-	{
-		double x = mLeafOverlay.at(i*2);
-		double y = mLeafOverlay.at((i*2)+1);
-
-		if(x<minX)
-			minX = x;
-		if(x>maxX)
-			maxX = x;
-		if(y<minY)
-			minY = y;
-		if(y>maxY)
-			maxY = y;
-	}
-	mXRange = maxX - minX;
-	mYRange = maxY - minY;
-
-	mXMid = minX + (mXRange / 2);
-	mYMid = minY + (mYRange / 2);
-	CalculateScale();*/
 }
 
 
@@ -462,30 +423,6 @@ void LeafCanvas::RemoveOverlay(void)
 {
 	mLeafOverlay.empty();
 	mOverlayExists = false;
-
-	/*double   minX = 0, minY = 0, maxX = 0, maxY = 0;
-	wxUint32   i;
-
-	for(i=0;i<mLeaf.size()/2;++i)
-	{
-		double x = mLeaf.at(i*2);
-		double y = mLeaf.at((i*2)+1);
-
-		if(x<minX)
-			minX = x;
-		if(x>maxX)
-			maxX = x;
-		if(y<minY)
-			minY = y;
-		if(y>maxY)
-			maxY = y;
-	}
-	mXRange = maxX - minX;
-	mYRange = maxY - minY;
-
-	mXMid = minX + (mXRange / 2);
-	mYMid = minY + (mYRange / 2);
-	CalculateScale();*/
 }
 
 
