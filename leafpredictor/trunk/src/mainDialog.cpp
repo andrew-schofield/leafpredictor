@@ -88,10 +88,6 @@ enum _STATUSBAR_PART
 };
 
 
-// Custom events
-DEFINE_EVENT_TYPE(EVT_NEW_MESSAGE_LOGGED)
-
-
 // Events processed by this class
 BEGIN_EVENT_TABLE(MainDialog, wxFrame)
 	// --- Menus

@@ -4,6 +4,7 @@
 * Added ability to save leaf output to Scalable Vector Graphics (svg) format.
 * Fixed axes markers to extend as far as viewport.
 * Show axes on program startup, when no leaf showing.
+* Added PC info to display canvas. Also appears on output.
 
 2010-03-09 Andrew Schofield <andrew@fire-salamander.co.uk>
 * Removed menu items that either don't work or don't do anything yet.

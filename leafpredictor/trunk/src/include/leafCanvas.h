@@ -38,7 +38,7 @@ protected:
 	double               mXRange, mYRange, mXMid, mYMid, mScale;
 	wxString             mLabel;
 	bool                 mLeafExists, mOverlayExists, mSelected;
-	wxUint32             mPC1, mPC2, mPC3, mPC4, mPC1Value, mPC2Value, mPC3Value, mPC4Value;
+	wxInt32              mPC1, mPC2, mPC3, mPC4, mPC1Value, mPC2Value, mPC3Value, mPC4Value;
 
 	void CalculateScale(void);
 
@@ -82,10 +82,10 @@ public:
 	wxUint32 GetPC3(void) {return mPC3;}
 	wxUint32 GetPC4(void) {return mPC4;}
 
-	wxUint32 GetPC1Value(void) {return mPC1Value;}
-	wxUint32 GetPC2Value(void) {return mPC2Value;}
-	wxUint32 GetPC3Value(void) {return mPC3Value;}
-	wxUint32 GetPC4Value(void) {return mPC4Value;}
+	wxInt32 GetPC1Value(void) {return mPC1Value;}
+	wxInt32 GetPC2Value(void) {return mPC2Value;}
+	wxInt32 GetPC3Value(void) {return mPC3Value;}
+	wxInt32 GetPC4Value(void) {return mPC4Value;}
 
 	void ExtDraw(void);
 
