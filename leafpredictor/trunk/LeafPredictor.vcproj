@@ -257,6 +257,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\include\leafpredictor.xpm.h"
+				>
+			</File>
+			<File
 				RelativePath=".\src\include\main.h"
 				>
 			</File>
