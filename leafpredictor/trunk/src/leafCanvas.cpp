@@ -293,7 +293,7 @@ void LeafCanvas::DrawLeaf(wxDC& dc, wxInt32 xOut, wxInt32 yOut, wxInt32 thicknes
 	if(MainDialog::GetInstance()->GetShowPCInfo())
 	{
 	
-		extData = wxString::Format(wxT("Scale: %i\nPC %i: %.1f SDs\nPC %i: %.1f SDs\nPC %i: %.1f SDs\nPC %i: %.1f SDs\n\n"),(int)(scale*50),this->GetPC1()+1,(double)(this->GetPC1Value())/10,this->GetPC2()+1,(double)(this->GetPC2Value())/10,this->GetPC3()+1,(double)(this->GetPC3Value())/10,this->GetPC4()+1,(double)(this->GetPC4Value())/10);
+		extData = wxString::Format(wxT("Scale: %i PC %i: %.1f SDs PC %i: %.1f SDs PC %i: %.1f SDs PC %i: %.1f SDs"),(int)(scale*50),this->GetPC1()+1,(double)(this->GetPC1Value())/10,this->GetPC2()+1,(double)(this->GetPC2Value())/10,this->GetPC3()+1,(double)(this->GetPC3Value())/10,this->GetPC4()+1,(double)(this->GetPC4Value())/10);
 		extDataSize = dc.GetMultiLineTextExtent(extData);
 	
 		dc.DrawText(extData,0,GetClientSize().y-extDataSize.GetHeight());
