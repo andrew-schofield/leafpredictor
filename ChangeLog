@@ -1,3 +1,6 @@
+2010-03-11 Andrew Schofield <andrew@fire-salamander.co.uk>
+* Added application icon for frames.
+
 2010-03-10 Andrew Schofield <andrew@fire-salamander.co.uk>
 * Swapped save dialog order such that the configuration happens after choosing
   the filename.
