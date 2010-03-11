@@ -151,7 +151,7 @@ MainDialog::MainDialog(void) : wxFrame(NULL, wxID_ANY, wxT(LEAFPREDICTOR_APPNAME
 	mSelectedCanvas = wxT("Predicted Leaf 1");
 	SetStatusText(wxString::Format(_("Selected Leaf: %i"),1), STATUS_LEAF);
 	mShowLandmarks = true;
-	SetIcon(wxICON(LeafPredictor_xpm));
+	SetIcon(wxICON(LeafPredictor));
 }
 
 
