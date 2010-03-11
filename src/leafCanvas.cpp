@@ -304,28 +304,31 @@ void LeafCanvas::DrawLeaf(wxDC& dc, wxInt32 xOut, wxInt32 yOut, wxInt32 thicknes
 	dc.DrawLine(0,(int)(yOut/2 - mYMid * scale),xOut,(int)(yOut/2 - mYMid * scale));
 	dc.DrawLine((int)(xOut/2 - mXMid * scale),0,(int)(xOut/2 - mXMid * scale),yOut);
 
-	for(wxInt32 j=(xOut/2 - mXMid * scale);j<=xOut;j+=(100*scale))
+	for(wxInt32 j=(int)(xOut/2 - mXMid * scale);j<=xOut;j+=(int)(100*scale))
+	{
+		wxUint32 x, y;
+		x = j;
+		y = (int)(yOut/2 - mYMid * scale);
+		//if((j-(int)(xOut/2 - mXMid * scale)) % (int)(10*scale) == 0)
+		//	dc.DrawLine(x,y,x,y-10);
+		//else
+			dc.DrawLine(x,y,x,y-5);
+	}
+	for(wxInt32 j=(int)(xOut/2 - mXMid * scale);j>=0;j-=(int)(100*scale))
 	{
 		wxUint32 x, y;
 		x = j;
 		y = (int)(yOut/2 - mYMid * scale);
 		dc.DrawLine(x,y,x,y-5);
 	}
-	for(wxInt32 j=(xOut/2 - mXMid * scale);j>=0;j-=(100*scale))
-	{
-		wxUint32 x, y;
-		x = j;
-		y = (int)(yOut/2 - mYMid * scale);
-		dc.DrawLine(x,y,x,y-5);
-	}
-	for(wxInt32 j=(yOut/2 - mYMid * scale);j<=yOut;j+=(100*scale))
+	for(wxInt32 j=(int)(yOut/2 - mYMid * scale);j<=yOut;j+=(int)(100*scale))
 	{
 		wxUint32 x, y;
 		x = (int)(xOut/2 - mXMid * scale);
 		y = j;
 		dc.DrawLine(x,y,x+5,y);
 	}
-	for(wxInt32 j=(yOut/2 - mYMid * scale);j>=0;j-=(100*scale))
+	for(wxInt32 j=(int)(yOut/2 - mYMid * scale);j>=0;j-=(int)(100*scale))
 	{
 		wxUint32 x, y;
 		x = (int)(xOut/2 - mXMid * scale);

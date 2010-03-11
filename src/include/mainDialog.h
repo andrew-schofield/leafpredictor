@@ -23,6 +23,7 @@
 
 #include "eigenSystem.h"
 #include "leafCanvas.h"
+#include "leafpredictor.xpm.h"
 
 #include "wx/frame.h"
 #include "wx/choice.h"
