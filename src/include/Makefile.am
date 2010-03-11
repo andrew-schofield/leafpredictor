@@ -24,5 +24,7 @@ EXTRA_DIST = \
 	staticBoldedText.h \
 	tools.h \
 	dcsvg.h \
-	leafpredictor.xpm.h
+	leafpredictor.xpm.h \
+	tinyxml.h \
+	tinystr.h
 
