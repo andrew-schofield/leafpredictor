@@ -175,6 +175,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\dcsvg.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\eigenSystem.cpp"
 				>
 			</File>
@@ -222,6 +226,10 @@
 			>
 			<File
 				RelativePath=".\src\include\aboutDialog.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\include\dcsvg.h"
 				>
 			</File>
 			<File
