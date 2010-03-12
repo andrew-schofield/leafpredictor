@@ -226,7 +226,7 @@ inline void MainDialog::CreateMenuBar(void)
 	menu->Append(mExportLeafMenu);
 	mExportLeafMenu->Enable(false);
 	menu->AppendSeparator();
-	/*menu->Append(wxID_OPEN, _("&Open\tCTRL+O"), _("Open a saved LeafPredictor project"));*/
+	menu->Append(wxID_OPEN, _("&Open\tCTRL+O"), _("Open a saved LeafPredictor project"));
 	mSaveProjectMenu = new wxMenuItem(menu, wxID_SAVE, _("&Save\tCTRL+S"), _("Save a LeafPredictor project"));
 	menu->Append(mSaveProjectMenu);
 	mSaveProjectMenu->Enable(false);
@@ -664,6 +664,12 @@ void MainDialog::SetPCMessage(wxString msg)
 
 void MainDialog::OnMenuOpen(wxCommandEvent& event)
 {
+	wxString selectedFile;
+
+	wxFileDialog *OpenDialog = new wxFileDialog(this, _("Open Project..."), wxT(""), wxT(""),wxT("LeafPredictor Project XML (*.lpx)|*.lpx"), wxOPEN, wxDefaultPosition);
+	if (OpenDialog->ShowModal() == wxID_OK) // if the user click "Save" instead of "cancel"
+	{
+	}
 }
 
 
@@ -690,7 +696,7 @@ void MainDialog::OnMenuSave(wxCommandEvent& event)
 
 		TiXmlElement * root = new TiXmlElement( "LeafPredictor" );
 		doc.LinkEndChild( root );
-		wxString Version = wxT(LEAFPREDICTOR_APPNAME);
+		wxString Version = wxT(LEAFPREDICTOR_VERSION);
 		root->SetAttribute( "Version", Version.mb_str( wxConvUTF8 ) );
 		
 		comment = new TiXmlComment();
