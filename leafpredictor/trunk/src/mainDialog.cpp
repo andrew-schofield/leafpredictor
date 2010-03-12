@@ -218,19 +218,19 @@ inline void MainDialog::CreateMenuBar(void)
 
 	// The 'Main' menu
 	menu = new wxMenu();
+	menu->Append(wxID_OPEN, _("&Open\tCTRL+O"), _("Open a saved LeafPredictor project"));
+	menu->AppendSeparator();
+	mSaveProjectMenu = new wxMenuItem(menu, wxID_SAVE, _("&Save\tCTRL+S"), _("Save a LeafPredictor project"));
+	menu->Append(mSaveProjectMenu);
+	mSaveProjectMenu->Enable(false);
+	menu->AppendSeparator();
 	menu->Append(MID_IMPORTES, _("&Import EigenSystem\tCTRL+I"), _("Import a LeafAnalyser eigensystem for prediction"));
 	mImportLeafMenu = new wxMenuItem(menu, MID_IMPORTLEAF, _("Import &Leaf"), _("Import a Leaf file from LeafAnalyser"));
 	menu->Append(mImportLeafMenu);
 	mImportLeafMenu->Enable(false);
-	menu->AppendSeparator();
 	mExportLeafMenu = new wxMenuItem(menu, MID_EXPORTLEAF, _("&Export Leaf"), _("Export the selected predicted leaf into LeafAnalyser format"));
 	menu->Append(mExportLeafMenu);
 	mExportLeafMenu->Enable(false);
-	menu->AppendSeparator();
-	menu->Append(wxID_OPEN, _("&Open\tCTRL+O"), _("Open a saved LeafPredictor project"));
-	mSaveProjectMenu = new wxMenuItem(menu, wxID_SAVE, _("&Save\tCTRL+S"), _("Save a LeafPredictor project"));
-	menu->Append(mSaveProjectMenu);
-	mSaveProjectMenu->Enable(false);
 	menu->AppendSeparator();
 	menu->Append(wxID_EXIT, _("&Quit\tCtrl+Q"), wxString::Format(_("Quit %s"), wxT(LEAFPREDICTOR_APPNAME)));
 	menuBar->Append(menu, _("&File"));

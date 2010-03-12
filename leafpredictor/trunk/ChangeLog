@@ -1,6 +1,8 @@
 2010-03-12 Andrew Schofield <andrew@fire-salamander.co.uk>
 * Added ability to save and load simple project files (ES, settings and
   viewed predictions).
+* Reordered menu items to reflect the fact that project loading and saving is
+  more important than importing an eigensystem.
 
 2010-03-11 Andrew Schofield <andrew@fire-salamander.co.uk>
 * Added application icon for frames.
