@@ -669,6 +669,17 @@ void MainDialog::OnMenuOpen(wxCommandEvent& event)
 	wxFileDialog *OpenDialog = new wxFileDialog(this, _("Open Project..."), wxT(""), wxT(""),wxT("LeafPredictor Project XML (*.lpx)|*.lpx"), wxOPEN, wxDefaultPosition);
 	if (OpenDialog->ShowModal() == wxID_OK) // if the user click "Save" instead of "cancel"
 	{
+		selectedFile = OpenDialog->GetPath();
+		TiXmlDocument doc((const char*)selectedFile.mb_str());
+		bool loadOkay = doc.LoadFile();
+		if (loadOkay)
+		{
+		}
+		else
+		{
+			Tools::ErrorMsgBox(wxString::Format(_("Could not load project from %s"), selectedFile.c_str()));
+		}
+
 	}
 }
 
