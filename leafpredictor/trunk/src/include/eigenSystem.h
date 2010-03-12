@@ -52,7 +52,9 @@ public:
 	
 	wxString OutputEigenVectors(wxUint32 i);
 
-	void SetLeaf(const std::vector< double > &leaf) {mMeanLeaf = leaf;}
+	void SetLeaf(const std::vector< double > &leaf) {mMeanLeaf = leaf; mPredictedLeaf = leaf;}
+	void SetEigenValues(const std::vector< double > &evalues) {mEigenValues = evalues;}
+	void SetEigenVectors(const std::vector< std::vector<double> > &evectors) {mEigenVectors = evectors;}
 
 	bool GetInversionFactor(void) {return (mInversionFactor==1);}
 

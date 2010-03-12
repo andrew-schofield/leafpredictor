@@ -35,6 +35,7 @@
 #include "projectDialog.h"
 #include "main.h"
 #include "tinyxml.h"
+#include "tools.h"
 
 #include "wx/filedlg.h"
 #include "wx/dcbuffer.h"
@@ -665,15 +666,246 @@ void MainDialog::SetPCMessage(wxString msg)
 void MainDialog::OnMenuOpen(wxCommandEvent& event)
 {
 	wxString selectedFile;
+	double tmpDouble;
+	std::vector< std::vector< double > > tmpVector;
 
 	wxFileDialog *OpenDialog = new wxFileDialog(this, _("Open Project..."), wxT(""), wxT(""),wxT("LeafPredictor Project XML (*.lpx)|*.lpx"), wxOPEN, wxDefaultPosition);
 	if (OpenDialog->ShowModal() == wxID_OK) // if the user click "Save" instead of "cancel"
 	{
 		selectedFile = OpenDialog->GetPath();
 		TiXmlDocument doc((const char*)selectedFile.mb_str());
+		TiXmlElement* elem;
 		bool loadOkay = doc.LoadFile();
 		if (loadOkay)
 		{
+				TiXmlHandle docHandle( &doc );
+				TiXmlElement* leafpredictor = docHandle.FirstChild( "LeafPredictor" ).ToElement();
+				if ( leafpredictor )
+				{
+					mChoice1->Enable(true);
+					mChoice2->Enable(true);
+					mChoice3->Enable(true);
+					mChoice4->Enable(true);
+					mPC1Amount->Enable(true);
+					mPC2Amount->Enable(true);
+					mPC3Amount->Enable(true);
+					mPC4Amount->Enable(true);
+					mRelativeMenu->Enable(true);
+					mIndependentMenu->Enable(true);
+					mManualMenu->Enable(true);
+					mResetMenu->Enable(true);
+					mImportLeafMenu->Enable(true);
+					mInvertLeafMenu->Enable(true);
+					m4UpLeafMenu->Enable(true);
+					mShowPCInfoMenu->Enable(true);
+					mExportLeafMenu->Enable(true);
+					mGridGenMenu->Enable(true);
+					mMeanOverlayMenu->Enable(true);
+					mShowLandmarksMenu->Enable(true);
+					mManualScaleAmount->Enable(true);
+					mSaveProjectMenu->Enable(true);
+				
+					elem = docHandle.FirstChild( "LeafPredictor" ).FirstChild( "Eigensystem").FirstChild( "MeanLeaf" ).Element();
+					if ( elem )
+					{
+						mEigenSystem.SetLeaf(Tools::SplitLineByDelim(wxString::FromUTF8(elem->GetText())+wxT(",x"), wxT(",")));
+					}
+					elem = docHandle.FirstChild( "LeafPredictor" ).FirstChild( "Eigensystem").FirstChild( "Eigenvalues" ).Element();
+					if ( elem )
+					{
+						mEigenSystem.SetEigenValues(Tools::SplitLineByDelim(wxString::FromUTF8(elem->GetText())+wxT(",x"), wxT(",")));
+					}
+					elem = docHandle.FirstChild( "LeafPredictor" ).FirstChild( "Eigensystem" ).FirstChild( "Eigenvectors" ).FirstChild( "Eigenvector" ).ToElement();
+					while( elem )
+					{
+						tmpVector.push_back(Tools::SplitLineByDelim(wxString::FromUTF8(elem->GetText())+wxT(",x"), wxT(",")));
+						elem=elem->NextSiblingElement();
+					}
+					mEigenSystem.SetEigenVectors(tmpVector);
+
+					//load settings after, as some depend on there actually being an eigensystem loaded
+					elem = docHandle.FirstChild( "LeafPredictor" ).FirstChild( "Settings" ).FirstChild( "scale" ).Element();
+					if ( elem )
+					{
+						wxString::FromUTF8(elem->GetText()).ToDouble(&tmpDouble);
+						mManualScale = (double)tmpDouble / 50;
+						mManualScaleAmount->SetValue((int)tmpDouble);
+					}
+					elem = docHandle.FirstChild( "LeafPredictor" ).FirstChild( "Settings" ).FirstChild( "scaletype" ).Element();
+					if ( elem )
+					{
+						if(wxString::FromUTF8(elem->GetText()).Cmp(wxT("relative")) == 0)
+						{
+							mManualScale = 0;
+							mLinkedScale = true;
+							mManualScaleAmount->Show(false);
+							mTopLevelSizer->Layout();
+							mRelativeMenu->Check(true);
+						}
+						else if(wxString::FromUTF8(elem->GetText()).Cmp(wxT("independent")) == 0)
+						{
+							mManualScale = 0;
+							mLinkedScale = false;
+							mManualScaleAmount->Show(false);
+							mTopLevelSizer->Layout();
+							mIndependentMenu->Check(true);
+						}
+						else
+						{
+							mManualMenu->Check(true);
+							mManualScaleAmount->Show(true);
+							mTopLevelSizer->Layout();
+						}
+					}
+					elem = docHandle.FirstChild( "LeafPredictor" ).FirstChild( "Settings" ).FirstChild( "inverted" ).Element();
+					if ( elem )
+					{
+						if(wxString::FromUTF8(elem->GetText()).Cmp(wxT("true")) == 0)
+						{
+							mInvertLeaf = true;
+							mInvertLeafMenu->Check(true);
+						}
+						else
+						{
+							mInvertLeaf = false;
+							mInvertLeafMenu->Check(false);
+						}
+					}
+					elem = docHandle.FirstChild( "LeafPredictor" ).FirstChild( "Settings" ).FirstChild( "fourupmode" ).Element();
+					if ( elem )
+					{
+						bool foup;
+						foup = (wxString::FromUTF8(elem->GetText()).Cmp(wxT("true")) == 0) ? true : false;
+						m4UpMode = foup;
+						mPredictedLeafCanvas2->Show(foup);
+						mPredictedLeafCanvas3->Show(foup);
+						mTopLevelSizer->Layout();
+						if(!m4UpMode)
+						{
+							mSelectedCanvas = wxT("Predicted Leaf 1");
+							SetStatusText(wxString::Format(_("Selected Leaf: %i"),1), STATUS_LEAF);
+						}
+					}
+					elem = docHandle.FirstChild( "LeafPredictor" ).FirstChild( "Settings" ).FirstChild( "showpcinfo" ).Element();
+					if ( elem )
+					{
+						if(wxString::FromUTF8(elem->GetText()).Cmp(wxT("true")) == 0)
+						{
+							mShowPCInfo = true;
+							mShowPCInfoMenu->Check(true);
+						}
+						else
+						{
+							mShowPCInfo = false;
+							mShowPCInfoMenu->Check(false);
+						}
+					}
+					elem = docHandle.FirstChild( "LeafPredictor" ).FirstChild( "Settings" ).FirstChild( "showmeanoverlay" ).Element();
+					if ( elem )
+					{
+						if(wxString::FromUTF8(elem->GetText()).Cmp(wxT("true")) == 0)
+							mMeanOverlayMenu->Check(true);
+						else
+							mMeanOverlayMenu->Check(false);
+						if(mMeanOverlayMenu->IsChecked())
+						{
+							mPredictedLeafCanvas1->SetOverlay(mEigenSystem.GetMeanLeaf());
+							mPredictedLeafCanvas2->SetOverlay(mEigenSystem.GetMeanLeaf());
+							mPredictedLeafCanvas3->SetOverlay(mEigenSystem.GetMeanLeaf());
+						}
+						else
+						{
+							mPredictedLeafCanvas1->RemoveOverlay();
+							mPredictedLeafCanvas2->RemoveOverlay();
+							mPredictedLeafCanvas3->RemoveOverlay();
+						}
+					}
+					elem = docHandle.FirstChild( "LeafPredictor" ).FirstChild( "Settings" ).FirstChild( "showlandmarks" ).Element();
+					if ( elem )
+					{
+						if(wxString::FromUTF8(elem->GetText()).Cmp(wxT("true")) == 0)
+						{
+							mShowLandmarks = true;
+							mShowLandmarksMenu->Check(true);
+						}
+						else
+						{
+							mShowLandmarks = false;
+							mShowLandmarksMenu->Check(false);
+						}
+					}
+					// load up prediction view settings
+					wxInt32 val;
+					elem = docHandle.FirstChild( "LeafPredictor" ).FirstChild( "PredictionView" ).FirstChild( "Prediction1" ).FirstChild( "PC" ).ToElement();
+					elem->QueryIntAttribute("Component", &val);
+					mPredictedLeafCanvas1->SetPC1(val);
+					elem->QueryIntAttribute("Value", &val);
+					mPredictedLeafCanvas1->SetPC1Value(val);
+					elem=elem->NextSiblingElement();
+					elem->QueryIntAttribute("Component", &val);
+					mPredictedLeafCanvas1->SetPC2(val);
+					elem->QueryIntAttribute("Value", &val);
+					mPredictedLeafCanvas1->SetPC2Value(val);
+					elem=elem->NextSiblingElement();
+					elem->QueryIntAttribute("Component", &val);
+					mPredictedLeafCanvas1->SetPC3(val);
+					elem->QueryIntAttribute("Value", &val);
+					mPredictedLeafCanvas1->SetPC3Value(val);
+					elem=elem->NextSiblingElement();
+					elem->QueryIntAttribute("Component", &val);
+					mPredictedLeafCanvas1->SetPC4(val);
+					elem->QueryIntAttribute("Value", &val);
+					mPredictedLeafCanvas1->SetPC4Value(val);
+					
+					elem = docHandle.FirstChild( "LeafPredictor" ).FirstChild( "PredictionView" ).FirstChild( "Prediction2" ).FirstChild( "PC" ).ToElement();
+					elem->QueryIntAttribute("Component", &val);
+					mPredictedLeafCanvas2->SetPC1(val);
+					elem->QueryIntAttribute("Value", &val);
+					mPredictedLeafCanvas2->SetPC1Value(val);
+					elem=elem->NextSiblingElement();
+					elem->QueryIntAttribute("Component", &val);
+					mPredictedLeafCanvas2->SetPC2(val);
+					elem->QueryIntAttribute("Value", &val);
+					mPredictedLeafCanvas2->SetPC2Value(val);
+					elem=elem->NextSiblingElement();
+					elem->QueryIntAttribute("Component", &val);
+					mPredictedLeafCanvas2->SetPC3(val);
+					elem->QueryIntAttribute("Value", &val);
+					mPredictedLeafCanvas2->SetPC3Value(val);
+					elem=elem->NextSiblingElement();
+					elem->QueryIntAttribute("Component", &val);
+					mPredictedLeafCanvas2->SetPC4(val);
+					elem->QueryIntAttribute("Value", &val);
+					mPredictedLeafCanvas2->SetPC4Value(val);
+					
+					elem = docHandle.FirstChild( "LeafPredictor" ).FirstChild( "PredictionView" ).FirstChild( "Prediction3" ).FirstChild( "PC" ).ToElement();
+					elem->QueryIntAttribute("Component", &val);
+					mPredictedLeafCanvas3->SetPC1(val);
+					elem->QueryIntAttribute("Value", &val);
+					mPredictedLeafCanvas3->SetPC1Value(val);
+					elem=elem->NextSiblingElement();
+					elem->QueryIntAttribute("Component", &val);
+					mPredictedLeafCanvas3->SetPC2(val);
+					elem->QueryIntAttribute("Value", &val);
+					mPredictedLeafCanvas3->SetPC2Value(val);
+					elem=elem->NextSiblingElement();
+					elem->QueryIntAttribute("Component", &val);
+					mPredictedLeafCanvas3->SetPC3(val);
+					elem->QueryIntAttribute("Value", &val);
+					mPredictedLeafCanvas3->SetPC3Value(val);
+					elem=elem->NextSiblingElement();
+					elem->QueryIntAttribute("Component", &val);
+					mPredictedLeafCanvas3->SetPC4(val);
+					elem->QueryIntAttribute("Value", &val);
+					mPredictedLeafCanvas3->SetPC4Value(val);
+
+					//UpdateLeaves();
+					ExternalCanvasSelect(wxT("Predicted Leaf 3"));
+					ExternalCanvasSelect(wxT("Predicted Leaf 2"));
+					ExternalCanvasSelect(wxT("Predicted Leaf 1"));
+				} else {
+					//invalid project file
+				}
 		}
 		else
 		{

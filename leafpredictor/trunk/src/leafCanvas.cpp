@@ -152,7 +152,6 @@ void LeafCanvas::PaintBackground(wxDC& dc)
 
 void LeafCanvas::OnResize(wxSizeEvent& event)
 {
-	CalculateScale();
 	Refresh();
 }
 

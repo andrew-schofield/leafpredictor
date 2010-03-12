@@ -17,13 +17,10 @@
 #ifndef _TOOLS_H
 #define _TOOLS_H
 
-#ifdef __GNUG__
-#pragma interface "tools.cpp"
-#endif
-
 #include "leafpredictor.h"
 
 #include "wx/msgdlg.h"
+#include <vector>
 
 /**
  * A class of useful tools.
@@ -65,6 +62,27 @@ public:
 	 * @param information The information to display.
 	 **/
 	static void InfoMsgBox(const wxString& information) {MsgBox(information, wxICON_INFORMATION | wxOK);}
+	
+	static std::vector<double> SplitLineByDelim(const wxString &line, const wxString &delim)
+	{
+		std::vector<double>    v;
+		wxInt32                endingPos;
+		wxString               choppedString;
+		wxString               tmpString;
+		double                 tmpDouble;
+
+		choppedString = line;
+		endingPos = choppedString.Find(delim);
+		while(endingPos != wxNOT_FOUND)
+		{
+			tmpString = choppedString.Mid(0, endingPos);
+			choppedString = choppedString.Mid(endingPos + 1, choppedString.length()- 1);
+			endingPos = choppedString.Find(delim);
+			tmpString.ToDouble(&tmpDouble);
+			v.push_back(tmpDouble);
+		}
+		return v;
+	}
 };
 
 
