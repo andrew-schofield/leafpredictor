@@ -354,9 +354,9 @@ void LeafCanvas::DrawLeaf(wxDC& dc, wxInt32 xOut, wxInt32 yOut, wxInt32 thicknes
 				leaf[(mLeafOverlay.size()/2)] = wxPoint(x,y);
 		}
 
-		//dc.SetBrush(wxBrush(*wxBLACK));
+		dc.SetBrush(wxBrush(*wxBLACK, wxTRANSPARENT));
 		dc.SetPen(wxPen(*wxBLACK, thickness));
-		dc.DrawSpline((mLeafOverlay.size()/2)+1,leaf);
+		dc.DrawPolygon((mLeafOverlay.size()/2)+1,leaf);
 		delete [] leaf;
 		leaf = NULL;
 	}
@@ -380,9 +380,9 @@ void LeafCanvas::DrawLeaf(wxDC& dc, wxInt32 xOut, wxInt32 yOut, wxInt32 thicknes
 				leaf[(mLeaf.size()/2)] = wxPoint(x,y);
 		}
 
-		dc.SetBrush(wxBrush(leafColour));
+		dc.SetBrush(wxBrush(leafColour, wxTRANSPARENT));
 		dc.SetPen(wxPen(leafColour, thickness));
-		dc.DrawSpline((mLeaf.size()/2)+1,leaf);
+		dc.DrawPolygon((mLeaf.size()/2)+1,leaf);
 		delete [] leaf;
 		leaf = NULL;
 	}
