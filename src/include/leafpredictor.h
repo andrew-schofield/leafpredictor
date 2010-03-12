@@ -25,6 +25,7 @@
 #endif
 
 #define LEAFPREDICTOR_APPNAME 	"LeafPredictor 0.8a"
+#define LEAFPREDICTOR_VERSION   "0.8a"
 #define LEAFPREDICTOR_URL_HOMEPAGE	"http://fire-salamander.co.uk/leafpredictor/"
 #define LEAFPREDICTOR_URL_WXWIDGETS	"http://www.wxwidgets.org/"
 #define LEAFPREDICTOR_URL_LICENCE	"http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt"
