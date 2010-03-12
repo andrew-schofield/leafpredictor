@@ -218,6 +218,22 @@
 				RelativePath=".\src\staticBoldedText.cpp"
 				>
 			</File>
+			<File
+				RelativePath=".\src\tinystr.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\tinyxml.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\tinyxmlerror.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\tinyxmlparser.cpp"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -282,6 +298,14 @@
 			</File>
 			<File
 				RelativePath=".\src\include\staticBoldedText.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\include\tinystr.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\include\tinyxml.h"
 				>
 			</File>
 			<File
