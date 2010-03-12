@@ -1,3 +1,7 @@
+2010-03-12 Andrew Schofield <andrew@fire-salamander.co.uk>
+* Added ability to save and load simple project files (ES, settings and
+  viewed predictions).
+
 2010-03-11 Andrew Schofield <andrew@fire-salamander.co.uk>
 * Added application icon for frames.
 
