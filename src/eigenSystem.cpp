@@ -33,7 +33,6 @@
 #include "wx/textfile.h"
 #include "wx/txtstrm.h"
 
-#include <vector>
 #include <math.h>
 
 EigenSystem::EigenSystem()
@@ -78,7 +77,7 @@ bool EigenSystem::LoadEigenFile(const wxString &eigenFile)
 	 * The number of x,y coordinates and therefore the eigenvalues/vectors is not defined.
 	 */
 
-	mMeanLeaf = SplitLineByDelim(in.GetLine(1), wxT("\t"));
+	mMeanLeaf = Tools::SplitLineByDelim(in.GetLine(1), wxT("\t"));
 
 	pcCount = mMeanLeaf.size() + 7;
 
@@ -89,7 +88,7 @@ bool EigenSystem::LoadEigenFile(const wxString &eigenFile)
 	InvertLeaf();
 
 	mPredictedLeaf = mMeanLeaf;
-	mEigenValues = SplitLineByDelim(in.GetLine(4), wxT("\t"));
+	mEigenValues = Tools::SplitLineByDelim(in.GetLine(4), wxT("\t"));
 	for(i=0;i<mMeanLeaf.size();++i)
 	{
 		mTotalVariance += mEigenValues.at(i);
@@ -97,7 +96,7 @@ bool EigenSystem::LoadEigenFile(const wxString &eigenFile)
 
 	for(i=7;i<pcCount;++i)
 	{
-		mEigenVectors.push_back(SplitLineByDelim(in.GetLine(i), wxT("\t")));
+		mEigenVectors.push_back(Tools::SplitLineByDelim(in.GetLine(i), wxT("\t")));
 	}
 
 	return true;
@@ -117,34 +116,13 @@ bool EigenSystem::LoadLeafFile(const wxString &leafFile)
 		return false;
 
 	// add redundant ",x" to the line to satisfy the splitter
-	mMeanLeaf = SplitLineByDelim(in.GetLine(0)+wxT(",x"), wxT(","));
+	mMeanLeaf = Tools::SplitLineByDelim(in.GetLine(0)+wxT(",x"), wxT(","));
 	// remove the first element as it is actually a node number, NOT a coordinate
 	mMeanLeaf.erase(mMeanLeaf.begin());
 
 	InvertLeaf();
 
 	return true;
-}
-
-std::vector<double> EigenSystem::SplitLineByDelim(const wxString &line, const wxString &delim)
-{
-	std::vector<double>    v;
-	wxInt32                endingPos;
-	wxString               choppedString;
-	wxString               tmpString;
-	double                 tmpDouble;
-
-	choppedString = line;
-	endingPos = choppedString.Find(delim);
-	while(endingPos != wxNOT_FOUND)
-	{
-		tmpString = choppedString.Mid(0, endingPos);
-		choppedString = choppedString.Mid(endingPos + 1, choppedString.length()- 1);
-		endingPos = choppedString.Find(delim);
-		tmpString.ToDouble(&tmpDouble);
-		v.push_back(tmpDouble);
-	}
-	return v;
 }
 
 
