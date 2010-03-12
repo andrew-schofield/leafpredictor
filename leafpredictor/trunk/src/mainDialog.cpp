@@ -34,6 +34,7 @@
 #include "leafDialog.h"
 #include "projectDialog.h"
 #include "main.h"
+#include "tinyxml.h"
 
 #include "wx/filedlg.h"
 #include "wx/dcbuffer.h"
@@ -224,9 +225,11 @@ inline void MainDialog::CreateMenuBar(void)
 	mExportLeafMenu = new wxMenuItem(menu, MID_EXPORTLEAF, _("&Export Leaf"), _("Export the selected predicted leaf into LeafAnalyser format"));
 	menu->Append(mExportLeafMenu);
 	mExportLeafMenu->Enable(false);
-	/*menu->AppendSeparator();
-	menu->Append(wxID_OPEN, _("&Open\tCTRL+O"), _("Open a saved LeafPredictor project"));
-	menu->Append(wxID_SAVE, _("&Save\tCTRL+S"), _("Save a LeafPredictor project"));*/
+	menu->AppendSeparator();
+	/*menu->Append(wxID_OPEN, _("&Open\tCTRL+O"), _("Open a saved LeafPredictor project"));*/
+	mSaveProjectMenu = new wxMenuItem(menu, wxID_SAVE, _("&Save\tCTRL+S"), _("Save a LeafPredictor project"));
+	menu->Append(mSaveProjectMenu);
+	mSaveProjectMenu->Enable(false);
 	menu->AppendSeparator();
 	menu->Append(wxID_EXIT, _("&Quit\tCtrl+Q"), wxString::Format(_("Quit %s"), wxT(LEAFPREDICTOR_APPNAME)));
 	menuBar->Append(menu, _("&File"));
@@ -469,6 +472,7 @@ void MainDialog::OnMenuImportES(wxCommandEvent& event)
 			mManualScaleAmount->Enable(true);
 			mManualScaleAmount->SetValue((wxInt32)(mMeanLeafCanvas->GetScale() * 50));
 			mManualScale = mMeanLeafCanvas->GetScale();
+			mSaveProjectMenu->Enable(true);
 			//UpdateLeaves();
 
 
@@ -665,6 +669,251 @@ void MainDialog::OnMenuOpen(wxCommandEvent& event)
 
 void MainDialog::OnMenuSave(wxCommandEvent& event)
 {
+//this will need moving out into a seperate file
+	wxString selectedFile;
+
+	wxFileDialog *SaveDialog = new wxFileDialog(this, _("Save as..."), wxT(""), wxT(""),wxT("LeafPredictor Project XML (*.lpx)|*.lpx"), wxSAVE, wxDefaultPosition);
+	if (SaveDialog->ShowModal() == wxID_OK) // if the user click "Save" instead of "cancel"
+	{
+		selectedFile = SaveDialog->GetPath();
+
+		TiXmlDocument doc;
+		TiXmlElement* msg;
+		TiXmlElement* prediction;
+		TiXmlComment * comment;
+		TiXmlDeclaration* decl = new TiXmlDeclaration("1.0", "UTF-8", "yes");
+		doc.LinkEndChild( decl );
+		
+		comment = new TiXmlComment();
+		comment->SetValue(" LeafPredictor Project File ");
+		doc.LinkEndChild( comment );
+
+		TiXmlElement * root = new TiXmlElement( "LeafPredictor" );
+		doc.LinkEndChild( root );
+		wxString Version = wxT(LEAFPREDICTOR_APPNAME);
+		root->SetAttribute( "Version", Version.mb_str( wxConvUTF8 ) );
+		
+		comment = new TiXmlComment();
+		comment->SetValue(" Project Settings ");
+		root->LinkEndChild( comment );
+		
+		TiXmlElement * settings = new TiXmlElement( "Settings" );
+		root->LinkEndChild( settings );
+		
+		msg = new TiXmlElement( "scale" );
+		msg->LinkEndChild( new TiXmlText( wxString::Format(wxT("%i"),mManualScaleAmount->GetValue()).mb_str( wxConvUTF8 ) ) );
+		settings->LinkEndChild( msg );
+		
+		msg = new TiXmlElement( "scaletype" );
+		wxString scale;
+		if (mManualScale != 0)
+			scale = wxT("manual");
+		else
+		{
+			if(mLinkedScale)
+				scale = wxT("relative");
+			else
+				scale = wxT("independent");
+		}
+		msg->LinkEndChild( new TiXmlText( scale.mb_str( wxConvUTF8 ) ) );
+		settings->LinkEndChild( msg );
+		
+		msg = new TiXmlElement( "inverted" );
+		wxString inverted;
+		if (mInvertLeaf)
+			inverted = wxT("true");
+		else
+			inverted = wxT("false");
+		msg->LinkEndChild( new TiXmlText( inverted.mb_str( wxConvUTF8 ) ) );
+		settings->LinkEndChild( msg );
+		
+		msg = new TiXmlElement( "fourupmode" );
+		wxString fourupmode;
+		if (m4UpMode)
+			fourupmode = wxT("true");
+		else
+			fourupmode = wxT("false");
+		msg->LinkEndChild( new TiXmlText( fourupmode.mb_str( wxConvUTF8 ) ) );
+		settings->LinkEndChild( msg );
+		
+		msg = new TiXmlElement( "showpcinfo" );
+		wxString showpcinfo;
+		if (mShowPCInfo)
+			showpcinfo = wxT("true");
+		else
+			showpcinfo = wxT("false");
+		msg->LinkEndChild( new TiXmlText( showpcinfo.mb_str( wxConvUTF8 ) ) );
+		settings->LinkEndChild( msg );
+		
+		msg = new TiXmlElement( "showmeanoverlay" );
+		wxString showmeanoverlay;
+		if (mMeanOverlayMenu->IsChecked())
+			showmeanoverlay = wxT("true");
+		else
+			showmeanoverlay = wxT("false");
+		msg->LinkEndChild( new TiXmlText( showmeanoverlay.mb_str( wxConvUTF8 ) ) );
+		settings->LinkEndChild( msg );
+		
+		msg = new TiXmlElement( "showlandmarks" );
+		wxString showlandmarks;
+		if (mShowLandmarks)
+			showlandmarks = wxT("true");
+		else
+			showlandmarks = wxT("false");
+		msg->LinkEndChild( new TiXmlText( showlandmarks.mb_str( wxConvUTF8 ) ) );
+		settings->LinkEndChild( msg );
+		
+		comment = new TiXmlComment();
+		comment->SetValue(" Statistical System ");
+		root->LinkEndChild( comment );
+		
+		TiXmlElement * eigensystem = new TiXmlElement( "Eigensystem" );
+		root->LinkEndChild( eigensystem );
+		
+		msg = new TiXmlElement( "CoordCount" );
+		msg->LinkEndChild( new TiXmlText( wxString::Format(wxT("%i"),mEigenSystem.GetNumberOfCoordinates()).mb_str( wxConvUTF8 ) ) );
+		eigensystem->LinkEndChild( msg );
+		
+		msg = new TiXmlElement( "EValueCount" );
+		msg->LinkEndChild( new TiXmlText( wxString::Format(wxT("%i"),mEigenSystem.GetEigenValueCount()).mb_str( wxConvUTF8 ) ) );
+		eigensystem->LinkEndChild( msg );
+		
+		msg = new TiXmlElement( "EVectorCount" );
+		msg->LinkEndChild( new TiXmlText( wxString::Format(wxT("%i"),mEigenSystem.GetEigenVectorsCount()).mb_str( wxConvUTF8 ) ) );
+		eigensystem->LinkEndChild( msg );
+		
+		msg = new TiXmlElement( "MeanLeaf" );
+		msg->LinkEndChild( new TiXmlText( mEigenSystem.OutputMeanLeaf().mb_str( wxConvUTF8 ) ) );
+		eigensystem->LinkEndChild( msg );
+		
+		msg = new TiXmlElement( "Eigenvalues" );
+		msg->LinkEndChild( new TiXmlText( mEigenSystem.OutputEigenValues().mb_str( wxConvUTF8 ) ));
+		eigensystem->LinkEndChild( msg );
+				
+		TiXmlElement * eigenvalues = new TiXmlElement( "Eigenvectors" );
+		eigensystem->LinkEndChild( eigenvalues );
+		
+		for(wxUint32 i=0;i<mEigenSystem.GetEigenVectorsCount();i++)
+		{
+			msg = new TiXmlElement( "Eigenvector" );
+			msg->LinkEndChild( new TiXmlText( mEigenSystem.OutputEigenVectors(i).mb_str( wxConvUTF8 ) ) );
+			eigenvalues->LinkEndChild( msg );
+		}
+		
+		comment = new TiXmlComment();
+		comment->SetValue(" Prediction View ");
+		root->LinkEndChild( comment );
+		
+		TiXmlElement * predictionview = new TiXmlElement( "PredictionView" );
+		root->LinkEndChild( predictionview );
+		
+		prediction = new TiXmlElement( "Prediction1" );
+		predictionview->LinkEndChild( prediction );
+		
+		msg = new TiXmlElement( "PC1" );
+		msg->LinkEndChild( new TiXmlText( wxString::Format(wxT("%i"),mPredictedLeafCanvas1->GetPC1()).mb_str( wxConvUTF8 ) ) );
+		prediction->LinkEndChild( msg );
+		
+		msg = new TiXmlElement( "PC2" );
+		msg->LinkEndChild( new TiXmlText( wxString::Format(wxT("%i"),mPredictedLeafCanvas1->GetPC2()).mb_str( wxConvUTF8 ) ) );
+		prediction->LinkEndChild( msg );
+		
+		msg = new TiXmlElement( "PC3" );
+		msg->LinkEndChild( new TiXmlText( wxString::Format(wxT("%i"),mPredictedLeafCanvas1->GetPC3()).mb_str( wxConvUTF8 ) ) );
+		prediction->LinkEndChild( msg );
+		
+		msg = new TiXmlElement( "PC4" );
+		msg->LinkEndChild( new TiXmlText( wxString::Format(wxT("%i"),mPredictedLeafCanvas1->GetPC4()).mb_str( wxConvUTF8 ) ) );
+		prediction->LinkEndChild( msg );
+		
+		msg = new TiXmlElement( "PC1Value" );
+		msg->LinkEndChild( new TiXmlText( wxString::Format(wxT("%i"),mPredictedLeafCanvas1->GetPC1Value()).mb_str( wxConvUTF8 ) ) );
+		prediction->LinkEndChild( msg );
+		
+		msg = new TiXmlElement( "PC2Value" );
+		msg->LinkEndChild( new TiXmlText( wxString::Format(wxT("%i"),mPredictedLeafCanvas1->GetPC2Value()).mb_str( wxConvUTF8 ) ) );
+		prediction->LinkEndChild( msg );
+		
+		msg = new TiXmlElement( "PC3Value" );
+		msg->LinkEndChild( new TiXmlText( wxString::Format(wxT("%i"),mPredictedLeafCanvas1->GetPC3Value()).mb_str( wxConvUTF8 ) ) );
+		prediction->LinkEndChild( msg );
+		
+		msg = new TiXmlElement( "PC4Value" );
+		msg->LinkEndChild( new TiXmlText( wxString::Format(wxT("%i"),mPredictedLeafCanvas1->GetPC4Value()).mb_str( wxConvUTF8 ) ) );
+		prediction->LinkEndChild( msg );
+
+		prediction = new TiXmlElement( "Prediction2" );
+		predictionview->LinkEndChild( prediction );
+		
+		msg = new TiXmlElement( "PC1" );
+		msg->LinkEndChild( new TiXmlText( wxString::Format(wxT("%i"),mPredictedLeafCanvas2->GetPC1()).mb_str( wxConvUTF8 ) ) );
+		prediction->LinkEndChild( msg );
+		
+		msg = new TiXmlElement( "PC2" );
+		msg->LinkEndChild( new TiXmlText( wxString::Format(wxT("%i"),mPredictedLeafCanvas2->GetPC2()).mb_str( wxConvUTF8 ) ) );
+		prediction->LinkEndChild( msg );
+		
+		msg = new TiXmlElement( "PC3" );
+		msg->LinkEndChild( new TiXmlText( wxString::Format(wxT("%i"),mPredictedLeafCanvas2->GetPC3()).mb_str( wxConvUTF8 ) ) );
+		prediction->LinkEndChild( msg );
+		
+		msg = new TiXmlElement( "PC4" );
+		msg->LinkEndChild( new TiXmlText( wxString::Format(wxT("%i"),mPredictedLeafCanvas2->GetPC4()).mb_str( wxConvUTF8 ) ) );
+		prediction->LinkEndChild( msg );
+		
+		msg = new TiXmlElement( "PC1Value" );
+		msg->LinkEndChild( new TiXmlText( wxString::Format(wxT("%i"),mPredictedLeafCanvas2->GetPC1Value()).mb_str( wxConvUTF8 ) ) );
+		prediction->LinkEndChild( msg );
+		
+		msg = new TiXmlElement( "PC2Value" );
+		msg->LinkEndChild( new TiXmlText( wxString::Format(wxT("%i"),mPredictedLeafCanvas2->GetPC2Value()).mb_str( wxConvUTF8 ) ) );
+		prediction->LinkEndChild( msg );
+		
+		msg = new TiXmlElement( "PC3Value" );
+		msg->LinkEndChild( new TiXmlText( wxString::Format(wxT("%i"),mPredictedLeafCanvas2->GetPC3Value()).mb_str( wxConvUTF8 ) ) );
+		prediction->LinkEndChild( msg );
+		
+		msg = new TiXmlElement( "PC4Value" );
+		msg->LinkEndChild( new TiXmlText( wxString::Format(wxT("%i"),mPredictedLeafCanvas2->GetPC4Value()).mb_str( wxConvUTF8 ) ) );
+		prediction->LinkEndChild( msg );
+
+		prediction = new TiXmlElement( "Prediction3" );
+		predictionview->LinkEndChild( prediction );
+		
+		msg = new TiXmlElement( "PC1" );
+		msg->LinkEndChild( new TiXmlText( wxString::Format(wxT("%i"),mPredictedLeafCanvas3->GetPC1()).mb_str( wxConvUTF8 ) ) );
+		prediction->LinkEndChild( msg );
+		
+		msg = new TiXmlElement( "PC2" );
+		msg->LinkEndChild( new TiXmlText( wxString::Format(wxT("%i"),mPredictedLeafCanvas3->GetPC2()).mb_str( wxConvUTF8 ) ) );
+		prediction->LinkEndChild( msg );
+		
+		msg = new TiXmlElement( "PC3" );
+		msg->LinkEndChild( new TiXmlText( wxString::Format(wxT("%i"),mPredictedLeafCanvas3->GetPC3()).mb_str( wxConvUTF8 ) ) );
+		prediction->LinkEndChild( msg );
+		
+		msg = new TiXmlElement( "PC4" );
+		msg->LinkEndChild( new TiXmlText( wxString::Format(wxT("%i"),mPredictedLeafCanvas3->GetPC4()).mb_str( wxConvUTF8 ) ) );
+		prediction->LinkEndChild( msg );
+		
+		msg = new TiXmlElement( "PC1Value" );
+		msg->LinkEndChild( new TiXmlText( wxString::Format(wxT("%i"),mPredictedLeafCanvas3->GetPC1Value()).mb_str( wxConvUTF8 ) ) );
+		prediction->LinkEndChild( msg );
+		
+		msg = new TiXmlElement( "PC2Value" );
+		msg->LinkEndChild( new TiXmlText( wxString::Format(wxT("%i"),mPredictedLeafCanvas3->GetPC2Value()).mb_str( wxConvUTF8 ) ) );
+		prediction->LinkEndChild( msg );
+		
+		msg = new TiXmlElement( "PC3Value" );
+		msg->LinkEndChild( new TiXmlText( wxString::Format(wxT("%i"),mPredictedLeafCanvas3->GetPC3Value()).mb_str( wxConvUTF8 ) ) );
+		prediction->LinkEndChild( msg );
+		
+		msg = new TiXmlElement( "PC4Value" );
+		msg->LinkEndChild( new TiXmlText( wxString::Format(wxT("%i"),mPredictedLeafCanvas3->GetPC4Value()).mb_str( wxConvUTF8 ) ) );
+		prediction->LinkEndChild( msg );
+		
+		doc.SaveFile( (const char*)selectedFile.mb_str());
+	}
 }
 
 

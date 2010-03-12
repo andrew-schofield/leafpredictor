@@ -83,6 +83,7 @@ protected:
 	wxMenuItem        *mMeanOverlayMenu;
 	wxMenuItem        *mShowLandmarksMenu;
 	wxMenuItem        *mShowPCInfoMenu;
+	wxMenuItem        *mSaveProjectMenu;
 	wxBoxSizer        *mTopLevelSizer;
 	wxGridSizer       *mLowerPlotSizer;
 	wxPanel           *mTopLevelPanel;

@@ -45,12 +45,22 @@ public:
 	void InvertLeaf(void);
 
 	void ExportLeaf(const wxString &location);
+	
+	wxString OutputMeanLeaf(void);
+	
+	wxString OutputEigenValues(void);
+	
+	wxString OutputEigenVectors(wxUint32 i);
 
 	void SetLeaf(const std::vector< double > &leaf) {mMeanLeaf = leaf;}
 
 	bool GetInversionFactor(void) {return (mInversionFactor==1);}
 
 	void Empty(void);
+	
+	wxUint32 GetEigenVectorsCount(void) {return mEigenVectors.size();}
+	wxInt32  GetNumberOfCoordinates(void);
+	wxUint32 GetEigenValueCount(void) {return mEigenValues.size();}
 
 private:
 
@@ -67,7 +77,6 @@ private:
 
 	double GetPCContribution(wxInt32 PC);
 
-	wxInt32 GetNumberOfCoordinates(void);
 };
 
 

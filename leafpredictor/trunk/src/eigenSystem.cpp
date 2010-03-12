@@ -220,6 +220,39 @@ void EigenSystem::ExportLeaf(const wxString &location)
 }
 
 
+wxString EigenSystem::OutputMeanLeaf(void)
+{
+	wxString outLine;
+	
+	outLine += wxString::Format(wxT("%.2f"),mMeanLeaf.at(0));
+	for(wxUint32 i=1; i<mMeanLeaf.size();++i)
+		outLine += wxString::Format(wxT(",%.2f"),mMeanLeaf.at(i));
+	return outLine;
+}
+
+
+wxString EigenSystem::OutputEigenValues(void)
+{
+	wxString outLine;
+	
+	outLine += wxString::Format(wxT("%.2f"),mEigenValues.at(0));
+	for(wxUint32 i=1; i<mEigenValues.size();++i)
+		outLine += wxString::Format(wxT(",%.2f"),mEigenValues.at(i));
+	return outLine;
+}
+
+
+wxString EigenSystem::OutputEigenVectors(wxUint32 i)
+{
+	wxString outLine;
+	
+	outLine += wxString::Format(wxT("%.2f"),mEigenVectors[i].at(0));
+	for(wxUint32 j=1; j<mEigenVectors[i].size();++j)
+		outLine += wxString::Format(wxT(",%.2f"),mEigenVectors[i].at(j));
+	return outLine;
+}
+
+
 void EigenSystem::Empty(void)
 {
 	mMeanLeaf.empty();
