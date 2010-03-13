@@ -1,3 +1,6 @@
+2010-03-12 Andrew Schofield <andrew@fire-salamander.co.uk>
+* Added extra filters to file dialogs to prompt on overwrite etc.
+
 LeafPredictor 0.8.9
 
 2010-03-12 Andrew Schofield <andrew@fire-salamander.co.uk>

@@ -84,10 +84,13 @@ protected:
 	wxMenuItem        *mShowLandmarksMenu;
 	wxMenuItem        *mShowPCInfoMenu;
 	wxMenuItem        *mSaveProjectMenu;
+	wxMenuItem        *mSaveAsProjectMenu;
 	wxBoxSizer        *mTopLevelSizer;
 	wxGridSizer       *mLowerPlotSizer;
 	wxPanel           *mTopLevelPanel;
 	double             mManualScale;
+	wxString           mCurrentFilename;
+	bool               mUnsavedState;
 
 	/**
 	 * Constructor.
@@ -121,6 +124,8 @@ protected:
 	void OnMenuOpen(wxCommandEvent& event);
 
 	void OnMenuSave(wxCommandEvent& event);
+
+	void OnMenuSaveAs(wxCommandEvent& event);
 
 	void OnMenuImportES(wxCommandEvent& event);
 
@@ -176,6 +181,8 @@ protected:
 	 * Called when the user wants to quit the application.
 	 **/
 	void OnMenuQuit(wxCommandEvent& event);
+	
+	bool Save(bool forcenew = false);
 
 public:
 	// Singleton pattern
@@ -231,6 +238,8 @@ public:
 	LeafCanvas* GetSelectedCanvas(void);
 	
 	bool GetShowPCInfo(void) {return mShowPCInfo;}
+	
+	void SetUnsavedState(bool state);
 
 private:
 	DECLARE_EVENT_TABLE()
