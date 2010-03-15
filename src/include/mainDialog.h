@@ -121,6 +121,8 @@ protected:
 	 **/
 	void OnMenuAbout(wxCommandEvent& event);
 
+	void OnMenuNew(wxCommandEvent& event);
+
 	void OnMenuOpen(wxCommandEvent& event);
 
 	void OnMenuSave(wxCommandEvent& event);

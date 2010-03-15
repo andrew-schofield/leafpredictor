@@ -98,6 +98,8 @@ public:
 	bool NeedsInversion(void);
 
 	void Select(bool select) {mSelected = select;}
+	
+	void Clear(void) {mLeafExists = false; mOverlayExists = false;}
 private:
 	DECLARE_EVENT_TABLE()
 };
