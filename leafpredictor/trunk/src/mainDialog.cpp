@@ -486,6 +486,19 @@ void MainDialog::OnMenuNew(wxCommandEvent& event)
 	mPredictedLeafCanvas1->ExtDraw();
 	mPredictedLeafCanvas2->ExtDraw();
 	mPredictedLeafCanvas3->ExtDraw();
+	
+	mPC1Amount->SetValue(0);
+	mPC1Value->SetLabel(wxT("0.0"));
+	mChoice1->SetSelection(0);
+	mPC2Amount->SetValue(0);
+	mPC2Value->SetLabel(wxT("0.0"));
+	mChoice2->SetSelection(0);
+	mPC3Amount->SetValue(0);
+	mPC3Value->SetLabel(wxT("0.0"));
+	mChoice3->SetSelection(0);
+	mPC4Amount->SetValue(0);
+	mPC4Value->SetLabel(wxT("0.0"));
+	mChoice4->SetSelection(0);
 	mTopLevelSizer->Layout();
 }
 
