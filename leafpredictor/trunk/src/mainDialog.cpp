@@ -97,6 +97,7 @@ BEGIN_EVENT_TABLE(MainDialog, wxFrame)
 	EVT_MENU               (wxID_EXIT,                           MainDialog::OnMenuQuit)
 	EVT_MENU               (wxID_ABOUT,                          MainDialog::OnMenuAbout)
 	EVT_MENU               (wxID_OPEN,                           MainDialog::OnMenuOpen)
+	EVT_MENU               (wxID_NEW,                            MainDialog::OnMenuNew)
 	EVT_MENU               (MID_IMPORTES,                        MainDialog::OnMenuImportES)
 	EVT_MENU               (MID_IMPORTLEAF,                      MainDialog::OnMenuImportLeaf)
 	EVT_MENU               (wxID_SAVE,                           MainDialog::OnMenuSave)
@@ -156,7 +157,7 @@ MainDialog::MainDialog(void) : wxFrame(NULL, wxID_ANY, wxT(LEAFPREDICTOR_APPNAME
 	mShowLandmarks = true;
 	SetIcon(wxICON(LeafPredictor));
 	mCurrentFilename = wxT("");
-	SetUnsavedState(true);
+	SetUnsavedState(false);
 }
 
 
@@ -221,6 +222,7 @@ inline void MainDialog::CreateMenuBar(void)
 
 	// The 'Main' menu
 	menu = new wxMenu();
+	menu->Append(wxID_NEW, _("&New\tCTRL+N"), _("Create a new LeafPredictor project"));
 	menu->Append(wxID_OPEN, _("&Open\tCTRL+O"), _("Open a saved LeafPredictor project"));
 	menu->AppendSeparator();
 	mSaveProjectMenu = new wxMenuItem(menu, wxID_SAVE, _("&Save\tCTRL+S"), _("Save a LeafPredictor project"));
@@ -426,6 +428,65 @@ inline void MainDialog::CreateLayout(void)
 void MainDialog::OnMenuQuit(wxCommandEvent& event)
 {
 	Close(true);
+}
+
+
+void MainDialog::OnMenuNew(wxCommandEvent& event)
+{
+	mLinkedScale = true;
+	mManualScale = 0;
+	mInvertLeaf = false;
+	m4UpMode = false;
+	mShowPCInfo = false;
+	mSelectedCanvas = wxT("Predicted Leaf 1");
+	SetStatusText(wxString::Format(_("Selected Leaf: %i"),1), STATUS_LEAF);
+	mShowLandmarks = true;
+	SetIcon(wxICON(LeafPredictor));
+	mCurrentFilename = wxT("");
+	SetUnsavedState(false);
+	//this doesn't work for some reason???
+	mEigenSystem.Empty();
+	mMeanLeafCanvas->Clear();
+	mPredictedLeafCanvas1->Clear();
+	mPredictedLeafCanvas2->Clear();
+	mPredictedLeafCanvas3->Clear();
+	
+	mChoice1->Enable(false);
+	mChoice2->Enable(false);
+	mChoice3->Enable(false);
+	mChoice4->Enable(false);
+	mPC1Amount->Enable(false);
+	mPC2Amount->Enable(false);
+	mPC3Amount->Enable(false);
+	mPC4Amount->Enable(false);
+	mRelativeMenu->Enable(false);
+	mIndependentMenu->Enable(false);
+	mManualMenu->Enable(false);
+	mResetMenu->Enable(false);
+	mImportLeafMenu->Enable(false);
+	mInvertLeafMenu->Enable(false);
+	mInvertLeafMenu->Check(false);
+	m4UpLeafMenu->Enable(false);
+	mShowPCInfoMenu->Enable(false);
+	mExportLeafMenu->Enable(false);
+	mGridGenMenu->Enable(false);
+	mMeanOverlayMenu->Enable(false);
+	mMeanOverlayMenu->Check(false);
+	mShowLandmarksMenu->Enable(false);
+	mManualScaleAmount->Enable(false);
+	mManualScaleAmount->SetValue((wxInt32)(1 * 50));
+	mSaveAsProjectMenu->Enable(false);
+	mPredictedLeafCanvas2->Show(false);
+	mPredictedLeafCanvas3->Show(false);
+	mManualScaleAmount->Show(true);
+	mManualScaleAmount->Enable(false);
+	mMeanLeafCanvas->Select(true);
+	mPredictedLeafCanvas1->Select(true);
+	mMeanLeafCanvas->ExtDraw();
+	mPredictedLeafCanvas1->ExtDraw();
+	mPredictedLeafCanvas2->ExtDraw();
+	mPredictedLeafCanvas3->ExtDraw();
+	mTopLevelSizer->Layout();
 }
 
 
