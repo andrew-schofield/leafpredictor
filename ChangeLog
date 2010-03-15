@@ -1,5 +1,8 @@
 2010-03-15 Andrew Schofield <andrew@fire-salamander.co.uk>
 * Added "new" project menu item.
+* Fixed crash when selecting canvas with no leaf set.
+* Fixed clicking on canvas after creating new project displaying old leaves.
+* Fixed PC selectors not reseting when creating new project.
 
 2010-03-12 Andrew Schofield <andrew@fire-salamander.co.uk>
 * Added extra filters to file dialogs to prompt on overwrite etc.

@@ -390,7 +390,8 @@ void LeafCanvas::DrawLeaf(wxDC& dc, wxInt32 xOut, wxInt32 yOut, wxInt32 thicknes
 
 void LeafCanvas::OnClick(wxMouseEvent& event)
 {
-	MainDialog::GetInstance()->ExternalCanvasSelect(mLabel);
+	if(mLeafExists)
+		MainDialog::GetInstance()->ExternalCanvasSelect(mLabel);
 }
 
 
