@@ -1,3 +1,5 @@
+LeafPredictor 0.9
+
 2010-03-15 Andrew Schofield <andrew@fire-salamander.co.uk>
 * Added "new" project menu item.
 * Fixed crash when selecting canvas with no leaf set.
